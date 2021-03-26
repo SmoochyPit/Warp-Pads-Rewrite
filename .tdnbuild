@@ -1,0 +1,21 @@
+{
+  "input-resources": "(automatically selected by Trident-UI)",
+  "output": {
+    "directories": {
+      "data-pack": "C:\\Users\\smooc\\Trident\\workspace\\warppadsre\\out\\warppadsre",
+      "resource-pack": "C:\\Users\\smooc\\Trident\\workspace\\warppadsre\\out\\warppadsre-resources.zip"
+    },
+    "clean-directories": {
+      "data-pack": false,
+      "resource-pack": false
+    },
+    "export-comments": true,
+    "export-gamelog": true
+  },
+  "trident-ui": {
+    "actions": {
+      "pre": [],
+      "post": []
+    }
+  }
+}

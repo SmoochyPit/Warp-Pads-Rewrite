@@ -1,0 +1,19 @@
+{
+  "target-version": [
+    1,
+    16,
+    0
+  ],
+  "default-namespace": "warppad",
+  "language-level": 1,
+  "strict-nbt": false,
+  "strict-text-components": false,
+  "anonymous-function-name": "_anonymous*",
+  "using-all-plugins": false,
+  "game-logger": {
+    "compact": false,
+    "timestamp-enabled": true,
+    "pos-enabled": true,
+    "line-number-enabled": false
+  }
+}

@@ -1,0 +1,17 @@
+{
+    "display": {
+        "title": "Warp Pads Rewrite",
+        "description": "Elegant Transportation v0.1",
+        "icon": {
+            "item": "minecraft:golden_apple"
+        },
+        "announce_to_chat": false,
+        "show_toast": false
+    },
+    "parent": "global:smoochypit",
+    "criteria": {
+        "trigger": {
+            "trigger": "minecraft:tick"
+        }
+    }
+}

@@ -1,0 +1,134 @@
+@ on compile
+@ priority 2
+
+global final var warp_config = {
+    
+    colors: {
+        default: [
+            item<minecraft:air>,
+            0.75,
+            0.0,
+            0.75
+        ],
+        red: [
+            item<minecraft:red_dye>,
+            1.0,
+            0.0,
+            0.0
+        ],
+        green: [
+            item<minecraft:lime_dye>,
+            0.0,
+            0.4,
+            0.0
+        ],
+        purple: [
+            item<minecraft:purple_dye>,
+            0.5,
+            0.0,
+            1.0
+        ],
+        cyan: [
+            item<minecraft:cyan_dye>,
+            0.0,
+            0.5,
+            0.5
+        ],
+        light_gray: [
+            item<minecraft:light_gray_dye>,
+            0.75,
+            0.75,
+            0.75
+        ],
+        gray: [
+            item<minecraft:gray_dye>,
+            0.25,
+            0.25,
+            0.25
+        ],
+        pink: [
+            item<minecraft:pink_dye>,
+            1.0,
+            0.5,
+            0.75
+        ],
+        lime: [
+            item<minecraft:lime_dye>,
+            0.0,
+            0.8,
+            0.0
+        ],
+        yellow: [
+            item<minecraft:yellow_dye>,
+            1.0,
+            1.0,
+            0.0
+        ],
+        light_blue: [
+            item<minecraft:light_blue_dye>,
+            0.5,
+            0.75,
+            1.0
+        ],
+        magenta: [
+            item<minecraft:magenta_dye>,
+            1.0,
+            0.0,
+            1.0
+        ],
+        orange: [
+            item<minecraft:orange_dye>,
+            1.0,
+            0.5,
+            0.0
+        ],
+        blue: [
+            item<minecraft:blue_dye>,
+            0.0,
+            0.0,
+            1.0
+        ],
+        brown: [
+            item<minecraft:brown_dye>,
+            0.5,
+            0.25,
+            0.0
+        ],
+        black: [
+            item<minecraft:black_dye>,
+            0.0,
+            0.0,
+            0.0
+        ],
+        white: [
+            item<minecraft:white_dye>,
+            1.0,
+            1.0,
+            1.0
+        ]
+    },
+    tiers: [
+        {
+            item_name:text_component<{"text":"Tier 1 Warp Pad"}>,
+            base:block<minecraft:gold_block>,
+            primary:item<minecraft:golden_apple>,
+            secondary:item<minecraft:quartz>,
+            max_distance:1000
+        },
+        {
+            item_name:text_component<{"text":"Tier 2 Warp Pad"}>,
+            base:block<minecraft:emerald_block>,
+            primary:item<minecraft:ghast_tear>,
+            secondary:item<minecraft:phantom_membrane>,
+            max_distance:25000
+        },
+        {
+            item_name:text_component<{"text":"Tier 3 Warp Pad"}>,
+            base:block<minecraft:diamond_block>,
+            primary:item<minecraft:nether_star>,
+            secondary:item<minecraft:ender_eye>,
+            max_distance:-1
+        }
+    ]
+    
+}

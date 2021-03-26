@@ -1,0 +1,65 @@
+define objective wp.freq
+define objective wp.color
+define objective wp.playerUUID
+
+define event base_items
+
+define entity warp_pad minecraft:armor_stand {
+    
+    default name [
+        "Warp Pad"
+    ]
+    
+    default nbt {
+        Marker:true,
+        Invisible:true,
+        Invulnerable:true,
+        NoGravity:true,
+        Tags:[
+            "wp.pad"
+        ]
+    }
+    
+    function construct {
+        
+        set @s->wp.freq = 0
+        set @s->wp.color = 0
+        
+    }
+    
+    function destruct {
+        
+        particle witch ~ ~-1 ~ 0 0 0 0.5 25
+        forceload remove ~ ~
+        unless score @s wp.freq matches 0 positioned ~ ~-1 ~ function redstone_dust {
+            
+            summon item ~ ~ ~ {Tags:["wp.redstonedrop"],Item:{id:"minecraft:redstone",Count:1b},PickupDelay:25s}
+            store result entity @e[tag=wp.redstonedrop,limit=1,sort=nearest] Item.Count byte 1.0
+                scoreboard players get @s wp.freq
+            
+        }
+        event @s base_items
+        unless score @s wp.playerUUID matches 0 positioned ~ ~-1 ~
+            summon item ~ ~ ~ {Item:{id:"minecraft:diamond",Count:1b},PickupDelay:25s}
+        
+    }
+    
+}
+
+# Define an entity component "tier_*" for each tier in config
+
+for (var i=0; i<warp_config.tiers.length; i++) {
+    
+    var tier = warp_config.tiers[i]
+    
+    define entity component ${"tier_" + i} {
+        
+        on base_items function {
+            
+            
+            
+        }
+        
+    }
+    
+}
