@@ -1,10 +1,17 @@
 define objective wp.freq
 define objective wp.color
-define objective wp.playerUUID
+define objective wp.player_uuid
+define objective wp.reserved_uuid
+define objective wp.x
+define objective wp.z
+define objective wp.chunk_x
+define objective wp.chunk_z
+define objective wp.pads_in_chunk
 
-define event base_items
+define event wp_spawn_base_items
+define event wp_check_base
 
-define entity warp_pad minecraft:armor_stand {
+define entity wp_pad minecraft:armor_stand {
     
     default name [
         "Warp Pad"
@@ -22,25 +29,91 @@ define entity warp_pad minecraft:armor_stand {
     
     function construct {
         
+        forceload add ~ ~
+        
         set @s->wp.freq = 0
         set @s->wp.color = 0
+        
+        store result score @s wp.x
+            data get entity @s Pos[0] 1
+        store result score @s wp.x
+            data get entity @s Pos[0] 1
+        
+        set @s->wp.chunk_x = @s->wp.x
+        set @s->wp.chunk_z = @s->wp.z
+        
+        set @s->wp.chunk_x /= 16
+        set @s->wp.chunk_z /= 16
+        
+        #if a negative value, offset by -1
+        if score @s wp.x matches ..-1
+            set @s->wp.chunk_x -= 1
+        if score @s wp.z matches ..-1
+            set @s->wp.chunk_z -= 1
         
     }
     
     function destruct {
         
         particle witch ~ ~-1 ~ 0 0 0 0.5 25
-        forceload remove ~ ~
-        unless score @s wp.freq matches 0 positioned ~ ~-1 ~ function redstone_dust {
+        function /../chunk_unload
+        positioned ~ ~-1 ~ function {
             
-            summon item ~ ~ ~ {Tags:["wp.redstonedrop"],Item:{id:"minecraft:redstone",Count:1b},PickupDelay:25s}
-            store result entity @e[tag=wp.redstonedrop,limit=1,sort=nearest] Item.Count byte 1.0
-                scoreboard players get @s wp.freq
+            unless score @s->wp.freq matches 0 function spawn_freq_item {
+            
+                summon item ~ ~ ~ {
+                    Tags:["wp.freq_item"],
+                    Item:{
+                        id:${(string) warp_config.modifiers.frequency},
+                        Count:1b
+                    },
+                    PickupDelay:25s}
+                store result entity @e[tag=wp.freq_item,limit=1,sort=nearest] Item.Count byte 1.0
+                    scoreboard players get @s wp.freq
+            
+            }
+            
+            unless score @s->wp.player_uuid matches 0 positioned ~ ~-1 ~
+                summon item ~ ~ ~ {
+                Item:{
+                    id:${(string) warp_config.modifiers.private},
+                    Count:1b
+                },
+                PickupDelay:25s
+            }
+            
+            unless score @s->wp.reserved_uuid matches 0 positioned ~ ~-1 ~
+                summon item ~ ~ ~ {
+                Item:{
+                    id:${(string) warp_config.modifiers.reserved},
+                    Count:1b
+                },
+                PickupDelay:25s
+            }
+            
+            event @s wp_spawn_base_items
             
         }
-        event @s base_items
-        unless score @s wp.playerUUID matches 0 positioned ~ ~-1 ~
-            summon item ~ ~ ~ {Item:{id:"minecraft:diamond",Count:1b},PickupDelay:25s}
+        
+        kill @s
+        
+    }
+    
+    function chunk_unload {
+        
+        tag @e[type=$wp_pad] remove wp.shares_chunk
+        using tag wp.deconstructing @s {
+            # 23 is a little over sqrt(2(16^2)) or sqrt(512)
+            as @e[type=$wp_pad,distance=..23]
+            function {
+                if score @s->wp.chunk_x = @e[tag=wp.deconstructing,limit=1]->wp.chunk_x
+                if score @s->wp.chunk_z = @e[tag=wp.deconstructing,limit=1]->wp.chunk_z
+                tag @s add wp.shares_chunk
+            }
+        }
+        
+        unless entity @e[tag=wp.shares_chunk]
+            forceload remove ~ ~
         
     }
     
@@ -48,18 +121,70 @@ define entity warp_pad minecraft:armor_stand {
 
 # Define an entity component "tier_*" for each tier in config
 
+var blocks : list = []
+
+var primaries : list = []
+
+var secondaries : list = []
+
 for (var i=0; i<warp_config.tiers.length; i++) {
     
     var tier = warp_config.tiers[i]
     
+    eval blocks.add((resource) (string) tier.base)
+    eval primaries.add((resource) (string) tier.primary)
+    eval secondaries.add((resource) (string) tier.secondary)
+    
     define entity component ${"tier_" + i} {
         
-        on base_items function {
+        default nbt {
+            Tags:[
+                ${"wp.pad." + i}
+            ]
+        }
+        
+        on wp_spawn_base_items function {
             
+            summon item ~ ~ ~ {
+                Item:{
+                    id:${(string) tier.primary},
+                    Count:1b
+                }
+            }
             
+            summon item ~ ~ ~ {
+                Item:{
+                    id:${(string) tier.secondary},
+                    Count:4b
+                }
+            }
+            
+        }
+        
+        on wp_check_base function {
+            
+            unless block ~ ~-1 ~ ${tier.base} tag @s add wp.base_broken
             
         }
         
     }
     
 }
+
+eval Tags.createTag(
+    "block",
+    resource</../../base_blocks>,
+    blocks
+)
+
+eval Tags.createTag(
+    "item",
+    resource</../../primary_items>,
+    primaries
+)
+
+eval Tags.createTag(
+    "item",
+    resource</../../secondary_items>,
+    secondaries
+)

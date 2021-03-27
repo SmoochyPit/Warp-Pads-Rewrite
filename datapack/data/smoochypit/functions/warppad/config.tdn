@@ -112,23 +112,28 @@ global final var warp_config = {
             item_name:text_component<{"text":"Tier 1 Warp Pad"}>,
             base:block<minecraft:gold_block>,
             primary:item<minecraft:golden_apple>,
-            secondary:item<minecraft:quartz>,
+            secondary:item<minecraft:ender_pearl>,
             max_distance:1000
         },
         {
             item_name:text_component<{"text":"Tier 2 Warp Pad"}>,
             base:block<minecraft:emerald_block>,
             primary:item<minecraft:ghast_tear>,
-            secondary:item<minecraft:phantom_membrane>,
+            secondary:item<minecraft:ender_eye>,
             max_distance:25000
         },
         {
             item_name:text_component<{"text":"Tier 3 Warp Pad"}>,
             base:block<minecraft:diamond_block>,
             primary:item<minecraft:nether_star>,
-            secondary:item<minecraft:ender_eye>,
+            secondary:item<minecraft:popped_chorus_fruit>,
             max_distance:-1
         }
-    ]
+    ],
+    modifiers: {
+        frequency:item<minecraft:redstone>,
+        private:item<minecraft:diamond>,
+        reserved:item<minecraft:glowstone_dust>
+    }
     
 }

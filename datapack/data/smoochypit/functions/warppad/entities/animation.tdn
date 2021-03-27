@@ -1,0 +1,19 @@
+@ on compile
+
+define entity wp_anim_stand minecraft:armor_stand {
+    
+    default name [
+        "Animated Item"
+    ]
+    
+    default nbt {
+        Marker:true,
+        Invisible:true,
+        Invulnerable:true,
+        NoGravity:true,
+        Tags:[
+            "wp.anim_stand"
+        ]
+    }
+    
+}

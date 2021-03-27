@@ -5,7 +5,7 @@
     0
   ],
   "default-namespace": "warppad",
-  "language-level": 1,
+  "language-level": 2,
   "strict-nbt": false,
   "strict-text-components": false,
   "anonymous-function-name": "_anonymous*",

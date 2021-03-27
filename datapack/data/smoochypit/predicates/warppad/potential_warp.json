@@ -1,0 +1,9 @@
+{
+    "condition":"location_check",
+    "offsetY":-1,
+    "predicate":{
+        "block":{
+            "tag":"smoochypit:warppad/base_blocks"
+        }
+    }
+}

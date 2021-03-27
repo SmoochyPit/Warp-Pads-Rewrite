@@ -1,0 +1,51 @@
+@ require smoochypit:warppad/entities/warppad
+@ tag load
+schedule function / 10t
+
+define objective wp.spawn_anim
+
+for (var i=0; i<warp_config.tiers.length; i++) {
+    
+    var tier = warp_config.tiers[i]
+    
+    as @e[type=item,
+        tag=!global.ignore,tag=!global.ignore.kill,
+        nbt={
+            Item:{
+                id:${(string) tier.primary}
+            }
+        }] 
+    at @s
+    align xyz
+    if entity @e[type=item,
+        tag=!global.ignore,tag=!global.ignore.kill,
+        dx=0,dy=0,dz=0,
+        nbt={
+            Item:{
+                id:${(string) tier.secondary},
+                Count:4b
+            }
+        }]
+    positioned ~0.5 ~0.5 ~0.5
+    unless entity @e[type=$wp_pad,distance=..2.9]
+    if block ~ ~-1 ~ ${tier.base}
+    function ${(resource) ("/create_warp_tier" + i)} {
+        
+        summon $wp_pad ~0.5 ~0.5 ~0.5 {Tags:["wp.temp"]}
+#       component @s add ${"tier_" + i}
+        tag @e[tag=wp.temp] add ${"trident-component.warppad.tier_" + i}
+        tag @e remove wp.temp
+        kill @e[type=item,
+            tag=!global.ignore,tag=!global.ignore.kill,
+            dx=0,dy=0,dz=0,
+            nbt={
+                Item:{
+                    id:${(string) tier.secondary},
+                    Count:4b
+                }
+            }]
+        kill @s
+        
+    }
+    
+}
