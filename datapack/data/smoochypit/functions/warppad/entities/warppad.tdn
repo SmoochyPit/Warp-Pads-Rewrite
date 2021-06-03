@@ -137,6 +137,7 @@ define entity wp_pad minecraft:marker {
                 unless entity @e[tag=global.forceload,dx=16,dy=320,dz=16]
                     forceload remove ~ ~
                 
+                kill @s
             }
             
         }
