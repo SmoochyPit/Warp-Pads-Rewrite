@@ -8,6 +8,7 @@ define entity wp_anim_stand minecraft:armor_stand {
     
     default nbt {
         Marker:true,
+        Small:true,
         Invisible:true,
         Invulnerable:true,
         NoGravity:true,

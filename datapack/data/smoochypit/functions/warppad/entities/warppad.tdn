@@ -1,29 +1,36 @@
-define objective wp.freq
-define objective wp.color
-define objective wp.player_uuid
-define objective wp.reserved_uuid
 define objective wp.x
 define objective wp.z
-define objective wp.chunk_x
-define objective wp.chunk_z
-define objective wp.pads_in_chunk
+define objective wp.math
+define objective wp.spawn_anim
 
 define event wp_spawn_base_items
-define event wp_check_base
 
-define entity wp_pad minecraft:armor_stand {
+define entity wp_pad minecraft:marker {
     
     default name [
         "Warp Pad"
     ]
     
     default nbt {
-        Marker:true,
-        Invisible:true,
-        Invulnerable:true,
-        NoGravity:true,
+        data:{
+            Color:0b,
+            Frequency:0b,
+            Destructable:true,
+            Reserved:false,
+            Private:false,
+            Owner_UUID:[
+                I;
+                0,
+                0,
+                0,
+                0
+            ]
+        },
         Tags:[
-            "wp.pad"
+            "wp.pad",
+            "global.ignore",
+            "global.ignore.pos",
+            "global.forceload"
         ]
     }
     
@@ -31,36 +38,33 @@ define entity wp_pad minecraft:armor_stand {
         
         forceload add ~ ~
         
-        set @s->wp.freq = 0
-        set @s->wp.color = 0
+        data modify entity @s data.Frequency set value 0
+        data modify entity @s data.Color set value 0
         
         store result score @s wp.x
             data get entity @s Pos[0] 1
-        store result score @s wp.x
-            data get entity @s Pos[0] 1
-        
-        set @s->wp.chunk_x = @s->wp.x
-        set @s->wp.chunk_z = @s->wp.z
-        
-        set @s->wp.chunk_x /= 16
-        set @s->wp.chunk_z /= 16
-        
-        #if a negative value, offset by -1
-        if score @s wp.x matches ..-1
-            set @s->wp.chunk_x -= 1
-        if score @s wp.z matches ..-1
-            set @s->wp.chunk_z -= 1
+        store result score @s wp.z
+            data get entity @s Pos[2] 1
         
     }
     
     function destruct {
         
         particle witch ~ ~-1 ~ 0 0 0 0.5 25
+        
         function /../chunk_unload
+        
         positioned ~ ~-1 ~ function {
             
-            unless score @s->wp.freq matches 0 function spawn_freq_item {
-            
+            unless entity @s[
+                nbt={
+                    data:{
+                        Frequency:0
+                    }
+                }
+            ]
+            positioned ~ ~-1 ~
+            function {
                 summon item ~ ~ ~ {
                     Tags:["wp.freq_item"],
                     Item:{
@@ -69,12 +73,18 @@ define entity wp_pad minecraft:armor_stand {
                     },
                     PickupDelay:25s}
                 store result entity @e[tag=wp.freq_item,limit=1,sort=nearest] Item.Count byte 1.0
-                    scoreboard players get @s wp.freq
-            
+                    data get entity @s data.Frequency
             }
             
-            unless score @s->wp.player_uuid matches 0 positioned ~ ~-1 ~
-                summon item ~ ~ ~ {
+            if entity @s[
+                nbt={
+                    data:{
+                        Private:true
+                    }
+                }
+            ]
+            positioned ~ ~-1 ~
+            summon item ~ ~ ~ {
                 Item:{
                     id:${(string) warp_config.modifiers.private},
                     Count:1b
@@ -82,7 +92,14 @@ define entity wp_pad minecraft:armor_stand {
                 PickupDelay:25s
             }
             
-            unless score @s->wp.reserved_uuid matches 0 positioned ~ ~-1 ~
+            if entity @s[
+                nbt={
+                    data:{
+                        Reserved:true
+                    }
+                }
+            ]
+            positioned ~ ~-1 ~
                 summon item ~ ~ ~ {
                 Item:{
                     id:${(string) warp_config.modifiers.reserved},
@@ -99,24 +116,117 @@ define entity wp_pad minecraft:armor_stand {
         
     }
     
-    function chunk_unload {
+    function chunk_unload { # as and at warp pad being destroyed
         
-        tag @e[type=$wp_pad] remove wp.shares_chunk
-        using tag wp.deconstructing @s {
-            # 23 is a little over sqrt(2(16^2)) or sqrt(512)
-            as @e[type=$wp_pad,distance=..23]
-            function {
-                if score @s->wp.chunk_x = @e[tag=wp.deconstructing,limit=1]->wp.chunk_x
-                if score @s->wp.chunk_z = @e[tag=wp.deconstructing,limit=1]->wp.chunk_z
-                tag @s add wp.shares_chunk
+        tag @s remove global.forceload # for later comparison
+        
+        using summon marker with wp.locator {
+            
+            at @s expand {  # copied Initia_Nova's homework
+                # Move x to chunk edge
+                set #pos->wp.math = @s.Pos[0]
+                set #pos->wp.math /= 16
+                set @s.Pos[0] * 16.0 = #pos->wp.math
+                # Move z to chunk edge
+                set #pos->wp.math = @s.Pos[2]
+                set #pos->wp.math /= 16
+                set @s.Pos[2] * 16.0 = #pos->wp.math
+                # Move y to -64
+                set @s.Pos[1] = -64.0
+                
+                unless entity @e[tag=global.forceload,dx=16,dy=320,dz=16]
+                    forceload remove ~ ~
+                
             }
+            
         }
-        
-        unless entity @e[tag=wp.shares_chunk]
-            forceload remove ~ ~
         
     }
     
+    function animate_per {
+        
+        as @e[tag=wp.pad,scores={wp.spawn_anim=1..}] function {
+            at @s positioned ~ ~-1.4 ~ function /../../animate_items
+            set @s->wp.spawn_anim -= 1
+        }
+        
+        if entity @e[tag=wp.pad,scores={wp.spawn_anim=1..}]
+        schedule function / 1t
+        
+    }
+    
+    function animate_items {
+        
+        if entity @s[scores={wp.spawn_anim=26..100}]
+        particle portal ~ ~0.8 ~ 0.25 0 0.25 0.3 5
+        
+        if entity @s[scores={wp.spawn_anim=11..100}]
+        as @e[tag=wp.primary_anim,distance=..2.5]
+        at @s
+        tp @s ~ ~0.0135 ~
+        
+        if entity @s[scores={wp.spawn_anim=11..50}]
+        as @e[tag=wp.primary_anim,distance=..2.5]
+        at @s
+        expand {
+            tp @s ^ ^ ^-0.2
+            
+            tp @s ^ ^ ^ ~18 ~ #720 degrees in 40 ticks
+            
+            tp @s ^ ^ ^0.2
+        }
+        
+        if entity @s[scores={wp.spawn_anim=51..100}]
+        as @e[tag=wp.primary_anim,distance=..2.5]
+        at @s
+        expand {
+            tp @s ^ ^ ^-0.2
+            
+            tp @s ^ ^ ^ ~7.2 ~ #360 degrees in 50 ticks
+            
+            tp @s ^ ^ ^0.2
+        }
+        
+        if entity @s[scores={wp.spawn_anim=1..10}]
+        as @e[tag=wp.primary_anim,distance=..2.5]
+        at @s
+        expand {
+            tp @s ^ ^ ^-0.2
+            
+            tp @s ~ ~-0.17 ~
+            
+            tp @s ^ ^ ^0.2
+        }
+        
+        if entity @s[scores={wp.spawn_anim=51..100}]
+        as @e[tag=wp.secondary_anim,distance=..2.5]
+        at @s
+        expand {
+            tp @s ^ ^ ^-0.2
+            
+            tp @s ^ ^ ^0.02 ~4 ~
+                
+            tp @s ^ ^ ^0.2
+        }
+        
+        if entity @s[scores={wp.spawn_anim=1}]
+        as @e[tag=wp.primary_anim,distance=..2.5]
+        at @s
+        function {
+            particle witch ~ ~1.4 ~ 0 0 0 1 80
+            particle reverse_portal ~ ~1.4 ~ 0.1 0.1 0.1 1 80
+            kill @s
+        }
+        
+        if entity @s[scores={wp.spawn_anim=50}]
+        as @e[tag=wp.secondary_anim,distance=..2.5]
+        at @s
+        function {
+            particle witch ~ ~1.4 ~ 0 0 0 0 10
+            kill @s
+        }
+    }
+
 }
 
 # Define an entity component "tier_*" for each tier in config
@@ -137,15 +247,10 @@ for (var i=0; i<warp_config.tiers.length; i++) {
     
     define entity component ${"tier_" + i} {
         
-        default nbt {
-            Tags:[
-                ${"wp.pad." + i}
-            ]
-        }
-        
         on wp_spawn_base_items function {
             
             summon item ~ ~ ~ {
+                PickupDelay:25s,
                 Item:{
                     id:${(string) tier.primary},
                     Count:1b
@@ -153,17 +258,12 @@ for (var i=0; i<warp_config.tiers.length; i++) {
             }
             
             summon item ~ ~ ~ {
+                PickupDelay:25s,
                 Item:{
                     id:${(string) tier.secondary},
                     Count:4b
                 }
             }
-            
-        }
-        
-        on wp_check_base function {
-            
-            unless block ~ ~-1 ~ ${tier.base} tag @s add wp.base_broken
             
         }
         
