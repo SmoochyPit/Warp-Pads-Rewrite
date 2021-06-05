@@ -14,7 +14,7 @@ define entity wp_pad minecraft:marker {
     
     default nbt {
         data:{
-            Color:0b,
+            Color:"default",
             Frequency:0b,
             Destructable:true,
             Reserved:false,

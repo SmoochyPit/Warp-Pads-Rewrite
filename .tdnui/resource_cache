@@ -1,16 +1,17 @@
 {
   "datapack/data/smoochypit/advancements/warppads/globaliteminfos.json": -52736769,
   "datapack/data/global/advancements/root.json": 717491058,
+  "datapack/data/smoochypit/functions/warppad/modification.tdn": 841918188,
   "datapack/data/smoochypit/functions/warppad/entities/animation.tdn": 949773775,
   "datapack/data/global/advancements/smoochypit.json": -480751951,
-  "datapack/pack.mcmeta": -2090259134,
+  "datapack/pack.mcmeta": 1570275894,
   "datapack/data/smoochypit/functions/warppad/forceload/remove_check.mcfunction": -46713456,
-  "datapack/data/smoochypit/functions/warppad/entities/warppad.tdn": 15618933,
+  "datapack/data/smoochypit/functions/warppad/entities/warppad.tdn": 1597087856,
   "datapack/data/smoochypit/functions/warppad/forceload/remove.mcfunction": -1873944933,
   "datapack/data/smoochypit/predicates/warppad/potential_warp.json": -23576085,
-  "datapack/data/smoochypit/functions/warppad/creation.tdn": -914684419,
-  "datapack/data/smoochypit/functions/warppad/uninstall.mcfunction": 1878486367,
+  "datapack/data/smoochypit/functions/warppad/creation.tdn": -791331756,
+  "datapack/data/smoochypit/functions/warppad/uninstall.mcfunction": 1452324320,
   "datapack/data/smoochypit/functions/warppad/forceload/remove_delay.mcfunction": 604466946,
   "datapack/data/smoochypit/functions/warppad/items/warppad.tdn": 1,
-  "datapack/data/smoochypit/functions/warppad/config.tdn": 812268184
+  "datapack/data/smoochypit/functions/warppad/config.tdn": -1189166850
 }

@@ -2,8 +2,8 @@
   "input-resources": "(automatically selected by Trident-UI)",
   "output": {
     "directories": {
-      "data-pack": "C:\\Users\\smooc\\AppData\\Roaming\\.minecraft\\saves\\CleanSlate\\datapacks\\warppadre.zip",
-      "resource-pack": "C:\\Users\\smooc\\Trident\\workspace\\warppadsre\\out\\warppadsre-resources.zip"
+      "data-pack": "C:\\Users\\smooc\\AppData\\Roaming\\.minecraft\\saves\\CleanSlate\\datapacks\\warppad.zip",
+      "resource-pack": "C:\\Users\\smooc\\Trident\\workspace\\warppads\\out\\warppads-resources.zip"
     },
     "clean-directories": {
       "data-pack": false,

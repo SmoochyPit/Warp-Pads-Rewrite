@@ -140,3 +140,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
     function smoochypit:warppad/entities/warppad/wp_pad/no_break
     
 }
+    
+as @e[type=$wp_pad]
+at @s
+    function /../modification

@@ -1,0 +1,115 @@
+@ require smoochypit:warppad/entities/warppad
+
+# called in warppad/creation every 10 ticks 
+# as $wp_pad
+# at @s
+
+for (color in warp_config.colors) {
+    var color_name = color.key
+    
+    var color_display_name = ""
+    for (word in color_name.split("_")) {
+        eval color_display_name += word[0].toUpperCase() + word.substring(1) + " "
+    }
+    eval color_display_name = color_display_name.substring(0,color_display_name.length-1)
+    
+    var color_item = color.value[0]
+    var color_RGB : list = [
+        color.value[1],
+        color.value[2],
+        color.value[3]
+    ]
+    
+    align xyz
+    if entity @e[
+        type=item,
+        nbt={
+            Item:$color_item
+        },
+        nbt={
+            Item:{
+                Count:1b
+            }
+        },
+        dx=0,
+        dy=0,
+        dz=0
+    ]
+    unless entity @s[
+        nbt={
+            data:{
+                Color:$color_name
+            }
+        }
+    ]
+    function {
+        
+        data modify entity @s data.Color set value $color_name
+        
+        at @e[type=item,limit=1,sort=nearest]
+            particle witch ~ ~ ~ 0 0 0 0.2 25
+        
+        tag @a[distance=..6,tag=!global.ignore.gui] add wp.displaying_gui
+        tag @a[tag=wp.displaying_gui] add global.ignore.gui
+        title @a[distance=..6,tag=wp.displaying_gui] actionbar {
+            "text":"Warp Pad color set to ",
+            "color":"dark_purple",
+            "extra":[
+                {
+                    "text":$color_display_name
+                }
+            ]
+        }
+        
+        tellraw @a {
+            "text":$color_name,
+            "extra":[
+                {
+                    "text":", "
+                },
+                {
+                    "text":${color_RGB[0]}
+                },
+                {
+                    "text":" "
+                },
+                {
+                    "text":${color_RGB[1]}
+                },
+                {
+                    "text":" "
+                },
+                {
+                    "text":${color_RGB[2]}
+                }
+            ]
+        }
+        
+        kill @e[
+            type=item,
+            nbt={
+                Item:$color_item
+            },
+            nbt={
+                Item:{
+                    Count:1b
+                }
+            },
+            dx=0,
+            dy=0,
+            dz=0
+        ]
+        
+    }
+    
+}
+
+
+
+define function remove_gui_display {
+    tag @a[tag=wp.displaying_gui] remove global.ignore.gui
+    tag @a remove wp.displaying_gui
+}
+
+if entity @a[tag=wp.displaying_gui]
+    schedule function /remove_gui_display 20t

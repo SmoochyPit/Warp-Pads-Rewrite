@@ -17,7 +17,7 @@ global final var warp_config = {
             0.0
         ],
         green: [
-            item<minecraft:lime_dye>,
+            item<minecraft:green_dye>,
             0.0,
             0.4,
             0.0
