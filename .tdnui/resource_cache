@@ -1,7 +1,7 @@
 {
   "datapack/data/smoochypit/advancements/warppads/globaliteminfos.json": -52736769,
   "datapack/data/global/advancements/root.json": 717491058,
-  "datapack/data/smoochypit/functions/warppad/modification.tdn": -243253610,
+  "datapack/data/smoochypit/functions/warppad/modification.tdn": -1660357818,
   "datapack/data/smoochypit/functions/warppad/entities/animation.tdn": 949773775,
   "datapack/data/smoochypit/advancements/warppads/globalwarppads.json": 1444734299,
   "datapack/data/global/advancements/smoochypit.json": -480751951,
@@ -11,7 +11,7 @@
   "datapack/data/smoochypit/functions/warppad/forceload/remove.mcfunction": -1873944933,
   "datapack/data/smoochypit/predicates/warppad/potential_warp.json": -23576085,
   "datapack/data/smoochypit/functions/warppad/creation.tdn": -1728409793,
-  "datapack/data/smoochypit/functions/warppad/uninstall.mcfunction": 1452324320,
+  "datapack/data/smoochypit/functions/warppad/uninstall.mcfunction": 1048440124,
   "datapack/data/smoochypit/functions/warppad/forceload/remove_delay.mcfunction": 604466946,
   "datapack/data/smoochypit/functions/warppad/items/warppad.tdn": 1,
   "datapack/data/smoochypit/functions/warppad/config.tdn": -1189166850

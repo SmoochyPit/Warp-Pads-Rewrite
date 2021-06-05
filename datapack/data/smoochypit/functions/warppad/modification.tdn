@@ -63,6 +63,22 @@ for (color in warp_config.colors) {
             if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
             function {
                 
+                for (color in warp_config.colors) {
+                
+                    if entity @s[
+                        nbt={
+                            data:{
+                                Color:${color.key}
+                            }
+                        }
+                    ]
+                    summon item ~ ~ ~ {
+                        Item:${color.value[0]},
+                        PickupDelay:25s
+                    }
+            
+                }
+                
                 set @s.data.Color = ${(nbt_value) color_name}
             
                 at @e[type=item,limit=1,sort=nearest]
@@ -161,6 +177,21 @@ function {
         if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
         function {
             
+            if entity @s[
+                nbt={
+                    data:{
+                        Private:true
+                    }
+                }
+            ]
+            summon item ~ ~ ~ {
+                Item:{
+                    id:${(string) warp_config.modifiers.private},
+                    Count:1b
+                },
+                PickupDelay:25s
+            }
+            
             set @s.data.Reserved = true
 
             at @e[type=item,limit=1,sort=nearest]
@@ -175,22 +206,6 @@ function {
             title @a[distance=..10,tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
                 "text":"Warp Pad Stream set to Reserved",
                 "color":"dark_purple"
-            }
-            
-            if entity @s[
-                nbt={
-                    data:{
-                        Private:true
-                    }
-                }
-            ]
-            positioned ~ ~-1 ~
-            summon item ~ ~ ~ {
-                Item:{
-                    id:${(string) warp_config.modifiers.private},
-                    Count:1b
-                },
-                PickupDelay:25s
             }
             
             kill @e[tag=wp.chosen_item]
@@ -213,13 +228,6 @@ if entity @e[
     dx=0,
     dy=0,
     dz=0
-]
-unless entity @s[
-    nbt={
-        data:{
-            Private:true
-        }
-    }
 ]
 unless entity @s[
     nbt={
@@ -247,6 +255,21 @@ function {
         set @e[tag=wp.chosen_item,limit=1]->wp.linked_UUID = @e[tag=wp.chosen_item,limit=1].Thrower[0]
         if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
         function {
+            
+            if entity @s[
+                nbt={
+                    data:{
+                        Reserved:true
+                    }
+                }
+            ]
+            summon item ~ ~ ~ {
+                Item:{
+                    id:${(string) warp_config.modifiers.reserved},
+                    Count:1b
+                },
+                PickupDelay:25s
+            }
             
             set @s.data.Private = true
 
