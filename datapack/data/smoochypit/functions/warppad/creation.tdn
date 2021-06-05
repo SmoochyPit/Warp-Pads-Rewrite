@@ -121,12 +121,22 @@ for (var i=0; i<warp_config.tiers.length; i++) {
     
     as @e[
         type=$wp_pad,
-        tag=${"trident-component.smoochypit.tier_" + i}
+        tag=${"trident-component.smoochypit.tier_" + i},
+        nbt={data:{Destructable:true}}
     ]
     at @s
     unless block ~ ~-1 ~ ${tier.base}
     if entity @p[distance=..32]
     function smoochypit:warppad/entities/warppad/wp_pad/destruct
     
-}
+    #no player in 32 block comparison here, as no chunk forceloads are being modified
+    as @e[
+        type=$wp_pad,
+        tag=${"trident-component.smoochypit.tier_" + i},
+        nbt={data:{Destructable:false}}
+    ]
+    at @s
+    unless block ~ ~-1 ~ ${tier.base}
+    function smoochypit:warppad/entities/warppad/wp_pad/no_break
     
+}

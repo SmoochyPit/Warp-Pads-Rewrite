@@ -4,6 +4,7 @@ define objective wp.math
 define objective wp.spawn_anim
 
 define event wp_spawn_base_items
+define event replace_base
 
 define entity wp_pad minecraft:marker {
     
@@ -38,13 +39,17 @@ define entity wp_pad minecraft:marker {
         
         forceload add ~ ~
         
-        data modify entity @s data.Frequency set value 0
-        data modify entity @s data.Color set value 0
+        set @s.data.Frequency = 0
+        set @s.data.Color = 0
         
-        store result score @s wp.x
-            data get entity @s Pos[0] 1
-        store result score @s wp.z
-            data get entity @s Pos[2] 1
+        #store result score @s wp.x
+        #    data get entity @s Pos[0] 1
+        #store result score @s wp.z
+        #    data get entity @s Pos[2] 1
+        set @s->wp.x = @s.Pos[0]
+        set @s->wp.z = @s.Pos[0]
+        
+        set @s.data.Owner_UUID = @e[tag=wp.mainitem,limit=1,sort=nearest].Thrower
         
     }
     
@@ -116,29 +121,34 @@ define entity wp_pad minecraft:marker {
         
     }
     
+    function no_break {
+        
+        positioned ~ ~-1 ~ event @s replace_base
+        
+    }
+    
     function chunk_unload { # as and at warp pad being destroyed
         
         tag @s remove global.forceload # for later comparison
         
         using summon marker with wp.locator {
-            
-            at @s expand {  # copied Initia_Nova's homework
-                # Move x to chunk edge
-                set #pos->wp.math = @s.Pos[0]
-                set #pos->wp.math /= 16
-                set @s.Pos[0] * 16.0 = #pos->wp.math
-                # Move z to chunk edge
-                set #pos->wp.math = @s.Pos[2]
-                set #pos->wp.math /= 16
-                set @s.Pos[2] * 16.0 = #pos->wp.math
-                # Move y to -64
-                set @s.Pos[1] = -64.0
+            # copied Initia_Nova's homework
+            # Move x to chunk edge
+            set #pos->wp.math = @s.Pos[0]
+            set #pos->wp.math /= 16
+            set @s.Pos[0] * 16.0 (double) = #pos->wp.math
+            # Move z to chunk edge
+            set #pos->wp.math = @s.Pos[2]
+            set #pos->wp.math /= 16
+            set @s.Pos[2] * 16.0 (double) = #pos->wp.math
+            # Move y to -64
+            set @s.Pos[1] (double) = -64.0
                 
-                unless entity @e[tag=global.forceload,dx=16,dy=320,dz=16]
-                    forceload remove ~ ~
+            at @s
+            unless entity @e[tag=global.forceload,dx=15,dy=319,dz=15]
+                forceload remove ~ ~
                 
-                kill @s
-            }
+            kill @s
             
         }
         
@@ -265,6 +275,20 @@ for (var i=0; i<warp_config.tiers.length; i++) {
                     Count:4b
                 }
             }
+            
+        }
+        
+        on replace_base function {
+            
+            align xyz 
+                kill @e[type=item,
+                nbt={
+                    Item:{
+                        id:${(string) tier.base}
+                    }
+                },
+                dx=0,dy=0,dz=0]
+            setblock ~ ~ ~ ${tier.base}
             
         }
         
