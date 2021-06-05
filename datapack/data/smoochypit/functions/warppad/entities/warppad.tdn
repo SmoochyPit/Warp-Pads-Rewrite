@@ -2,6 +2,7 @@ define objective wp.x
 define objective wp.z
 define objective wp.math
 define objective wp.spawn_anim
+define objective wp.linked_UUID
 
 define event wp_spawn_base_items
 define event replace_base
@@ -50,6 +51,7 @@ define entity wp_pad minecraft:marker {
         set @s->wp.z = @s.Pos[0]
         
         set @s.data.Owner_UUID = @e[tag=wp.mainitem,limit=1,sort=nearest].Thrower
+        set @s->wp.linked_UUID = @s.data.Owner_UUID[0]
         
     }
     
@@ -68,7 +70,6 @@ define entity wp_pad minecraft:marker {
                     }
                 }
             ]
-            positioned ~ ~-1 ~
             function {
                 summon item ~ ~ ~ {
                     Tags:["wp.freq_item"],
@@ -88,13 +89,28 @@ define entity wp_pad minecraft:marker {
                     }
                 }
             ]
-            positioned ~ ~-1 ~
             summon item ~ ~ ~ {
                 Item:{
                     id:${(string) warp_config.modifiers.private},
                     Count:1b
                 },
                 PickupDelay:25s
+            }
+            
+            for (color in warp_config.colors) {
+                
+                if entity @s[
+                    nbt={
+                        data:{
+                            Color:${color.key}
+                        }
+                    }
+                ]
+                summon item ~ ~ ~ {
+                    Item:${color.value[0]},
+                    PickupDelay:25s
+                }
+            
             }
             
             if entity @s[
@@ -104,7 +120,6 @@ define entity wp_pad minecraft:marker {
                     }
                 }
             ]
-            positioned ~ ~-1 ~
                 summon item ~ ~ ~ {
                 Item:{
                     id:${(string) warp_config.modifiers.reserved},

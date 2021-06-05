@@ -5,6 +5,7 @@
 # at @s
 
 for (color in warp_config.colors) {
+    
     var color_name = color.key
     
     var color_display_name = ""
@@ -43,49 +44,7 @@ for (color in warp_config.colors) {
         }
     ]
     function {
-        
-        data modify entity @s data.Color set value $color_name
-        
-        at @e[type=item,limit=1,sort=nearest]
-            particle witch ~ ~ ~ 0 0 0 0.2 25
-        
-        tag @a[distance=..6,tag=!global.ignore.gui] add wp.displaying_gui
-        tag @a[tag=wp.displaying_gui] add global.ignore.gui
-        title @a[distance=..6,tag=wp.displaying_gui] actionbar {
-            "text":"Warp Pad color set to ",
-            "color":"dark_purple",
-            "extra":[
-                {
-                    "text":$color_display_name
-                }
-            ]
-        }
-        
-        tellraw @a {
-            "text":$color_name,
-            "extra":[
-                {
-                    "text":", "
-                },
-                {
-                    "text":${color_RGB[0]}
-                },
-                {
-                    "text":" "
-                },
-                {
-                    "text":${color_RGB[1]}
-                },
-                {
-                    "text":" "
-                },
-                {
-                    "text":${color_RGB[2]}
-                }
-            ]
-        }
-        
-        kill @e[
+        using tag wp.chosen_item @e[
             type=item,
             nbt={
                 Item:$color_item
@@ -97,18 +56,230 @@ for (color in warp_config.colors) {
             },
             dx=0,
             dy=0,
-            dz=0
-        ]
+            dz=0,
+            limit=1
+        ] {
+            set @e[tag=wp.chosen_item,limit=1]->wp.linked_UUID = @e[tag=wp.chosen_item,limit=1].Thrower[0]
+            if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+            function {
+                
+                set @s.data.Color = ${(nbt_value) color_name}
+            
+                at @e[type=item,limit=1,sort=nearest]
+                    particle witch ~ ~ ~ 0 0 0 0.2 25
+        
+                as @a[distance=..10]
+                if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+                    tag @s update wp.mod_thrower
+                
+                tag @p[distance=..10,tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
+                tag @a[tag=wp.displaying_gui] add global.ignore.gui
+                title @a[distance=..10,tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
+                    "text":"Warp Pad Color set to ",
+                    "color":"dark_purple",
+                    "extra":[
+                        {
+                            "text":$color_display_name
+                        }
+                    ]
+                }
+                
+                tellraw @a {
+                    
+                    "text":$color_name,
+                    "extra":[
+                        {
+                            "text":", "
+                        },
+                        {
+                            "text":${color_RGB[0]}
+                        },
+                        {
+                            "text":" "
+                        },
+                        {
+                            "text":${color_RGB[1]}
+                        },
+                        {
+                            "text":" "
+                        },
+                        {
+                            "text":${color_RGB[2]}
+                        }
+                    ]
+                }
+        
+                kill @e[tag=wp.chosen_item]
+                
+            }
+            
+        }
         
     }
     
 }
 
+align xyz
+if entity @e[
+    type=item,
+    nbt={
+        Item:${warp_config.modifiers.reserved}
+    },
+    nbt={
+        Item:{
+            Count:1b
+        }
+    },
+    dx=0,
+    dy=0,
+    dz=0
+]
+unless entity @s[
+    nbt={
+        data:{
+            Reserved:true
+        }
+    }
+]
+function {
+    using tag wp.chosen_item @e[
+        type=item,
+        nbt={
+            Item:${warp_config.modifiers.reserved}
+        },
+        nbt={
+            Item:{
+                Count:1b
+            }
+        },
+        dx=0,
+        dy=0,
+        dz=0,
+        limit=1
+    ] {
+        set @e[tag=wp.chosen_item,limit=1]->wp.linked_UUID = @e[tag=wp.chosen_item,limit=1].Thrower[0]
+        if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+        function {
+            
+            set @s.data.Reserved = true
 
+            at @e[type=item,limit=1,sort=nearest]
+            particle witch ~ ~ ~ 0 0 0 0.2 25
+            
+            as @a[distance=..10]
+            if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+                tag @s update wp.mod_thrower
+            
+            tag @p[distance=..10,tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
+            tag @a[tag=wp.displaying_gui] add global.ignore.gui
+            title @a[distance=..10,tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
+                "text":"Warp Pad Stream set to Reserved",
+                "color":"dark_purple"
+            }
+            
+            if entity @s[
+                nbt={
+                    data:{
+                        Private:true
+                    }
+                }
+            ]
+            positioned ~ ~-1 ~
+            summon item ~ ~ ~ {
+                Item:{
+                    id:${(string) warp_config.modifiers.private},
+                    Count:1b
+                },
+                PickupDelay:25s
+            }
+            
+            kill @e[tag=wp.chosen_item]
+    
+        }
+    }
+}
+
+align xyz
+if entity @e[
+    type=item,
+    nbt={
+        Item:${warp_config.modifiers.private}
+    },
+    nbt={
+        Item:{
+            Count:1b
+        }
+    },
+    dx=0,
+    dy=0,
+    dz=0
+]
+unless entity @s[
+    nbt={
+        data:{
+            Private:true
+        }
+    }
+]
+unless entity @s[
+    nbt={
+        data:{
+            Reserved:true
+        }
+    }
+]
+function {
+    using tag wp.chosen_item @e[
+        type=item,
+        nbt={
+            Item:${warp_config.modifiers.private}
+        },
+        nbt={
+            Item:{
+                Count:1b
+            }
+        },
+        dx=0,
+        dy=0,
+        dz=0,
+        limit=1
+    ] {
+        set @e[tag=wp.chosen_item,limit=1]->wp.linked_UUID = @e[tag=wp.chosen_item,limit=1].Thrower[0]
+        if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+        function {
+            
+            set @s.data.Private = true
+
+            at @e[type=item,limit=1,sort=nearest]
+            particle witch ~ ~ ~ 0 0 0 0.2 25
+            
+            as @a[distance=..10]
+            if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+                tag @s update wp.mod_thrower
+            
+            tag @p[distance=..10,tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
+            tag @a[tag=wp.displaying_gui] add global.ignore.gui
+            title @a[distance=..10,tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
+                "text":"Warp Pad Stream set to Private for ",
+                "color":"dark_purple",
+                "extra":[
+                    {
+                        "selector":"@p[tag=wp.mod_thrower]"
+                    }
+                ]
+            }
+            
+            kill @e[tag=wp.chosen_item]
+    
+        }
+    }
+}
 
 define function remove_gui_display {
+    
     tag @a[tag=wp.displaying_gui] remove global.ignore.gui
     tag @a remove wp.displaying_gui
+    
 }
 
 if entity @a[tag=wp.displaying_gui]
