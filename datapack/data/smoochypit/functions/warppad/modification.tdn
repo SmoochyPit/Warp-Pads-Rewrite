@@ -4,6 +4,8 @@
 # as $wp_pad
 # at @s
 
+# Colors
+
 for (color in warp_config.colors) {
     
     var color_name = color.key
@@ -22,8 +24,17 @@ for (color in warp_config.colors) {
     ]
     
     align xyz
+    unless entity @s[
+        nbt={
+            data:{
+                Color:$color_name
+            }
+        }
+    ]
     if entity @e[
         type=item,
+        tag=!global.ignore,
+        tag=!global.ignore.kill,
         nbt={
             Item:$color_item
         },
@@ -36,16 +47,11 @@ for (color in warp_config.colors) {
         dy=0,
         dz=0
     ]
-    unless entity @s[
-        nbt={
-            data:{
-                Color:$color_name
-            }
-        }
-    ]
     function {
         using tag wp.chosen_item @e[
             type=item,
+            tag=!global.ignore,
+            tag=!global.ignore.kill,
             nbt={
                 Item:$color_item
             },
@@ -72,7 +78,7 @@ for (color in warp_config.colors) {
                             }
                         }
                     ]
-                    summon item ~ ~ ~ {
+                    summon item ~.5 ~.5 ~.5 {
                         Item:${color.value[0]},
                         PickupDelay:25s
                     }
@@ -81,7 +87,7 @@ for (color in warp_config.colors) {
                 
                 set @s.data.Color = ${(nbt_value) color_name}
             
-                at @e[type=item,limit=1,sort=nearest]
+                at @e[tag=wp.chosen_item,limit=1]
                     particle witch ~ ~ ~ 0 0 0 0.2 25
         
                 as @a[distance=..10]
@@ -135,9 +141,20 @@ for (color in warp_config.colors) {
     
 }
 
+# Reserved
+
 align xyz
+unless entity @s[
+    nbt={
+        data:{
+            Reserved:true
+        }
+    }
+]
 if entity @e[
     type=item,
+    tag=!global.ignore,
+    tag=!global.ignore.kill,
     nbt={
         Item:${warp_config.modifiers.reserved}
     },
@@ -150,16 +167,11 @@ if entity @e[
     dy=0,
     dz=0
 ]
-unless entity @s[
-    nbt={
-        data:{
-            Reserved:true
-        }
-    }
-]
 function {
     using tag wp.chosen_item @e[
         type=item,
+        tag=!global.ignore,
+        tag=!global.ignore.kill,
         nbt={
             Item:${warp_config.modifiers.reserved}
         },
@@ -184,17 +196,21 @@ function {
                     }
                 }
             ]
-            summon item ~ ~ ~ {
-                Item:{
-                    id:${(string) warp_config.modifiers.private},
-                    Count:1b
-                },
-                PickupDelay:25s
+            function {
+                summon item ~.5 ~.5 ~.5 {
+                    Item:{
+                        id:${(string) warp_config.modifiers.private},
+                        Count:1b
+                    },
+                    PickupDelay:25s
+                }
+                set @s.data.Private = false
             }
+            
             
             set @s.data.Reserved = true
 
-            at @e[type=item,limit=1,sort=nearest]
+            at @e[tag=wp.chosen_item,limit=1]
             particle witch ~ ~ ~ 0 0 0 0.2 25
             
             as @a[distance=..10]
@@ -214,9 +230,20 @@ function {
     }
 }
 
+# Private
+
 align xyz
+unless entity @s[
+    nbt={
+        data:{
+            Private:true
+        }
+    }
+]
 if entity @e[
     type=item,
+    tag=!global.ignore,
+    tag=!global.ignore.kill,
     nbt={
         Item:${warp_config.modifiers.private}
     },
@@ -229,16 +256,11 @@ if entity @e[
     dy=0,
     dz=0
 ]
-unless entity @s[
-    nbt={
-        data:{
-            Reserved:true
-        }
-    }
-]
 function {
     using tag wp.chosen_item @e[
         type=item,
+        tag=!global.ignore,
+        tag=!global.ignore.kill,
         nbt={
             Item:${warp_config.modifiers.private}
         },
@@ -263,17 +285,20 @@ function {
                     }
                 }
             ]
-            summon item ~ ~ ~ {
-                Item:{
-                    id:${(string) warp_config.modifiers.reserved},
-                    Count:1b
-                },
-                PickupDelay:25s
+            function {
+                summon item ~.5 ~.5 ~.5 {
+                    Item:{
+                        id:${(string) warp_config.modifiers.reserved},
+                        Count:1b
+                    },
+                    PickupDelay:25s
+                }
+                set @s.data.Reserved = false
             }
             
             set @s.data.Private = true
 
-            at @e[type=item,limit=1,sort=nearest]
+            at @e[tag=wp.chosen_item,limit=1]
             particle witch ~ ~ ~ 0 0 0 0.2 25
             
             as @a[distance=..10]
@@ -288,6 +313,165 @@ function {
                 "extra":[
                     {
                         "selector":"@p[tag=wp.mod_thrower]"
+                    }
+                ]
+            }
+            
+            kill @e[tag=wp.chosen_item]
+    
+        }
+    }
+}
+
+# Frequency
+
+align xyz
+unless entity @s[
+    scores={wp.frequency=64..}
+]
+if entity @e[
+    type=item,
+    tag=!global.ignore,
+    tag=!global.ignore.kill,
+    nbt={
+        Item:${warp_config.modifiers.frequency}
+    },
+    nbt={
+        Item:{
+            Count:1b
+        }
+    },
+    dx=0,
+    dy=0,
+    dz=0
+]
+function {
+    using tag wp.chosen_item @e[
+        type=item,
+        tag=!global.ignore,
+        tag=!global.ignore.kill,
+        nbt={
+            Item:${warp_config.modifiers.frequency}
+        },
+        nbt={
+            Item:{
+                Count:1b
+            }
+        },
+        dx=0,
+        dy=0,
+        dz=0,
+        limit=1
+    ] {
+        set @e[tag=wp.chosen_item,limit=1]->wp.linked_UUID = @e[tag=wp.chosen_item,limit=1].Thrower[0]
+        if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+        function {
+            
+            set @s->wp.frequency += 1
+            set @s.data.Frequency (int) = @s->wp.frequency
+
+            at @e[tag=wp.chosen_item,limit=1]
+            particle witch ~ ~ ~ 0 0 0 0.2 25
+            
+            as @a[distance=..10]
+            if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+                tag @s update wp.mod_thrower
+            
+            tag @p[distance=..10,tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
+            tag @a[tag=wp.displaying_gui] add global.ignore.gui
+            title @a[distance=..10,tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
+                "text":"Warp Pad Frequency tuned to ",
+                "color":"dark_purple",
+                "extra":[
+                    {
+                        "score":{
+                            "name":"@s",
+                            "objective":"wp.frequency"
+                        }
+                    }
+                ]
+            }
+            
+            kill @e[tag=wp.chosen_item]
+    
+        }
+    }
+}
+
+# Rename
+
+align xyz
+if entity @e[
+    type=item,
+    tag=!global.ignore,
+    tag=!global.ignore.kill,
+    nbt={
+        Item:${warp_config.modifiers.rename}
+    },
+    nbt={
+        Item:{
+            Count:1b
+        }
+    },
+    dx=0,
+    dy=0,
+    dz=0
+]
+function {
+    using tag wp.chosen_item @e[
+        type=item,
+        tag=!global.ignore,
+        tag=!global.ignore.kill,
+        nbt={
+            Item:${warp_config.modifiers.rename}
+        },
+        nbt={
+            Item:{
+                Count:1b
+            }
+        },
+        dx=0,
+        dy=0,
+        dz=0,
+        limit=1
+    ] {
+        set @e[tag=wp.chosen_item,limit=1]->wp.linked_UUID = @e[tag=wp.chosen_item,limit=1].Thrower[0]
+        if data entity @e[tag=wp.chosen_item,limit=1] Item.tag.display.Name
+        if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+        function {
+            unless entity @s[
+                nbt={
+                    CustomName:'{"text":"Warp Pad"}'
+                }
+            ]
+            positioned ~.5 ~.5 ~.5
+            function {
+                using summon item{
+                    Tags:["wp.pad"],
+                    Item:${item<minecraft:paper>},
+                    PickupDelay:25s
+                } with named_paper {
+                    set @s.Item.tag.display.Name = @e[type=$wp_pad,limit=1,sort=nearest].CustomName
+                }
+            }
+            
+            set @s.CustomName = @e[tag=wp.chosen_item,limit=1].Item.tag.display.Name
+
+            at @e[tag=wp.chosen_item,limit=1]
+            particle witch ~ ~ ~ 0 0 0 0.2 25
+            
+            as @a[distance=..10]
+            if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+                tag @s update wp.mod_thrower
+            
+            tag @p[distance=..10,tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
+            tag @a[tag=wp.displaying_gui] add global.ignore.gui
+            title @a[distance=..10,tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
+                "text":"Warp Pad renamed to ",
+                "color":"dark_purple",
+                "extra":[
+                    {
+                        "selector":"@s"
                     }
                 ]
             }

@@ -133,7 +133,8 @@ global final var warp_config = {
     modifiers: {
         frequency:item<minecraft:redstone>,
         private:item<minecraft:diamond>,
-        reserved:item<minecraft:glowstone_dust>
+        reserved:item<minecraft:glowstone_dust>,
+        rename:item<minecraft:paper>
     }
     
 }

@@ -3,6 +3,7 @@ define objective wp.z
 define objective wp.math
 define objective wp.spawn_anim
 define objective wp.linked_UUID
+define objective wp.frequency
 
 define event wp_spawn_base_items
 define event replace_base
@@ -17,7 +18,6 @@ define entity wp_pad minecraft:marker {
         data:{
             Color:"default",
             Frequency:0b,
-            Destructable:true,
             Reserved:false,
             Private:false,
             Owner_UUID:[
@@ -26,7 +26,10 @@ define entity wp_pad minecraft:marker {
                 0,
                 0,
                 0
-            ]
+            ],
+            AllSeeing:false,
+            Destructable:true,
+            SpamPunish:true
         },
         Tags:[
             "wp.pad",
@@ -50,8 +53,10 @@ define entity wp_pad minecraft:marker {
         set @s->wp.x = @s.Pos[0]
         set @s->wp.z = @s.Pos[0]
         
-        set @s.data.Owner_UUID = @e[tag=wp.mainitem,limit=1,sort=nearest].Thrower
+        set @s.data.Owner_UUID = @e[tag=wp.mainitem,limit=1].Thrower
         set @s->wp.linked_UUID = @s.data.Owner_UUID[0]
+        
+        set @s.CustomName = @e[tag=wp.mainitem,limit=1].Item.tag.display.Name
         
     }
     
@@ -78,8 +83,7 @@ define entity wp_pad minecraft:marker {
                         Count:1b
                     },
                     PickupDelay:25s}
-                store result entity @e[tag=wp.freq_item,limit=1,sort=nearest] Item.Count byte 1.0
-                    data get entity @s data.Frequency
+                set @e[tag=wp.freq_item,limit=1,sort=nearest].Item.Count (byte) = @s.data.Frequency
             }
             
             if entity @s[
@@ -129,6 +133,14 @@ define entity wp_pad minecraft:marker {
             }
             
             event @s wp_spawn_base_items
+            
+            unless entity @s[
+                nbt={
+                    CustomName:'{"text":"Warp Pad"}'
+                }
+            ]
+                set @e[tag=wp.primary_item,limit=1].Item.tag.display.Name = @s.CustomName
+            tag @e remove wp.primary_item
             
         }
         
@@ -276,6 +288,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
         on wp_spawn_base_items function {
             
             summon item ~ ~ ~ {
+                Tags:["wp.primary_item"],
                 PickupDelay:25s,
                 Item:{
                     id:${(string) tier.primary},

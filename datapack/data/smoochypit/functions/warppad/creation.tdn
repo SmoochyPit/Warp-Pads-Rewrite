@@ -2,9 +2,14 @@
 @ tag load
 schedule function / 10t
 
+# set player UUID score
 set @a->wp.linked_UUID += 0
 as @a[scores={wp.linked_UUID=0}]
     set @s->wp.linked_UUID = @s.UUID[0]
+
+# set wp freq score from data
+as @e[type=$wp_pad]
+    set @s->wp.frequency = @s.data.Frequency (int)
 
 for (var i=0; i<warp_config.tiers.length; i++) {
     
