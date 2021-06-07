@@ -1,7 +1,10 @@
+@ on compile
+
 define objective wp.x
 define objective wp.z
 define objective wp.math
 define objective wp.spawn_anim
+define objective wp.UUID
 define objective wp.linked_UUID
 define objective wp.frequency
 
@@ -16,6 +19,9 @@ define entity wp_pad minecraft:marker {
     
     default nbt {
         data:{
+            ValidDests:[],
+            InvalidDests:[],
+            IteratedDests:[],
             Color:"default",
             Frequency:0b,
             Reserved:false,
@@ -55,6 +61,8 @@ define entity wp_pad minecraft:marker {
         
         set @s.data.Owner_UUID = @e[tag=wp.mainitem,limit=1].Thrower
         set @s->wp.linked_UUID = @s.data.Owner_UUID[0]
+        
+        set @s->wp.UUID = @s.UUID[0] (int)
         
         set @s.CustomName = @e[tag=wp.mainitem,limit=1].Item.tag.display.Name
         

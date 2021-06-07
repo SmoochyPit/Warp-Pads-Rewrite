@@ -135,6 +135,11 @@ global final var warp_config = {
         private:item<minecraft:diamond>,
         reserved:item<minecraft:glowstone_dust>,
         rename:item<minecraft:paper>
+    },
+    dimensions: {
+        "minecraft:overworld": 1,
+        "minecraft:the_nether": 8,
+        "minecraft:the_end": 1
     }
     
 }

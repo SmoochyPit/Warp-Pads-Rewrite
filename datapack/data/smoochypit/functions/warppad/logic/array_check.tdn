@@ -1,0 +1,121 @@
+@ require smoochypit:warppad/entities/warppad
+@ on compile
+
+# as and at all active warps not yet processed
+
+define function valid_dests {
+    tag @e[type=$wp_pad,
+        tag=!wp.processing,
+        tag=!wp.invalid_dest,
+        nbt={
+            data:{
+                AllSeeing:true
+            }
+        }] add wp.valid_dest
+    
+    # From UUID of source
+    if data entity @s data.ValidDests[0]
+    function {
+        set @s->wp.math = @s.data.ValidDests[0]
+        
+        as @e[
+            type=$wp_pad,
+            tag=!wp.processing,
+            tag=!wp.iterated,
+            tag=!wp.invalid_dest,
+            tag=!wp.valid_dest,
+            limit=1
+        ]
+        if score @s wp.UUID = @e[tag=wp.processing,limit=1] wp.math
+            tag @s add wp.valid_dest
+        
+        data modify entity @s data.IteratedDests append from entity @s data.ValidDests[0]
+        data remove entity @s data.ValidDests[0]
+        
+        if data entity @s data.ValidDests[0] function /
+    }
+    
+    data modify entity @s data.ValidDests set from entity @s data.IteratedDests
+    data modify entity @s data.IteratedDests set value []
+    
+}
+
+define function invalid_dests {
+    # Entities in other dimensions invalid
+    for (dimension in warp_config.dimensions) {
+        
+        if entity @s[
+            nbt={Dimension:${dimension.key}}
+        ]
+        as @e[
+            type=$wp_pad,
+            tag=!wp.processing
+        ]
+        unless entity @s[
+            nbt={Dimension:${dimension.key}}
+        ]
+        tag @s add wp.invalid_dest
+        
+    }
+    
+    # Remove other frequencies
+    as @e[
+        type=$wp_pad,
+        tag=!wp.processing,
+        tag=!wp.invalid_dest
+    ]
+    unless score @s wp.frequency = @e[tag=wp.processing,limit=1] wp.frequency
+        tag @s add wp.invalid_dest
+    
+    # Remove reserved without matching UUID
+    as @e[
+        type=$wp_pad,
+        tag=!wp.processing,
+        tag=!wp.invalid_dest,
+        nbt={
+            data:{
+                Reserved:true
+            }
+        }
+    ]
+    unless score @s wp.linked_UUID = @e[tag=wp.processing,limit=1] wp.linked_UUID
+        tag @s add wp.invalid_dest
+    
+    # Remove private without matching Player's UUID
+    as @e[
+        type=$wp_pad,
+        tag=!wp.processing,
+        tag=!wp.invalid_dest,
+        nbt={
+            data:{
+                Private:true
+            }
+        }
+    ]
+    align xyz
+    unless score @s wp.linked_UUID = @p[dx=0,dy=0,dz=0] wp.linked_UUID
+        tag @s add wp.invalid_dest
+    
+    # From UUID of source
+    if data entity @s data.InvalidDests[0]
+    function {
+        set @s->wp.math = @s.data.InvalidDests[0]
+        
+        as @e[
+            type=$wp_pad,
+            tag=!wp.processing,
+            tag=!wp.invalid_dest
+        ]
+        if score @s wp.UUID = @e[tag=wp.processing,limit=1] wp.math
+            tag @s add wp.invalid_dest
+        
+        data modify entity @s data.IteratedDests append from entity @s data.InvalidDests[0]
+        data remove entity @s data.InvalidDests[0]
+        
+        if data entity @s data.InvalidDests[0] function /
+    }
+    
+    data modify entity @s data.InvalidDests set from entity @s data.IteratedDests
+    data modify entity @s data.IteratedDests set value []
+    
+}

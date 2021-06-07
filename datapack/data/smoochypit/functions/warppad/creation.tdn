@@ -11,6 +11,9 @@ as @a[scores={wp.linked_UUID=0}]
 as @e[type=$wp_pad]
     set @s->wp.frequency = @s.data.Frequency (int)
 
+as @e[type=$wp_pad]
+set @s->wp.linked_UUID = @s.data.Owner_UUID[0]
+
 for (var i=0; i<warp_config.tiers.length; i++) {
     
     var tier = warp_config.tiers[i]

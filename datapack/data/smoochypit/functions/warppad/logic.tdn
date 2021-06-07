@@ -1,0 +1,57 @@
+@ require smoochypit:warppad/entities/warppad
+
+@ tag load
+
+schedule function / 10t
+
+at @a[
+    tag=!wp.spam,
+    tag=!global.ignore.pos,
+    predicate=smoochypit:warppad/potential_warp
+]
+align xyz
+    tag @e[type=$wp_pad,dx=0,dy=0,dz=0] add wp.active
+
+as @e[tag=wp.active]
+at @s
+align xyz
+unless entity @p[dx=0,dy=0,dz=0]
+function {
+    tag @s remove wp.active
+    tag @s remove wp.processed
+}
+
+as @e[tag=wp.active,tag=!wp.processed]
+at @s
+function {
+    tag @s add wp.processing
+    # Add wp.invaliddest to all within the corresponding list of UUIDS
+    function /../array_check/invalid_dests
+    
+    # Add wp.validdest to all within the corresponding list of UUIDs
+    function /../array_check/valid_dests
+    
+    # Check remaining $wp_pad s
+    
+    
+    # Create icons
+    
+    
+    say Invalid : @e[type=$wp_pad,tag=wp.invalid_dest]
+    say Valid : @e[type=$wp_pad,tag=wp.valid_dest]
+    say Remaining: @e[type=$wp_pad,tag=!wp.valid_dest,tag=!wp.invalid_dest,tag=!wp.processing]
+    
+    tag @e remove wp.invalid_dest
+    tag @e remove wp.valid_dest
+    
+    tag @s add wp.processed
+    tag @s remove wp.processing
+}
+
+as @e[tag=wp.active]
+at @s
+function {
+    # Icon Selection
+    
+    # Warp Launch
+}
