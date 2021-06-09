@@ -44,17 +44,33 @@ define function invalid_dests {
     # Entities in other dimensions invalid
     for (dimension in warp_config.dimensions) {
         
-        if entity @s[
-            nbt={Dimension:${dimension.key}}
-        ]
-        as @e[
-            type=$wp_pad,
-            tag=!wp.processing
-        ]
-        unless entity @s[
-            nbt={Dimension:${dimension.key}}
-        ]
-        tag @s add wp.invalid_dest
+        var function_name = (resource) ("/dim_" + dimension.key.replace(":","_"))
+        var function_name_2 = (resource) ("/dim_" + dimension.key.replace(":","_") + "2")
+        
+        /${"execute in " + (dimension.key) + " run function " + (string) function_name}
+        
+        define function $function_name {
+            
+            if entity @e[tag=wp.processing,
+                distance=0..]
+            as @e[
+                type=$wp_pad,
+                tag=!wp.processing
+            ]
+            at @s
+            /${"execute in " + (dimension.key) + " run function " + (string) function_name_2}
+            
+            define function $function_name_2 {
+                
+                using tag wp.test_dim @s {
+                    unless entity @e[tag=wp.test_dim,
+                    distance=0..]
+                    tag @s add wp.early_exclude
+                }
+                
+            }
+            
+        }
         
     }
     
@@ -62,30 +78,71 @@ define function invalid_dests {
     as @e[
         type=$wp_pad,
         tag=!wp.processing,
-        tag=!wp.invalid_dest
+        tag=!wp.early_exclude
     ]
     unless score @s wp.frequency = @e[tag=wp.processing,limit=1] wp.frequency
-        tag @s add wp.invalid_dest
+        tag @s add wp.early_exclude
     
-    # Remove reserved without matching UUID
-    as @e[
+    # For reserved
+    
+    if entity @s[nbt={
+            data:{
+                Reserved:true
+            }
+        }]
+    function {
+         
+        # Remove non-reserved from reserved
+        tag @e[
+            type=$wp_pad,
+            tag=!wp.processing,
+            tag=!wp.early_exclude,
+            nbt={
+                data:{
+                    Reserved:false
+                }
+            }
+        ] add wp.early_exclude
+        
+        # Remove reserved from reserved without matching UUID
+        as @e[
+            type=$wp_pad,
+            tag=!wp.processing,
+            tag=!wp.early_exclude,
+            nbt={
+                data:{
+                    Reserved:true
+                }
+            }
+        ]
+        unless score @s wp.linked_UUID = @e[tag=wp.processing,limit=1] wp.linked_UUID
+            tag @s add wp.early_exclude
+        
+    }
+    
+    # Remove reserved from non-reserved
+    
+    if entity @s[nbt={
+            data:{
+                Reserved:false
+            }
+        }]
+    tag @e[
         type=$wp_pad,
         tag=!wp.processing,
-        tag=!wp.invalid_dest,
+        tag=!wp.early_exclude,
         nbt={
             data:{
                 Reserved:true
             }
         }
-    ]
-    unless score @s wp.linked_UUID = @e[tag=wp.processing,limit=1] wp.linked_UUID
-        tag @s add wp.invalid_dest
+    ] add wp.early_exclude
     
     # Remove private without matching Player's UUID
     as @e[
         type=$wp_pad,
         tag=!wp.processing,
-        tag=!wp.invalid_dest,
+        tag=!wp.early_exclude,
         nbt={
             data:{
                 Private:true
@@ -94,7 +151,7 @@ define function invalid_dests {
     ]
     align xyz
     unless score @s wp.linked_UUID = @p[dx=0,dy=0,dz=0] wp.linked_UUID
-        tag @s add wp.invalid_dest
+        tag @s add wp.early_exclude
     
     # From UUID of source
     if data entity @s data.InvalidDests[0]
@@ -104,7 +161,7 @@ define function invalid_dests {
         as @e[
             type=$wp_pad,
             tag=!wp.processing,
-            tag=!wp.invalid_dest
+            tag=!wp.early_exclude
         ]
         if score @s wp.UUID = @e[tag=wp.processing,limit=1] wp.math
             tag @s add wp.invalid_dest
@@ -117,5 +174,10 @@ define function invalid_dests {
     
     data modify entity @s data.InvalidDests set from entity @s data.IteratedDests
     data modify entity @s data.IteratedDests set value []
+    
+    tag @e[
+        type=$wp_pad,
+        tag=wp.early_exclude
+    ] add wp.invalid_dest
     
 }

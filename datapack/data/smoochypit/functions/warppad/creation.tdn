@@ -105,7 +105,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
             Tags:["wp.temp"]
         }
         set @e[tag=wp.temp]->wp.spawn_anim = 100
-#           cheap workaround for component @s add ${"tier_" + i}
+        # cheap workaround for component @s add ${"tier_" + i}
         tag @e[tag=wp.temp] add ${"trident-component.smoochypit.tier_" + i}
         as @e[tag=wp.temp]
             schedule function smoochypit:warppad/entities/warppad/wp_pad/animate_per 1t

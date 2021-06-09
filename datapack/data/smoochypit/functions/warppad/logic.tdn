@@ -32,7 +32,7 @@ function {
     function /../array_check/valid_dests
     
     # Check remaining $wp_pad s
-    
+    function /../conditions
     
     # Create icons
     
@@ -41,6 +41,7 @@ function {
     say Valid : @e[type=$wp_pad,tag=wp.valid_dest]
     say Remaining: @e[type=$wp_pad,tag=!wp.valid_dest,tag=!wp.invalid_dest,tag=!wp.processing]
     
+    tag @e remove wp.early_exclude
     tag @e remove wp.invalid_dest
     tag @e remove wp.valid_dest
     
