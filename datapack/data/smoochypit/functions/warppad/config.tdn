@@ -140,6 +140,6 @@ global final var warp_config = {
         "minecraft:overworld": 1,
         "minecraft:the_nether": 8,
         "minecraft:the_end": 1
-    }
-    
+    },
+    circle_radius: 2.5
 }

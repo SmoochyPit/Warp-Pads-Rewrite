@@ -1,0 +1,12 @@
+@ tag tick
+
+for (color in warp_config.colors) {
+    
+    at @e[type=$wp_indicator,nbt={
+            data:{
+                Color:${color.key}
+            }
+        }]
+        particle dust ${color.value[1]} ${color.value[2]} ${color.value[3]} 1 ~ ~ ~ 0 0 0 0 1 force @a
+    
+}

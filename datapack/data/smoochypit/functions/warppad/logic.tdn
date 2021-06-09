@@ -32,10 +32,10 @@ function {
     function /../conditions
     
     # Create icons
+    function /../warping/icon_align
     
-    
-    say Invalid : @e[type=$wp_pad,tag=wp.invalid_dest]
-    say Valid : @e[type=$wp_pad,tag=wp.valid_dest]
+    say Invalid : @e[tag=wp.invalid_dest]
+    say Valid : @e[tag=wp.valid_dest]
     say Remaining: @e[type=$wp_pad,tag=!wp.valid_dest,tag=!wp.invalid_dest,tag=!wp.processing]
     
     tag @e remove wp.early_exclude

@@ -12,7 +12,7 @@ define objective wp.frequency
 define event wp_spawn_base_items
 define event replace_base
 
-define entity wp_pad minecraft:marker {
+define entity wp_pad marker {
     
     default name [
         "Warp Pad"
@@ -51,7 +51,6 @@ define entity wp_pad minecraft:marker {
         forceload add ~ ~
         
         set @s.data.Frequency = 0
-        set @s.data.Color = 0
         
         #store result score @s wp.x
         #    data get entity @s Pos[0] 1

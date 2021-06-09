@@ -1,6 +1,6 @@
 @ on compile
 
-define entity wp_anim_stand minecraft:armor_stand {
+define entity wp_anim_stand armor_stand {
     
     default name [
         "Animated Item"

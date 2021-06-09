@@ -1,6 +1,13 @@
 @ tag load
 schedule function / 10t
 
+as @e[type=$wp_indicator]
+at @s
+unless entity @e[type=$wp_pad,
+    tag=wp.active,
+    distance=..2.9]
+    kill @s
+
 # set player UUID score
 set @a->wp.linked_UUID += 0
 as @a[scores={wp.linked_UUID=0}]

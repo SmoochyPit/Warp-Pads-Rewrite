@@ -1,0 +1,72 @@
+@ on compile
+
+define objective wp.temp_ID
+
+define entity wp_indicator marker {
+    
+    default name [
+        "Warp Pad Icon Indicator"
+    ]
+    
+    default nbt {
+        CustomNameVisible:false,
+        data:{
+            Color:"default",
+            Home_UUID:[
+                I;
+                0,
+                0,
+                0,
+                0
+            ],
+            Associated_UUID:[
+                I;
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        Tags:[
+            "wp.warp_icon"
+        ]
+    }
+    
+}
+
+define function /icon_align {
+    
+    # as and at all active warps not yet processed
+    
+    as @e[
+        tag=wp.valid_dest
+    ]
+    function {
+        
+        summon $wp_indicator{Tags:["wp.temp"]}
+        align xyz set @e[tag=wp.temp,limit=1].data.Home_UUID = @e[type=$wp_pad,dx=0,dy=0,dz=0,limit=1].UUID
+        set @e[tag=wp.temp,limit=1].data.Associated_UUID = @s.UUID
+        set @e[tag=wp.temp,limit=1].CustomName = @s.CustomName
+        set @e[tag=wp.temp,limit=1].data.Color = @s.data.Color
+        set @e[tag=wp.temp,limit=1]->wp.x = @s->wp.x
+        set @e[tag=wp.temp,limit=1]->wp.z = @s->wp.z
+        tp @e[tag=wp.temp,limit=1] ~ ~1.1 ~ facing entity @s
+        as @e[tag=wp.temp,limit=1] at @s tp @s ^ ^ ^2
+        
+        if @s[scores={wp.temp_ID=1..}]
+            set @e[tag=wp.temp,limit=1]->wp.temp_ID = @s->wp.temp_ID
+        
+        if @s[scores={wp.temp_ID=0}]
+        function {
+            
+            set @e[type=$wp_pad,scores={wp.temp_ID=1..}]->wp.temp_ID += 1
+            set @s->wp.temp_ID = 1
+            set @e[tag=wp.temp,limit=1]->wp.temp_ID = 1
+            
+        }
+        
+        tag @e remove wp.temp
+        
+    }
+    
+}
