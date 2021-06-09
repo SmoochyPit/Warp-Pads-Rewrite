@@ -1,7 +1,5 @@
-@ require smoochypit:warppad/entities/warppad
-@ on compile
-
 # as and at all active warps not yet processed
+
 for (dimension in warp_config.dimensions) {
     
     var function_name = (resource) ("/dim_" + dimension.key.replace(":","_"))

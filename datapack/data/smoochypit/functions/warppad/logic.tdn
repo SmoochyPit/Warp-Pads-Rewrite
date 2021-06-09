@@ -1,7 +1,4 @@
-@ require smoochypit:warppad/entities/warppad
-
 @ tag load
-
 schedule function / 10t
 
 at @a[

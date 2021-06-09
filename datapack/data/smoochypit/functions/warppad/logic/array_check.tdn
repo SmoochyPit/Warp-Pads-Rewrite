@@ -1,4 +1,3 @@
-@ require smoochypit:warppad/entities/warppad
 @ on compile
 
 # as and at all active warps not yet processed
