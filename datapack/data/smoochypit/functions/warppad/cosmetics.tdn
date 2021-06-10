@@ -7,6 +7,9 @@ for (color in warp_config.colors) {
                 Color:${color.key}
             }
         }]
-        particle dust ${color.value[1]} ${color.value[2]} ${color.value[3]} 1 ~ ~ ~ 0 0 0 0 1 force @a
+        particle dust ${color.value[1]} ${color.value[2]} ${color.value[3]} 1 ~ ~ ~ 0 0 0 0 1 force @a[distance=..15]
     
 }
+
+at @e[tag=wp.selected_icon]
+    particle reverse_portal ~ ~ ~ 0 0 0 0.25 1 normal @a[distance=..15]

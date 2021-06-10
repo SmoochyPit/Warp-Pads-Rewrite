@@ -1,0 +1,11 @@
+@ tag tick
+
+define objective wp.player_launch minecraft.custom:minecraft.sneak_time
+
+as @e[tag=wp.active]
+at @s
+function {
+    # Icon Selection
+    function /../../logic/warping/selection
+    # Warp Launch
+}

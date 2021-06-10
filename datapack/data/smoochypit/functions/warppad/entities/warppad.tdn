@@ -57,7 +57,7 @@ define entity wp_pad marker {
         #store result score @s wp.z
         #    data get entity @s Pos[2] 1
         set @s->wp.x = @s.Pos[0]
-        set @s->wp.z = @s.Pos[0]
+        set @s->wp.z = @s.Pos[2]
         
         set @s.data.Owner_UUID = @e[tag=wp.mainitem,limit=1].Thrower
         set @s->wp.linked_UUID = @s.data.Owner_UUID[0]
@@ -147,7 +147,8 @@ define entity wp_pad marker {
                     CustomName:'{"text":"Warp Pad"}'
                 }
             ]
-                set @e[tag=wp.primary_item,limit=1].Item.tag.display.Name = @s.CustomName
+                set @e[tag=wp.primary_item,limit=1,sort=nearest].Item.tag.display.Name = @s.CustomName
+            set @e[tag=wp.primary_item,limit=1,sort=nearest].Thrower = @s.data.Owner_UUID
             tag @e remove wp.primary_item
             
         }

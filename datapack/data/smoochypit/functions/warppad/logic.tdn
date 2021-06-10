@@ -18,10 +18,34 @@ function {
     tag @s remove wp.processed
 }
 
+as @e[tag=wp.selector]
+at @s
+unless entity @e[tag=wp.active,distance=..5]
+    kill @s
+
+unless entity @e[tag=wp.active]
+    set @e[type=$wp_pad]->wp.temp_ID = 0
+
+as @a 
+at @s
+align xyz
+unless entity @e[tag=wp.active,dx=0,dy=0,dz=0]
+function {
+    tag @s remove wp.pilot
+    if entity @s[tag=wp.displaying_warp_gui] 
+    function {
+        tag @a[tag=wp.displaying_warp_gui] remove global.ignore.gui
+        tag @a remove wp.displaying_warp_gui
+    }
+}
+
 as @e[tag=wp.active,tag=!wp.processed]
 at @s
 function {
     tag @s add wp.processing
+    align xyz
+    tag @p[dx=0,dy=0,dz=0] add wp.pilot
+    
     # Add wp.invaliddest to all within the corresponding list of UUIDS
     function /../array_check/invalid_dests
     
@@ -34,6 +58,9 @@ function {
     # Create icons
     function /../warping/icon_align
     
+    # Create selector
+    function /../warping/make_selector
+    
     say Invalid : @e[tag=wp.invalid_dest]
     say Valid : @e[tag=wp.valid_dest]
     say Remaining: @e[type=$wp_pad,tag=!wp.valid_dest,tag=!wp.invalid_dest,tag=!wp.processing]
@@ -44,12 +71,4 @@ function {
     
     tag @s add wp.processed
     tag @s remove wp.processing
-}
-
-as @e[tag=wp.active]
-at @s
-function {
-    # Icon Selection
-    
-    # Warp Launch
 }

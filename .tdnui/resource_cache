@@ -1,17 +1,18 @@
 {
   "datapack/data/smoochypit/advancements/warppads/globaliteminfos.json": -52736769,
   "datapack/data/global/advancements/root.json": 717491058,
-  "datapack/data/smoochypit/functions/warppad/modification.tdn": 1120321441,
+  "datapack/data/smoochypit/functions/warppad/modification.tdn": 1912917921,
   "datapack/data/smoochypit/functions/warppad/logic/conditions.tdn": -260716059,
   "datapack/data/smoochypit/functions/warppad/entities/animation.tdn": 1275972124,
   "datapack/data/smoochypit/advancements/warppads/globalwarppads.json": 1444734299,
   "datapack/data/global/advancements/smoochypit.json": -480751951,
-  "datapack/data/smoochypit/functions/warppad/logic/warping.tdn": 1373142654,
+  "datapack/data/smoochypit/functions/warppad/logic/warping.tdn": -2002737137,
   "datapack/pack.mcmeta": 1570275894,
-  "datapack/data/smoochypit/functions/warppad/cosmetics.tdn": -1108901797,
+  "datapack/data/smoochypit/functions/warppad/cosmetics.tdn": 815147357,
+  "datapack/data/smoochypit/functions/warppad/active_warp.tdn": 1694208263,
   "datapack/data/smoochypit/functions/warppad/forceload/remove_check.mcfunction": -46713456,
-  "datapack/data/smoochypit/functions/warppad/entities/warppad.tdn": -1871743673,
-  "datapack/data/smoochypit/functions/warppad/logic.tdn": 1382940369,
+  "datapack/data/smoochypit/functions/warppad/entities/warppad.tdn": 458886291,
+  "datapack/data/smoochypit/functions/warppad/logic.tdn": -1595785303,
   "datapack/data/smoochypit/functions/warppad/forceload/remove.mcfunction": -1873944933,
   "datapack/data/smoochypit/predicates/warppad/potential_warp.json": -23576085,
   "datapack/data/smoochypit/functions/warppad/creation.tdn": 2000404188,
@@ -19,5 +20,5 @@
   "datapack/data/smoochypit/functions/warppad/forceload/remove_delay.mcfunction": 604466946,
   "datapack/data/smoochypit/functions/warppad/logic/array_check.tdn": 678569909,
   "datapack/data/smoochypit/functions/warppad/items/warppad.tdn": 1,
-  "datapack/data/smoochypit/functions/warppad/config.tdn": 1875871586
+  "datapack/data/smoochypit/functions/warppad/config.tdn": -1171342591
 }

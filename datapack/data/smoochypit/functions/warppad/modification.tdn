@@ -105,31 +105,6 @@ for (color in warp_config.colors) {
                         }
                     ]
                 }
-                
-                tellraw @a {
-                    
-                    "text":$color_name,
-                    "extra":[
-                        {
-                            "text":", "
-                        },
-                        {
-                            "text":${color_RGB[0]}
-                        },
-                        {
-                            "text":" "
-                        },
-                        {
-                            "text":${color_RGB[1]}
-                        },
-                        {
-                            "text":" "
-                        },
-                        {
-                            "text":${color_RGB[2]}
-                        }
-                    ]
-                }
         
                 kill @e[tag=wp.chosen_item]
                 

@@ -5,10 +5,13 @@ define objective wp.temp_ID
 define entity wp_indicator marker {
     
     default name [
+        
         "Warp Pad Icon Indicator"
+        
     ]
     
     default nbt {
+        
         CustomNameVisible:false,
         data:{
             Color:"default",
@@ -43,30 +46,128 @@ define function /icon_align {
     ]
     function {
         
-        summon $wp_indicator{Tags:["wp.temp"]}
-        align xyz set @e[tag=wp.temp,limit=1].data.Home_UUID = @e[type=$wp_pad,dx=0,dy=0,dz=0,limit=1].UUID
+        positioned ~ ~1.14 ~
+        facing entity @s
+            summon $wp_indicator{Tags:["wp.temp"]} ^ ^ ^2
+        
+        align xyz
+            set @e[tag=wp.temp,limit=1].data.Home_UUID = @e[type=$wp_pad,dx=0,dy=0,dz=0,limit=1].UUID
+        
         set @e[tag=wp.temp,limit=1].data.Associated_UUID = @s.UUID
         set @e[tag=wp.temp,limit=1].CustomName = @s.CustomName
         set @e[tag=wp.temp,limit=1].data.Color = @s.data.Color
         set @e[tag=wp.temp,limit=1]->wp.x = @s->wp.x
         set @e[tag=wp.temp,limit=1]->wp.z = @s->wp.z
-        tp @e[tag=wp.temp,limit=1] ~ ~1.1 ~ facing entity @s
-        as @e[tag=wp.temp,limit=1] at @s tp @s ^ ^ ^2
         
         if @s[scores={wp.temp_ID=1..}]
             set @e[tag=wp.temp,limit=1]->wp.temp_ID = @s->wp.temp_ID
-        
+        set @e[type=$wp_pad]->wp.temp_ID += 0
         if @s[scores={wp.temp_ID=0}]
         function {
-            
-            set @e[type=$wp_pad,scores={wp.temp_ID=1..}]->wp.temp_ID += 1
+            set @e[scores={wp.temp_ID=1..}]->wp.temp_ID += 1
             set @s->wp.temp_ID = 1
             set @e[tag=wp.temp,limit=1]->wp.temp_ID = 1
-            
         }
         
         tag @e remove wp.temp
         
     }
+    
+}
+
+define function /make_selector {
+    
+    # as and at all active warps not yet processed
+    
+    summon marker{Tags:[
+            "wp.selector",
+            "wp.temp"
+        ]} ~ ~1.1 ~
+    
+}
+
+define function /mark_selected {
+    
+    # as and at $wp_indicator
+    
+    tag @s add wp.selected_icon
+    
+    at @e[tag=wp.selecting,limit=1]
+    align xyz
+    function {
+        
+        # Removed in logic.tdn
+        tag @p[tag=!global.ignore.gui,tag=wp.pilot,dx=0,dy=0,dz=0] add wp.displaying_warp_gui
+        tag @a[tag=wp.displaying_warp_gui] add global.ignore.gui
+        title @p[tag=wp.displaying_warp_gui,dx=0,dy=0,dz=0] actionbar {
+            "text":"Destination: ",
+            "color":"gold",
+            "extra":[
+                {
+                    "selector":"@s",
+                    "color":"light_purple"
+                },
+                {
+                    "text":" at "
+                },
+                {
+                    "score":{
+                        "name":"@s",
+                        "objective":"wp.x"
+                    },
+                    "color":"red"
+                },
+                {
+                    "text":" "
+                },
+                {
+                    "score":{
+                        "name":"@s",
+                        "objective":"wp.z"
+                    },
+                    "color":"blue"
+                }
+            ]
+        }
+        
+    }
+    
+}
+
+
+define function /selection {
+    
+    # as and at all processed, active pads
+    
+    positioned ~ ~1.14 ~
+        tag @e[type=$wp_indicator,distance=..2.1] remove wp.selected_icon
+    
+    using tag wp.selecting @s {
+    
+        align xyz
+        as @p[tag=wp.pilot,dx=0,dy=0,dz=0]
+        at @s
+        positioned ~ ~1.64 ~
+        as @e[tag=wp.selector,limit=1,sort=nearest]
+        function {
+            
+            tp @s ^ ^ ^2 ~ ~
+            
+            at @s
+            as @e[type=$wp_indicator,
+                distance=..0.8,
+                limit=1,
+                sort=nearest]
+            function /../../mark_selected
+                
+            tp @s ^ ^ ^ ~ ~
+            
+        }
+        
+    }
+    
+    positioned ~ ~1.14 ~
+    unless entity @e[tag=wp.selected_icon,distance=..2.1]
+        title @a[tag=wp.displaying_warp_gui] actionbar {"text":""}
     
 }
