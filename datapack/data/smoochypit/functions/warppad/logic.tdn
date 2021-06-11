@@ -27,7 +27,7 @@ unless entity @e[tag=wp.active,distance=..5]
 
 as @e[tag=wp.name_display]
 at @s
-unless entity @e[type=$wp_indicator,distance=..0.1]
+unless entity @e[type=$wp_indicator,distance=..0.001]
     kill @s
 
 unless entity @e[tag=wp.active]

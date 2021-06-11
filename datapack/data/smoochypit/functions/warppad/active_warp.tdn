@@ -15,7 +15,7 @@ function {
         type=$wp_indicator,
         tag=!wp.selected_icon
     ]
-        kill @e[tag=wp.name_display,distance=..0.1]
+        kill @e[tag=wp.name_display,distance=..0.001]
     
     set @a->wp.player_launch = 0
 }

@@ -98,10 +98,11 @@ define function /mark_selected {
     unless entity @s[nbt={
             CustomName:'{"text":"Warp Pad"}'
         }]
-    unless entity @e[tag=wp.name_display,distance=..0.1]
+    unless entity @e[tag=wp.name_display,distance=..0.001]
     function {
-        summon $wp_anim_stand ~ ~ ~ {Tags:["wp.name_display"],CustomNameVisible:1b}
-        set @e[tag=wp.name_display,distance=..0.1,limit=1].CustomName = @s.CustomName
+        summon $wp_anim_stand ~ ~ ~ {Tags:["wp.name_display"],CustomNameVisible:false}
+        set @e[tag=wp.name_display,distance=..0.001,limit=1].CustomName = @s.CustomName
+        data modify entity @e[tag=wp.name_display,distance=..0.001,limit=1] CustomNameVisible set value true
     }
     
     at @e[tag=wp.selecting,limit=1]
