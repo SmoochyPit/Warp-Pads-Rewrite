@@ -1,6 +1,8 @@
 @ tag load
 schedule function / 10t
 
+set @a->wp.player_launch = 0
+
 at @a[
     tag=!wp.spam,
     tag=!global.ignore.pos,
