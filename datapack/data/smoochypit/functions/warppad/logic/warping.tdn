@@ -1,6 +1,7 @@
 @ on compile
 
 define objective wp.temp_ID
+define objective wp.player_launch minecraft.custom:minecraft.sneak_time {"text":"Warp Launch"}
 
 define entity wp_indicator marker {
     
@@ -48,7 +49,7 @@ define function /icon_align {
         
         positioned ~ ~1.14 ~
         facing entity @s
-            summon $wp_indicator{Tags:["wp.temp"]} ^ ^ ^2
+            summon $wp_indicator{Tags:["wp.temp"]} ^ ^ ^${warp_config.icon.distance_away}
         
         align xyz
             set @e[tag=wp.temp,limit=1].data.Home_UUID = @e[type=$wp_pad,dx=0,dy=0,dz=0,limit=1].UUID
@@ -82,21 +83,29 @@ define function /make_selector {
     summon marker{Tags:[
             "wp.selector",
             "wp.temp"
-        ]} ~ ~1.1 ~
+        ]} ~ ~1.14 ~
     
 }
 
 define function /mark_selected {
     
-    # as and at $wp_indicator
+    # as $wp_indicator
+    # at current active $wp_pad
     
     tag @s add wp.selected_icon
+    
+    at @s
+    unless entity @e[tag=wp.name_display,distance=..0.1]
+    function {
+        summon $wp_anim_stand ~ ~ ~ {Tags:["wp.name_display"],CustomNameVisible:1b}
+        set @e[tag=wp.name_display,distance=..0.1,limit=1].CustomName = @s.CustomName
+    }
     
     at @e[tag=wp.selecting,limit=1]
     align xyz
     function {
         
-        # Removed in logic.tdn
+        # Tag removed in logic.tdn
         tag @p[tag=!global.ignore.gui,tag=wp.pilot,dx=0,dy=0,dz=0] add wp.displaying_warp_gui
         tag @a[tag=wp.displaying_warp_gui] add global.ignore.gui
         title @p[tag=wp.displaying_warp_gui,dx=0,dy=0,dz=0] actionbar {
@@ -140,22 +149,31 @@ define function /selection {
     # as and at all processed, active pads
     
     positioned ~ ~1.14 ~
-        tag @e[type=$wp_indicator,distance=..2.1] remove wp.selected_icon
+        tag @e[type=$wp_indicator,distance=..${warp_config.icon.distance_away + 0.1}] remove wp.selected_icon
     
     using tag wp.selecting @s {
     
         align xyz
-        as @p[tag=wp.pilot,dx=0,dy=0,dz=0]
-        at @s
+        at @p[tag=wp.pilot,dx=0,dy=0,dz=0]
         positioned ~ ~1.64 ~
         as @e[tag=wp.selector,limit=1,sort=nearest]
         function {
             
-            tp @s ^ ^ ^2 ~ ~
+            tp @s ^ ^ ^${warp_config.icon.distance_away} ~ ~
+            
+            if (warp_config.icon.selection_particle.size != 0.0) {
+                
+                var particle = warp_config.icon.selection_particle
+                
+                at @s
+                    particle dust ${particle.r} ${particle.g} ${particle.b} ${particle.size} 
+                    ^ ^ ^-0.1 0 0 0 ${particle.speed} 1 normal @a[distance=..15]
+                
+            }
             
             at @s
             as @e[type=$wp_indicator,
-                distance=..0.8,
+                distance=..${warp_config.icon.selection_radius},
                 limit=1,
                 sort=nearest]
             function /../../mark_selected
@@ -167,7 +185,50 @@ define function /selection {
     }
     
     positioned ~ ~1.14 ~
-    unless entity @e[tag=wp.selected_icon,distance=..2.1]
+    unless entity @e[tag=wp.selected_icon,distance=..${warp_config.icon.distance_away + 0.1}]
         title @a[tag=wp.displaying_warp_gui] actionbar {"text":""}
+    
+}
+
+define function /teleport {
+    
+    tp @s ~ ~-0.5 ~
+    
+    set @s->wp.player_launch = 0
+    
+}
+
+define function /warp {
+    
+    # at and as pads with a pilot sneaking
+    
+    tag @e[type=$wp_pad] remove wp.dest_pad
+    
+    positioned ~ ~1.14 ~
+    as @e[
+        tag=wp.selected_icon,
+        distance=..${warp_config.icon.distance_away + 0.1},
+        limit=1,
+        sort=nearest
+    ]
+    as @e[
+        type=$wp_pad,
+        scores={
+            wp.temp_ID=1..
+        }
+    ]
+    if score @s wp.temp_ID = @e[
+        tag=wp.selected_icon,
+        distance=..${warp_config.icon.distance_away + 0.1},
+        limit=1,
+        sort=nearest
+        ] wp.temp_ID
+    tag @s add wp.dest_pad
+    
+    align xyz
+    if entity @e[tag=wp.dest_pad]
+    as @e[tag=wp.pilot,dx=0,dy=0,dz=0]
+    at @e[tag=wp.dest_pad,limit=1]
+    function /../teleport
     
 }

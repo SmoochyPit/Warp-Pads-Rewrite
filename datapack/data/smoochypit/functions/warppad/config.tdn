@@ -141,5 +141,19 @@ global final var warp_config = {
         "minecraft:the_nether": 8,
         "minecraft:the_end": 1
     },
-    circle_radius: 2.0
+    icon: {
+        unselected_size:0.5,
+        selected_size:0.8,
+        distance_away: 2.0,
+        selection_radius: 0.5,
+        selection_particle: {
+            r:0.7,
+            g:0.0,
+            b:0.7,
+            size:0,
+            speed:0
+        }
+    },
+    warp_circle_radius: 2.0
+    
 }

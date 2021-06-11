@@ -7,7 +7,7 @@ at @a[
     predicate=smoochypit:warppad/potential_warp
 ]
 align xyz
-    tag @e[type=$wp_pad,dx=0,dy=0,dz=0] add wp.active
+    tag @e[type=$wp_pad,dx=0,dy=0,dz=0,scores={wp.spawn_anim=0}] add wp.active
 
 as @e[tag=wp.active]
 at @s
@@ -21,6 +21,11 @@ function {
 as @e[tag=wp.selector]
 at @s
 unless entity @e[tag=wp.active,distance=..5]
+    kill @s
+
+as @e[tag=wp.name_display]
+at @s
+unless entity @e[type=$wp_indicator,distance=..0.1]
     kill @s
 
 unless entity @e[tag=wp.active]
@@ -44,7 +49,7 @@ at @s
 function {
     tag @s add wp.processing
     align xyz
-    tag @p[dx=0,dy=0,dz=0] add wp.pilot
+        tag @p[dx=0,dy=0,dz=0] add wp.pilot
     
     # Add wp.invaliddest to all within the corresponding list of UUIDS
     function /../array_check/invalid_dests
@@ -61,9 +66,9 @@ function {
     # Create selector
     function /../warping/make_selector
     
-    say Invalid : @e[tag=wp.invalid_dest]
-    say Valid : @e[tag=wp.valid_dest]
-    say Remaining: @e[type=$wp_pad,tag=!wp.valid_dest,tag=!wp.invalid_dest,tag=!wp.processing]
+    #say Invalid : @e[tag=wp.invalid_dest]
+    #say Valid : @e[tag=wp.valid_dest]
+    #say Remaining: @e[type=$wp_pad,tag=!wp.valid_dest,tag=!wp.invalid_dest,tag=!wp.processing]
     
     tag @e remove wp.early_exclude
     tag @e remove wp.invalid_dest

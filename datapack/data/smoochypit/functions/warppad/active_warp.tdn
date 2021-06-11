@@ -1,11 +1,21 @@
 @ tag tick
 
-define objective wp.player_launch minecraft.custom:minecraft.sneak_time
-
 as @e[tag=wp.active]
 at @s
 function {
     # Icon Selection
     function /../../logic/warping/selection
     # Warp Launch
+    align xyz
+    if entity @p[tag=wp.pilot,dx=0,dy=0,dz=0,scores={wp.player_launch=1..}]
+    at @s
+        function /../../logic/warping/warp
+    
+    at @e[
+        type=$wp_indicator,
+        tag=!wp.selected_icon
+    ]
+        kill @e[tag=wp.name_display,distance=..0.1]
+    
+    set @a->wp.player_launch = 0
 }
