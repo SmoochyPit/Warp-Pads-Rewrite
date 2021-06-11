@@ -111,13 +111,13 @@ global final var warp_config = {
         {
             item_name:text_component<{"text":"Tier 1 Warp Pad"}>,
             base:block<minecraft:gold_block>,
-            primary:item<minecraft:golden_apple>,
-            secondary:item<minecraft:ender_pearl>,
+            primary:item<minecraft:ender_pearl>,
+            secondary:item<minecraft:amethyst_shard>,
             max_distance:1000
         },
         {
             item_name:text_component<{"text":"Tier 2 Warp Pad"}>,
-            base:block<minecraft:emerald_block>,
+            base:block<minecraft:amethyst_block>,
             primary:item<minecraft:ghast_tear>,
             secondary:item<minecraft:ender_eye>,
             max_distance:25000
