@@ -95,6 +95,9 @@ define function /mark_selected {
     tag @s add wp.selected_icon
     
     at @s
+    unless entity @s[nbt={
+            CustomName:'{"text":"Warp Pad"}'
+        }]
     unless entity @e[tag=wp.name_display,distance=..0.1]
     function {
         summon $wp_anim_stand ~ ~ ~ {Tags:["wp.name_display"],CustomNameVisible:1b}
