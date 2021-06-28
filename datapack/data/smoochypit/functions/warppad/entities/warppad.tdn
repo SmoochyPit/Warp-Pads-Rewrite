@@ -8,9 +8,11 @@ define objective wp.spawn_anim
 define objective wp.UUID
 define objective wp.linked_UUID
 define objective wp.frequency
+define objective wp.spamcount
 
 define event wp_spawn_base_items
-define event replace_base
+define event wp_replace_base
+define event wp_inc_spam
 
 define entity wp_pad marker {
     
@@ -159,7 +161,13 @@ define entity wp_pad marker {
     
     function no_break {
         
-        positioned ~ ~-1 ~ event @s replace_base
+        positioned ~ ~-1 ~ event @s wp_replace_base
+        
+    }
+    
+    function inc_spam {
+        
+        event @s wp_inc_spam
         
     }
     
@@ -315,7 +323,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
             
         }
         
-        on replace_base function {
+        on wp_replace_base function {
             
             align xyz 
                 kill @e[type=item,
@@ -326,6 +334,13 @@ for (var i=0; i<warp_config.tiers.length; i++) {
                 },
                 dx=0,dy=0,dz=0]
             setblock ~ ~ ~ ${tier.base}
+            
+        }
+        
+        on wp_inc_spam function {
+            
+            align xyz
+            set @a[tag=wp.pilot,dx=0,dy=0,dz=0,gamemode=survival]->wp.spamcount += ${(int) tier.spam_percent}
             
         }
         

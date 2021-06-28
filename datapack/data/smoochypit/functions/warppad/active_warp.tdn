@@ -3,6 +3,12 @@
 as @e[tag=wp.active]
 at @s
 function {
+    align xyz
+    unless entity @p[tag=wp.pilot,dx=0,dy=0,dz=0]
+        tag @p[dx=0,dy=0,dz=0,scores={
+            wp.cooldown=0
+        }] add wp.pilot
+    
     # Icon Selection
     function /../../logic/warping/selection
     # Warp Launch

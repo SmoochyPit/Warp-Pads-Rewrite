@@ -3,6 +3,11 @@
 
 global final var warp_config = {
     
+    dimensions: {
+        "minecraft:overworld": 1,
+        "minecraft:the_nether": 8,
+        "minecraft:the_end": 1
+    },
     colors: {
         default: [
             item<minecraft:air>,
@@ -113,21 +118,24 @@ global final var warp_config = {
             base:block<minecraft:gold_block>,
             primary:item<minecraft:ender_pearl>,
             secondary:item<minecraft:amethyst_shard>,
-            max_distance:1000
+            max_distance:1000,
+            spam_percent:50
         },
         {
             item_name:text_component<{"text":"Tier 2 Warp Pad"}>,
             base:block<minecraft:amethyst_block>,
             primary:item<minecraft:ghast_tear>,
             secondary:item<minecraft:ender_eye>,
-            max_distance:25000
+            max_distance:25000,
+            spam_percent:25
         },
         {
             item_name:text_component<{"text":"Tier 3 Warp Pad"}>,
             base:block<minecraft:diamond_block>,
             primary:item<minecraft:nether_star>,
             secondary:item<minecraft:popped_chorus_fruit>,
-            max_distance:-1
+            max_distance:-1,
+            spam_percent:0
         }
     ],
     modifiers: {
@@ -135,11 +143,6 @@ global final var warp_config = {
         private:item<minecraft:diamond>,
         reserved:item<minecraft:glowstone_dust>,
         rename:item<minecraft:paper>
-    },
-    dimensions: {
-        "minecraft:overworld": 1,
-        "minecraft:the_nether": 8,
-        "minecraft:the_end": 1
     },
     icon: {
         unselected_size:0.5,
@@ -154,6 +157,7 @@ global final var warp_config = {
             speed:0
         }
     },
-    warp_circle_radius: 2.0
+    warp_circle_radius: 2.0,
+    spam_punishment: 15
     
 }

@@ -2,6 +2,8 @@
 
 define objective wp.temp_ID
 define objective wp.player_launch minecraft.custom:minecraft.sneak_time {"text":"Warp Launch"}
+define objective wp.cooldown
+# define objective wp.spamcount ( Moved to entities/warppad )
 
 define entity wp_indicator marker {
     
@@ -76,6 +78,42 @@ define function /icon_align {
     
 }
 
+define function /tick_cool_down {
+    
+    # Decrement cooldown and spamcount
+    # If spamcount is >= 100, tag as wp.spammed, set cooldown and reset spamcount
+    # Remove tag wp.spammed from anybody with no cooldown
+    
+    set @a[scores={
+            wp.cooldown=1..
+        }]->wp.cooldown -= 1
+    set @a[scores={
+            wp.spamcount=1..
+        }]->wp.spamcount -= 2
+    
+    as @a[scores={wp.spamcount=100..}]
+    function {
+        tag @s add wp.spammed
+        set @s->wp.cooldown = ${warp_config.spam_punishment * 4}
+        set @s->wp.spamcount = 0
+    }
+    
+    tag @a[scores={wp.cooldown=0}] remove wp.spammed
+    
+    schedule clear /
+    
+    if entity @a[scores={
+            wp.cooldown=1..
+        }]
+    schedule function / 5t
+    
+    if entity @a[scores={
+            wp.spamcount=1..
+        }]
+    schedule function / 5t
+    
+}
+
 define function /make_selector {
     
     # as and at all active warps not yet processed
@@ -101,8 +139,8 @@ define function /mark_selected {
     unless entity @e[tag=wp.name_display,distance=..0.001]
     function {
         summon $wp_anim_stand ~ ~ ~ {Tags:["wp.name_display"],CustomNameVisible:false}
-        set @e[tag=wp.name_display,distance=..0.001,limit=1].CustomName = @s.CustomName
-        data modify entity @e[tag=wp.name_display,distance=..0.001,limit=1] CustomNameVisible set value true
+        set @e[tag=wp.name_display,distance=..0.001,limit=1,sort=nearest].CustomName = @s.CustomName
+        data modify entity @e[tag=wp.name_display,distance=..0.001,limit=1,sort=nearest] CustomNameVisible set value true
     }
     
     at @e[tag=wp.selecting,limit=1]
@@ -190,13 +228,21 @@ define function /selection {
     
     positioned ~ ~1.14 ~
     unless entity @e[tag=wp.selected_icon,distance=..${warp_config.icon.distance_away + 0.1}]
-        title @a[tag=wp.displaying_warp_gui] actionbar {"text":""}
+        title @a[tag=wp.displaying_warp_gui] actionbar ""
     
 }
 
 define function /teleport {
     
     tp @s ~ ~-0.5 ~
+    
+    unless entity @a[scores={
+            wp.cooldown=1..
+        }]
+    schedule function smoochypit:warppad/logic/warping/tick_cool_down 5t
+    
+    set @s->wp.cooldown = 3
+    set @s->wp.spamcount += 1
     
     set @s->wp.player_launch = 0
     
@@ -228,6 +274,8 @@ define function /warp {
         sort=nearest
         ] wp.temp_ID
     tag @s add wp.dest_pad
+    
+    function smoochypit:warppad/entities/warppad/wp_pad/inc_spam
     
     align xyz
     if entity @e[tag=wp.dest_pad]
