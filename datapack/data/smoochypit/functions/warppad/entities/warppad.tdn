@@ -1,6 +1,8 @@
 @ on compile
 @ priority 2
 
+var particle_dist = warp_config.particle_view_distance
+
 define objective wp.x
 define objective wp.z
 define objective wp.math
@@ -72,7 +74,7 @@ define entity wp_pad marker {
     
     function destruct {
         
-        particle witch ~ ~-1 ~ 0 0 0 0.5 25
+        particle witch ~ ~-1 ~ 0 0 0 0.5 25 normal @a[distance=..$particle_dist]
         
         function /../chunk_unload
         
@@ -213,7 +215,7 @@ define entity wp_pad marker {
     function animate_items {
         
         if entity @s[scores={wp.spawn_anim=26..100}]
-        particle portal ~ ~0.8 ~ 0.25 0 0.25 0.3 5
+        particle portal ~ ~0.8 ~ 0.25 0 0.25 0.3 5 normal @a[distance=..$particle_dist]
         
         if entity @s[scores={wp.spawn_anim=11..100}]
         as @e[tag=wp.primary_anim,distance=..2.5]
@@ -268,8 +270,8 @@ define entity wp_pad marker {
         as @e[tag=wp.primary_anim,distance=..2.5]
         at @s
         function {
-            particle witch ~ ~1.4 ~ 0 0 0 1 80
-            particle reverse_portal ~ ~1.4 ~ 0.1 0.1 0.1 1 80
+            particle witch ~ ~1.4 ~ 0 0 0 1 80 normal @a[distance=..$particle_dist]
+            particle reverse_portal ~ ~1.4 ~ 0.1 0.1 0.1 1 80 normal @a[distance=..$particle_dist]
             kill @s
         }
         
@@ -277,7 +279,7 @@ define entity wp_pad marker {
         as @e[tag=wp.secondary_anim,distance=..2.5]
         at @s
         function {
-            particle witch ~ ~1.4 ~ 0 0 0 0 10
+            particle witch ~ ~1.4 ~ 0 0 0 0 10 normal @a[distance=..$particle_dist]
             kill @s
         }
     }

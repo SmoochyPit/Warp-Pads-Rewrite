@@ -1,5 +1,7 @@
 @ require smoochypit:warppad/entities/warppad
 
+var particle_dist = warp_config.particle_view_distance
+
 # called in warppad/creation every 10 ticks 
 # as $wp_pad
 # at @s
@@ -88,7 +90,7 @@ for (color in warp_config.colors) {
                 set @s.data.Color = ${(nbt_value) color_name}
             
                 at @e[tag=wp.chosen_item,limit=1]
-                    particle witch ~ ~ ~ 0 0 0 0.2 25
+                    particle witch ~ ~ ~ 0 0 0 0.2 25 normal @a[distance=..$particle_dist]
         
                 as @a[distance=..10]
                 if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
@@ -186,7 +188,7 @@ function {
             set @s.data.Reserved = true
 
             at @e[tag=wp.chosen_item,limit=1]
-            particle witch ~ ~ ~ 0 0 0 0.2 25
+            particle witch ~ ~ ~ 0 0 0 0.2 25 normal @a[distance=..$particle_dist]
             
             as @a[distance=..10]
             if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
@@ -274,7 +276,7 @@ function {
             set @s.data.Private = true
 
             at @e[tag=wp.chosen_item,limit=1]
-            particle witch ~ ~ ~ 0 0 0 0.2 25
+            particle witch ~ ~ ~ 0 0 0 0.2 25 normal @a[distance=..$particle_dist]
             
             as @a[distance=..10]
             if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
@@ -346,7 +348,7 @@ function {
             set @s.data.Frequency (int) = @s->wp.frequency
 
             at @e[tag=wp.chosen_item,limit=1]
-            particle witch ~ ~ ~ 0 0 0 0.2 25
+            particle witch ~ ~ ~ 0 0 0 0.2 25 normal @a[distance=..$particle_dist]
             
             as @a[distance=..10]
             if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
@@ -433,7 +435,7 @@ function {
             set @s.CustomName = @e[tag=wp.chosen_item,limit=1].Item.tag.display.Name
 
             at @e[tag=wp.chosen_item,limit=1]
-            particle witch ~ ~ ~ 0 0 0 0.2 25
+            particle witch ~ ~ ~ 0 0 0 0.2 25 normal @a[distance=..$particle_dist]
             
             as @a[distance=..10]
             if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID

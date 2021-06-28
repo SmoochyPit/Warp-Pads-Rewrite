@@ -157,7 +157,40 @@ global final var warp_config = {
             speed:0
         }
     },
-    warp_circle_radius: 2.0,
+    particle_view_distance: 15,
+    warp_circle: {
+        particle: {
+            name: "minecraft:item",
+            colors: [
+                
+            ],
+            block: "minecraft:amethyst_block",
+            y_offset: -0.4,
+            dx: 0,
+            dy: 0,
+            dz: 0,
+            speed: 0,
+            count: 1
+        },
+        particle2: {
+            name: "",
+            colors: [
+                
+            ],
+            block: "",
+            y_offset: -0.4,
+            dx: 0,
+            dy: 0,
+            dz: 0,
+            speed: 0,
+            count: 1
+        },
+        radius: 2,
+        points: 50,
+        tick_interval: 1,
+        active_trails: 10,
+        clockwise: true
+    },
     spam_punishment: 15
     
 }

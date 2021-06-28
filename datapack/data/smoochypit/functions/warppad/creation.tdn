@@ -1,6 +1,8 @@
 @ tag load
 schedule function / 10t
 
+var particle_dist = warp_config.particle_view_distance
+
 as @e[type=$wp_indicator]
 at @s
 unless entity @e[type=$wp_pad,
@@ -105,7 +107,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
             tp @s ^ ^ ^0.2
         }
         
-        particle witch ~ ~-0.2 ~ 0.25 0 0.25 1 80 normal
+        particle witch ~ ~-0.2 ~ 0.25 0 0.25 1 80 normal @a[distance=..$particle_dist]
         
         summon $wp_pad ~ ~ ~ {
             Tags:["wp.temp"]

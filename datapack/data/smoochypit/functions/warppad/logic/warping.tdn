@@ -1,5 +1,7 @@
 @ on compile
 
+var particle_dist = warp_config.particle_view_distance
+
 define objective wp.temp_ID
 define objective wp.player_launch minecraft.custom:minecraft.sneak_time {"text":"Warp Launch"}
 define objective wp.cooldown
@@ -209,7 +211,7 @@ define function /selection {
                 
                 at @s
                     particle dust ${particle.r} ${particle.g} ${particle.b} ${particle.size} 
-                    ^ ^ ^-0.1 0 0 0 ${particle.speed} 1 normal @a[distance=..15]
+                    ^ ^ ^-0.1 0 0 0 ${particle.speed} 1 normal @a[distance=..$particle_dist]
                 
             }
             

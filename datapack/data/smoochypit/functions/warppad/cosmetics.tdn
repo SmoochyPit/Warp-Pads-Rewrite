@@ -1,5 +1,7 @@
 @ tag tick
 
+var particle_dist = warp_config.particle_view_distance
+
 for (color in warp_config.colors) {
     
     at @e[type=$wp_indicator,
@@ -9,7 +11,7 @@ for (color in warp_config.colors) {
                 Color:${color.key}
             }
         }]
-        particle dust ${color.value[1]} ${color.value[2]} ${color.value[3]} ${warp_config.icon.unselected_size} ~ ~ ~ 0 0 0 0 1 force @a[distance=..15]
+        particle dust ${color.value[1]} ${color.value[2]} ${color.value[3]} ${warp_config.icon.unselected_size} ~ ~ ~ 0 0 0 0 1 force @a[distance=..$particle_dist]
     
     at @e[type=$wp_indicator,
         tag=wp.selected_icon,
@@ -18,9 +20,145 @@ for (color in warp_config.colors) {
                 Color:${color.key}
             }
         }]
-        particle dust ${color.value[1]} ${color.value[2]} ${color.value[3]} ${warp_config.icon.selected_size} ~ ~ ~ 0 0 0 0 1 force @a[distance=..15]
+        particle dust ${color.value[1]} ${color.value[2]} ${color.value[3]} ${warp_config.icon.selected_size} ~ ~ ~ 0 0 0 0 1 force @a[distance=..$particle_dist]
+    
+}
+
+var points = warp_config.warp_circle.points
+var radius = warp_config.warp_circle.radius
+var radian_segment = (2 * Math.PI) / points
+var circ_functions = []
+
+for (var i=points-1; i>=0; i--) {
+    
+    var radians = 0
+    if (warp_config.warp_circle.clockwise)
+        eval radians = radian_segment * i
+    else
+        eval radians = radian_segment * (points - 1 - i) # reverse the location of each point
+    
+    var rx = radius * Math.cos(radians)
+    eval rx = (real) ( (int) (rx * 1000) ) / 1000
+    var rz = radius * Math.sin(radians) 
+    eval rz = (real) ( (int) (rz * 1000) ) / 1000
+    
+    var func_name = (resource) ("/circle_point_" + i)
+    
+    var next_func_name = (resource) "/"
+    if (i == (points-1)) 
+        eval next_func_name = (resource) ("/circle_point_" + 0)
+    else
+        eval next_func_name = (resource) ("/circle_point_" + (i+1))
+    
+    define function $func_name {
+        
+        var particle = warp_config.warp_circle.particle
+        
+        var particle_command = ""
+        
+        if (particle.colors.length > 0) {
+            
+            var colors = ""
+            for (d in particle.colors) {
+                eval colors += d + " "
+            }
+            
+            eval particle_command = "particle " + particle.name + " " + colors + "~" + rx + " ~" + particle.y_offset + " ~" + rz + " " + particle.dx + " " + particle.dy + " " + particle.dz + " " + particle.speed + " " + particle.count + " normal @a[distance=.." + particle_dist + "]"
+            
+            if (i == 0)
+                log info "Colors enabled. Sample circle particle command: " + particle_command
+            
+        }
+        else if (particle.block != "") {
+            eval particle_command = "particle " + particle.name + " " + particle.block +  " ~" + rx + " ~" + particle.y_offset + " ~" + rz + " " + particle.dx + " " + particle.dy + " " + particle.dz + " " + particle.speed + " " + particle.count + " normal @a[distance=.." + particle_dist + "]"
+            
+            if (i == 0)
+                log info "Block enabled. Sample circle particle command: " + particle_command
+        }
+        else {
+            eval particle_command = "particle " + particle.name + " ~" + rx + " ~" + particle.y_offset + " ~" + rz + " " + particle.dx + " " + particle.dy + " " + particle.dz + " " + particle.speed + " " + particle.count + " normal @a[distance=.." + particle_dist + "]"
+            
+            if (i == 0)
+                log info "Sample circle particle command: " + particle_command
+        }
+        
+        var particle2 = warp_config.warp_circle.particle2
+        
+        var particle2_command = ""
+        
+        if (particle2.name != "") {
+            
+            if (particle2.colors.length > 0) {
+            
+                var colors = ""
+                for (d in particle2.colors) {
+                    eval colors += d + " "
+                }
+                
+                eval particle2_command = "particle " + particle2.name + " " + colors + "~" + rx + " ~" + particle2.y_offset + " ~" + rz + " " + particle2.dx + " " + particle2.dy + " " + particle2.dz + " " + particle2.speed + " " + particle2.count + " normal @a[distance=.." + particle_dist + "]"
+                
+                if (i == 0)
+                    log info "Colors enabled. Sample circle particle 2 command: " + particle2_command
+                
+            }
+            else if (particle2.block != "") {
+                
+                eval particle2_command = "particle " + particle2.name + " " + particle2.block +  " ~" + rx + " ~" + particle2.y_offset + " ~" + rz + " " + particle2.dx + " " + particle2.dy + " " + particle2.dz + " " + particle2.speed + " " + particle2.count + " normal @a[distance=.." + particle_dist + "]"
+                
+                if (i == 0)
+                    log info "Block enabled. Sample circle particle 2 command: " + particle2_command
+                
+            }
+            else {
+            
+                eval particle2_command = "particle " + particle2.name + " ~" + rx + " ~" + particle2.y_offset + " ~" + rz + " " + particle2.dx + " " + particle2.dy + " " + particle2.dz + " " + particle2.speed + " " + particle2.count + " normal @a[distance=.." + particle_dist + "]"
+            
+                if (i == 0)
+                    log info "Sample circle particle 2 command: " + particle2_command
+                
+            }
+            
+        }
+        
+        at @e[tag=wp.active]
+            /$particle_command
+        if (particle2_command != "") {
+            at @e[tag=wp.active]
+                /$particle2_command
+        }
+        
+        /${"schedule function " + next_func_name + " " + warp_config.warp_circle.tick_interval + 't'}
+        
+    }
+    
+    eval circ_functions.add(func_name)
+    
+}
+
+define function clear_circles {
+    
+    for (res in circ_functions) {
+        
+        schedule clear $res
+        
+    }
+    
+}
+
+define function init_circles {
+    
+    @ tag load
+    
+    function /../clear_circles
+    
+    for (var i=0; i<points; i+=(points/warp_config.warp_circle.active_trails)) {
+        
+        var func_name = (resource) ("/../circle_point_" + i)
+        schedule function $func_name 1t
+        
+    }
     
 }
 
 #at @e[tag=wp.selected_icon]
-#    particle reverse_portal ~ ~ ~ 0 0 0 0.25 1 normal @a[distance=..15]
+#    particle reverse_portal ~ ~ ~ 0 0 0 0.25 1 normal @a[distance=..$particle_dist]
