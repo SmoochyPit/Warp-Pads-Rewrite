@@ -1,4 +1,5 @@
 @ on compile
+@ require smoochypit:warppad/entities/animation
 
 var particle_dist = warp_config.particle_view_distance
 
