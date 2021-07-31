@@ -4,13 +4,13 @@
 		
 		"default-definition-packs": [
 			
-			"/home/smooch/Documents/Minecraft-Definitions/defpacks/zipped/minecraft_j_1_17.zip"
+			"../../Minecraft-Definitions/defpacks/zipped/minecraft_j_1_17.zip"
 			
 		],
-		"feature-map": "/home/smooch/Documents/Minecraft-Definitions/featuremaps/j_1_17.json",
+		"feature-map": "../../Minecraft-Definitions/featuremaps/j_1_17.json",
 		"type-map-packs": [
 			
-			"/home/smooch/Documents/Minecraft-Definitions/typemaps/zipped/j_1_17.zip"
+			"../../Minecraft-Definitions/typemaps/zipped/j_1_17.zip"
 			
 		]
 	},
@@ -18,7 +18,7 @@
 		
 		"directories": {
 			
-			"data-pack": "/home/smooch/.minecraft/saves/Dev-World/datapacks/warppad.zip"
+			"data-pack": "out/warppadre.zip"
 			
 		},
 		"export-comments": false
