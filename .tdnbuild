@@ -1,21 +1,28 @@
 {
-  "input-resources": "(automatically selected by Trident-UI)",
-  "output": {
-    "directories": {
-      "data-pack": "C:\\Users\\smooc\\AppData\\Roaming\\.minecraft\\saves\\CleanSlate\\datapacks\\warppad.zip",
-      "resource-pack": "C:\\Users\\smooc\\Trident\\workspace\\warppads\\out\\warppads-resources.zip"
-    },
-    "clean-directories": {
-      "data-pack": false,
-      "resource-pack": false
-    },
-    "export-comments": true,
-    "export-gamelog": true
-  },
-  "trident-ui": {
-    "actions": {
-      "pre": [],
-      "post": []
-    }
-  }
+	
+	"input-resources": {
+		
+		"default-definition-packs": [
+			
+			"/home/smooch/Documents/Minecraft-Definitions/defpacks/zipped/minecraft_j_1_17.zip"
+			
+		],
+		"feature-map": "/home/smooch/Documents/Minecraft-Definitions/featuremaps/j_1_17.json",
+		"type-map-packs": [
+			
+			"/home/smooch/Documents/Minecraft-Definitions/typemaps/zipped/j_1_17.zip"
+			
+		]
+	},
+	"output": {
+		
+		"directories": {
+			
+			"data-pack": "/home/smooch/.minecraft/saves/Dev-World/datapacks/warppad.zip"
+			
+		},
+		"export-comments": false
+		
+	}
+	
 }

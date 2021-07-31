@@ -1,19 +1,7 @@
 {
-  "target-version": [
-    1,
-    17,
-    0
-  ],
-  "default-namespace": "warppad",
-  "language-level": 2,
-  "strict-nbt": false,
-  "strict-text-components": false,
-  "anonymous-function-name": "_anonymous*",
-  "using-all-plugins": false,
-  "game-logger": {
-    "compact": false,
-    "timestamp-enabled": true,
-    "pos-enabled": true,
-    "line-number-enabled": false
-  }
+	
+	"target-version": [1, 17, 1],
+	"default-namespace": "warppad",
+	"language-level": 2
+		
 }
