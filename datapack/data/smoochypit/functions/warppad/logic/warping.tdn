@@ -1,5 +1,6 @@
 @ on compile
 @ require smoochypit:warppad/entities/animation
+@ require smoochypit:warppad/logic/passengers
 
 var particle_dist = warp_config.particle_view_distance
 
@@ -238,6 +239,9 @@ define function /selection {
 define function /teleport {
     
     tp @s ~ ~-0.5 ~
+    tp @e[tag=wp.passenger] ~ ~-0.5 ~
+    as @e[tag=wp.passenger]
+    function smoochypit:warppad/logic/passengers/set_offset
     
     unless entity @a[scores={
             wp.cooldown=1..
@@ -279,11 +283,31 @@ define function /warp {
     tag @s add wp.dest_pad
     
     function smoochypit:warppad/entities/warppad/wp_pad/inc_spam
-    
-    align xyz
+
     if entity @e[tag=wp.dest_pad]
+    align y
+    as @e[
+        tag=!wp.pilot,
+        tag=!global.ignore,
+        tag=!global.ignore.pos,
+        distance=..${warp_config.warp_circle.radius}
+        ]
+    positioned ~${-1 * warp_config.warp_circle.radius} ~ ~${-1 * warp_config.warp_circle.radius}
+    tag @s[
+        dx=${2 * warp_config.warp_circle.radius},
+        dy=0,
+        dz=${2 * warp_config.warp_circle.radius}
+        ] add wp.passenger
+        
+    as @e[tag=wp.passenger]
+    function smoochypit:warppad/logic/passengers/get_offset
+
+    if entity @e[tag=wp.dest_pad]
+    align xyz
     as @e[tag=wp.pilot,dx=0,dy=0,dz=0]
     at @e[tag=wp.dest_pad,limit=1]
     function /../teleport
+
+    tag @e remove wp.passenger
     
 }

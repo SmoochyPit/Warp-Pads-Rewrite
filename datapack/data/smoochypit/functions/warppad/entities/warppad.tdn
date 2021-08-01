@@ -343,6 +343,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
             
             align xyz
             set @a[tag=wp.pilot,dx=0,dy=0,dz=0,gamemode=survival]->wp.spamcount += ${(int) tier.spam_percent}
+            set @a[tag=wp.passenger,gamemode=survival]->wp.spamcount += ${(int) tier.spam_percent}
             
         }
         
