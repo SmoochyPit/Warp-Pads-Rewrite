@@ -1,0 +1,70 @@
+@ on compile
+
+define objective wp.x_off
+define objective wp.z_off
+
+define function /get_offset {
+    # as all passengers
+
+    set @s->wp.x_off = @s.Pos[0] * 10
+    set @s->wp.x = @e[tag=wp.active,limit=1].Pos[0] * 10
+    set @s->wp.x_off -= @s->wp.x
+
+    set @s->wp.z_off = @s.Pos[2] * 10
+    set @s->wp.z = @e[tag=wp.active,limit=1].Pos[2] * 10
+    set @s->wp.z_off -= @s->wp.z
+
+}
+
+define function /set_offset {
+    # as all passengers
+
+    if entity @s[type=player]
+    function /player {
+
+        function /x {
+            at @s[scores={wp.x_off=1..}]
+            function {
+                tp @s ~-0.1 ~ ~
+                set @s->wp.x_off -= 1
+            }
+            at @s[scores={wp.x_off=..-1}]
+            function {
+                tp @s ~0.1 ~ ~
+                set @s->wp.x_off += 1
+            }
+
+            unless entity @s[scores={wp.x_off=0}]
+                function /
+        }
+
+        function /z {
+            at @s[scores={wp.z_off=1..}]
+            function {
+                tp @s ~ ~ ~-0.1
+                set @s->wp.z_off -= 1
+            }
+            at @s[scores={wp.z_off=..-1}]
+            function {
+                tp @s ~ ~ ~0.1
+                set @s->wp.z_off += 1
+            }
+
+            unless entity @s[scores={wp.z_off=0}]
+                function /
+        }
+
+    }
+
+    unless entity @s[type=player]
+    function /other {
+        set @s->wp.x = @s.Pos[0] * 10
+        set @s->wp.x_off += @s->wp.x
+        set @s.Pos[0] * 0.1 (double) = @s->wp.x_off
+
+        set @s->wp.z = @s.Pos[2] * 10
+        set @s->wp.z_off += @s->wp.z
+        set @s.Pos[2] * 0.1 (double) = @s->wp.z_off   
+    }
+
+}
