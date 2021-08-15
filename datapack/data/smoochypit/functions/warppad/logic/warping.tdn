@@ -288,6 +288,7 @@ define function /warp {
     align y
     as @e[
         tag=!wp.pilot,
+        type=!#smoochypit:warppad/nonwarpable,
         tag=!global.ignore,
         tag=!global.ignore.pos,
         distance=..${warp_config.warp_circle.radius}
