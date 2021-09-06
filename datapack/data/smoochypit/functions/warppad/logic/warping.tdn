@@ -53,9 +53,27 @@ define function /icon_align {
     ]
     function {
         
+        summon $wp_indicator{Tags:["wp.temp"]} ~ ~ ~
+        
         positioned ~ ~1.14 ~
         facing entity @s
-            summon $wp_indicator{Tags:["wp.temp"]} ^ ^ ^${warp_config.icon.distance_away}
+            tp @e[tag=wp.temp] ^ ^ ^${warp_config.icon.distance_away} facing entity @s
+
+        as @e[tag=wp.temp,limit=1]
+        at @s
+        unless block ~ ~ ~ #smoochypit:warppad/icon_no_coll
+        function {
+            say RAN
+            tp @s ^ ^ ^-0.2
+
+            at @s
+            unless block ~ ~ ~ #smoochypit:warppad/icon_no_coll
+            positioned ~ ~-1.64 ~
+            if entity @p[distance=1..5]
+            positioned ~ ~1.64 ~
+                function /
+
+        }
         
         align xyz
             set @e[tag=wp.temp,limit=1].data.Home_UUID = @e[type=$wp_pad,dx=0,dy=0,dz=0,limit=1].UUID
