@@ -1,0 +1,24 @@
+{
+    "__comment": "Made with TheDestruc7i0n's advancements generator: https://advancements.thedestruc7i0n.ca",
+    "display": {
+        "title": {
+            "text": "Warp Stream"
+        },
+        "description": {
+            "text": "Create a Warp Pad with a Gold Block, an Ender Pearl and four Amethyst Shards"
+        },
+        "icon": {
+            "item": "minecraft:amethyst_shard"
+        },
+        "frame": "goal",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "warppad1": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "smoochypit:warppad/root"
+}

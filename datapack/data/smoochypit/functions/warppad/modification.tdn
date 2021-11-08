@@ -96,9 +96,9 @@ for (color in warp_config.colors) {
                 if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
                     tag @s update wp.mod_thrower
                 
-                tag @p[distance=..10,tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
+                tag @p[tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
                 tag @a[tag=wp.displaying_gui] add global.ignore.gui
-                title @a[distance=..10,tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
+                title @a[tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
                     "text":"Warp Pad Color set to ",
                     "color":"dark_purple",
                     "extra":[
@@ -107,6 +107,8 @@ for (color in warp_config.colors) {
                         }
                     ]
                 }
+
+                advancement grant @a[tag=wp.mod_thrower] only smoochypit:warppad/mods/color
         
                 kill @e[tag=wp.chosen_item]
                 
@@ -194,12 +196,14 @@ function {
             if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
                 tag @s update wp.mod_thrower
             
-            tag @p[distance=..10,tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
+            tag @p[tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
             tag @a[tag=wp.displaying_gui] add global.ignore.gui
-            title @a[distance=..10,tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
+            title @a[tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
                 "text":"Warp Pad Stream set to Reserved",
                 "color":"dark_purple"
             }
+
+            advancement grant @a[tag=wp.mod_thrower] only smoochypit:warppad/mods/reserve
             
             kill @e[tag=wp.chosen_item]
     
@@ -282,9 +286,9 @@ function {
             if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
                 tag @s update wp.mod_thrower
             
-            tag @p[distance=..10,tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
+            tag @p[tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
             tag @a[tag=wp.displaying_gui] add global.ignore.gui
-            title @a[distance=..10,tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
+            title @a[tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
                 "text":"Warp Pad Stream set to Private for ",
                 "color":"dark_purple",
                 "extra":[
@@ -293,6 +297,8 @@ function {
                     }
                 ]
             }
+
+            advancement grant @a[tag=wp.mod_thrower] only smoochypit:warppad/mods/private
             
             kill @e[tag=wp.chosen_item]
     
@@ -354,9 +360,9 @@ function {
             if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
                 tag @s update wp.mod_thrower
             
-            tag @p[distance=..10,tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
+            tag @p[tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
             tag @a[tag=wp.displaying_gui] add global.ignore.gui
-            title @a[distance=..10,tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
+            title @a[tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
                 "text":"Warp Pad Frequency tuned to ",
                 "color":"dark_purple",
                 "extra":[
@@ -368,7 +374,11 @@ function {
                     }
                 ]
             }
-            
+
+            advancement grant @a[tag=wp.mod_thrower] only smoochypit:warppad/mods/freq
+            if entity @s[scores={wp.frequency=64..}]
+                advancement grant @a[tag=wp.mod_thrower] only smoochypit:warppad/challenges/freq64
+
             kill @e[tag=wp.chosen_item]
     
         }
@@ -441,9 +451,9 @@ function {
             if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
                 tag @s update wp.mod_thrower
             
-            tag @p[distance=..10,tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
+            tag @p[tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
             tag @a[tag=wp.displaying_gui] add global.ignore.gui
-            title @a[distance=..10,tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
+            title @a[tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
                 "text":"Warp Pad renamed to ",
                 "color":"dark_purple",
                 "extra":[
@@ -452,6 +462,8 @@ function {
                     }
                 ]
             }
+
+            advancement grant @a[tag=wp.mod_thrower] only smoochypit:warppad/mods/rename
             
             kill @e[tag=wp.chosen_item]
     

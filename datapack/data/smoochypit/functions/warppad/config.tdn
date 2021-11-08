@@ -8,6 +8,7 @@ global final var warp_config = {
         "minecraft:the_nether": 8,
         "minecraft:the_end": 1
     },
+
     colors: {
         default: [
             item<minecraft:air>,
@@ -112,6 +113,13 @@ global final var warp_config = {
             1.0
         ]
     },
+
+    _tier_comment:[
+        "Notice: Changing warp pad recipes will not update advancements.",
+        "You can manually modify their contents at data/smoochypit/advancements/warppad/makepad.",
+        "If you add or remove warp pad tiers, you'll need to add or remove both the advancement file and the logic",
+        "Logic is found in data/smoochypit/functions/warppad/entities/warppad.tdn at line 276"
+    ],
     tiers: [
         {
             item_name:text_component<{"text":"Tier 1 Warp Pad"}>,
@@ -124,8 +132,8 @@ global final var warp_config = {
         {
             item_name:text_component<{"text":"Tier 2 Warp Pad"}>,
             base:block<minecraft:amethyst_block>,
-            primary:item<minecraft:ghast_tear>,
-            secondary:item<minecraft:ender_eye>,
+            primary:item<minecraft:ender_eye>,
+            secondary:item<minecraft:quartz>,
             max_distance:25000,
             spam_percent:25
         },
@@ -138,12 +146,18 @@ global final var warp_config = {
             spam_percent:0
         }
     ],
+
+    _mod_comment:[
+            "Notice: Changing warp pad modifiers will not update advancements!",
+            "You can manually modify their contents at data/smoochypit/advancements/warppad/makepad."
+    ],
     modifiers: {
         frequency:item<minecraft:redstone>,
         private:item<minecraft:diamond>,
         reserved:item<minecraft:glowstone_dust>,
         rename:item<minecraft:paper>
     },
+
     icon: {
         unselected_size:0.5,
         selected_size:0.8,
@@ -157,6 +171,7 @@ global final var warp_config = {
             speed:0
         }
     },
+
     particle_view_distance: 15,
     warp_circle: {
         particle: {
@@ -191,6 +206,7 @@ global final var warp_config = {
         active_trails: 10,
         clockwise: true
     },
+
     spam_punishment: 15
     
 }
