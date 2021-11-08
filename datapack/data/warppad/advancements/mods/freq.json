@@ -1,0 +1,24 @@
+{
+    "__comment": "Made with TheDestruc7i0n's advancements generator: https://advancements.thedestruc7i0n.ca",
+    "display": {
+        "title": {
+            "text": "Tune Up"
+        },
+        "description": {
+            "text": "Change a Warp Pad's frequency by throwing Redstone Dust on it"
+        },
+        "icon": {
+            "item": "minecraft:redstone"
+        },
+        "frame": "task",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "warpfreq": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "warppad:makepad/pad0"
+}

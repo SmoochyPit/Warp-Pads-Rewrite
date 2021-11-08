@@ -1,0 +1,482 @@
+@ require warppad:entities/warppad
+
+var particle_dist = warp_config.particle_view_distance
+
+# called in warppad/creation every 10 ticks 
+# as $wp_pad
+# at @s
+
+# Colors
+
+for (color in warp_config.colors) {
+    
+    var color_name = color.key
+    
+    var color_display_name = ""
+    for (word in color_name.split("_")) {
+        eval color_display_name += word[0].toUpperCase() + word.substring(1) + " "
+    }
+    eval color_display_name = color_display_name.substring(0,color_display_name.length-1)
+    
+    var color_item = color.value[0]
+    var color_RGB : list = [
+        color.value[1],
+        color.value[2],
+        color.value[3]
+    ]
+    
+    align xyz
+    unless entity @s[
+        nbt={
+            data:{
+                Color:$color_name
+            }
+        }
+    ]
+    if entity @e[
+        type=item,
+        tag=!global.ignore,
+        tag=!global.ignore.kill,
+        nbt={
+            Item:$color_item
+        },
+        nbt={
+            Item:{
+                Count:1b
+            }
+        },
+        dx=0,
+        dy=0,
+        dz=0
+    ]
+    function {
+        using tag wp.chosen_item @e[
+            type=item,
+            tag=!global.ignore,
+            tag=!global.ignore.kill,
+            nbt={
+                Item:$color_item
+            },
+            nbt={
+                Item:{
+                    Count:1b
+                }
+            },
+            dx=0,
+            dy=0,
+            dz=0,
+            limit=1
+        ] {
+            set @e[tag=wp.chosen_item,limit=1]->wp.linked_UUID = @e[tag=wp.chosen_item,limit=1].Thrower[0]
+            if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+            function {
+                
+                for (color in warp_config.colors) {
+                
+                    if entity @s[
+                        nbt={
+                            data:{
+                                Color:${color.key}
+                            }
+                        }
+                    ]
+                    summon item ~.5 ~.5 ~.5 {
+                        Item:${color.value[0]},
+                        PickupDelay:25s
+                    }
+            
+                }
+                
+                set @s.data.Color = ${(nbt_value) color_name}
+            
+                at @e[tag=wp.chosen_item,limit=1]
+                    particle witch ~ ~ ~ 0 0 0 0.2 25 normal @a[distance=..$particle_dist]
+        
+                as @a[distance=..10]
+                if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+                    tag @s update wp.mod_thrower
+                
+                tag @p[tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
+                tag @a[tag=wp.displaying_gui] add global.ignore.gui
+                title @a[tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
+                    "text":"Warp Pad Color set to ",
+                    "color":"dark_purple",
+                    "extra":[
+                        {
+                            "text":$color_display_name
+                        }
+                    ]
+                }
+
+                advancement grant @a[tag=wp.mod_thrower] only warppad:mods/color
+        
+                kill @e[tag=wp.chosen_item]
+                
+            }
+            
+        }
+        
+    }
+    
+}
+
+# Reserved
+
+align xyz
+unless entity @s[
+    nbt={
+        data:{
+            Reserved:true
+        }
+    }
+]
+if entity @e[
+    type=item,
+    tag=!global.ignore,
+    tag=!global.ignore.kill,
+    nbt={
+        Item:${warp_config.modifiers.reserved}
+    },
+    nbt={
+        Item:{
+            Count:1b
+        }
+    },
+    dx=0,
+    dy=0,
+    dz=0
+]
+function {
+    using tag wp.chosen_item @e[
+        type=item,
+        tag=!global.ignore,
+        tag=!global.ignore.kill,
+        nbt={
+            Item:${warp_config.modifiers.reserved}
+        },
+        nbt={
+            Item:{
+                Count:1b
+            }
+        },
+        dx=0,
+        dy=0,
+        dz=0,
+        limit=1
+    ] {
+        set @e[tag=wp.chosen_item,limit=1]->wp.linked_UUID = @e[tag=wp.chosen_item,limit=1].Thrower[0]
+        if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+        function {
+            
+            if entity @s[
+                nbt={
+                    data:{
+                        Private:true
+                    }
+                }
+            ]
+            function {
+                summon item ~.5 ~.5 ~.5 {
+                    Item:{
+                        id:${(string) warp_config.modifiers.private},
+                        Count:1b
+                    },
+                    PickupDelay:25s
+                }
+                set @s.data.Private = false
+            }
+            
+            
+            set @s.data.Reserved = true
+
+            at @e[tag=wp.chosen_item,limit=1]
+            particle witch ~ ~ ~ 0 0 0 0.2 25 normal @a[distance=..$particle_dist]
+            
+            as @a[distance=..10]
+            if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+                tag @s update wp.mod_thrower
+            
+            tag @p[tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
+            tag @a[tag=wp.displaying_gui] add global.ignore.gui
+            title @a[tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
+                "text":"Warp Pad Stream set to Reserved",
+                "color":"dark_purple"
+            }
+
+            advancement grant @a[tag=wp.mod_thrower] only warppad:mods/reserve
+            
+            kill @e[tag=wp.chosen_item]
+    
+        }
+    }
+}
+
+# Private
+
+align xyz
+unless entity @s[
+    nbt={
+        data:{
+            Private:true
+        }
+    }
+]
+if entity @e[
+    type=item,
+    tag=!global.ignore,
+    tag=!global.ignore.kill,
+    nbt={
+        Item:${warp_config.modifiers.private}
+    },
+    nbt={
+        Item:{
+            Count:1b
+        }
+    },
+    dx=0,
+    dy=0,
+    dz=0
+]
+function {
+    using tag wp.chosen_item @e[
+        type=item,
+        tag=!global.ignore,
+        tag=!global.ignore.kill,
+        nbt={
+            Item:${warp_config.modifiers.private}
+        },
+        nbt={
+            Item:{
+                Count:1b
+            }
+        },
+        dx=0,
+        dy=0,
+        dz=0,
+        limit=1
+    ] {
+        set @e[tag=wp.chosen_item,limit=1]->wp.linked_UUID = @e[tag=wp.chosen_item,limit=1].Thrower[0]
+        if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+        function {
+            
+            if entity @s[
+                nbt={
+                    data:{
+                        Reserved:true
+                    }
+                }
+            ]
+            function {
+                summon item ~.5 ~.5 ~.5 {
+                    Item:{
+                        id:${(string) warp_config.modifiers.reserved},
+                        Count:1b
+                    },
+                    PickupDelay:25s
+                }
+                set @s.data.Reserved = false
+            }
+            
+            set @s.data.Private = true
+
+            at @e[tag=wp.chosen_item,limit=1]
+            particle witch ~ ~ ~ 0 0 0 0.2 25 normal @a[distance=..$particle_dist]
+            
+            as @a[distance=..10]
+            if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+                tag @s update wp.mod_thrower
+            
+            tag @p[tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
+            tag @a[tag=wp.displaying_gui] add global.ignore.gui
+            title @a[tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
+                "text":"Warp Pad Stream set to Private for ",
+                "color":"dark_purple",
+                "extra":[
+                    {
+                        "selector":"@p[tag=wp.mod_thrower]"
+                    }
+                ]
+            }
+
+            advancement grant @a[tag=wp.mod_thrower] only warppad:mods/private
+            
+            kill @e[tag=wp.chosen_item]
+    
+        }
+    }
+}
+
+# Frequency
+
+align xyz
+unless entity @s[
+    scores={wp.frequency=64..}
+]
+if entity @e[
+    type=item,
+    tag=!global.ignore,
+    tag=!global.ignore.kill,
+    nbt={
+        Item:${warp_config.modifiers.frequency}
+    },
+    nbt={
+        Item:{
+            Count:1b
+        }
+    },
+    dx=0,
+    dy=0,
+    dz=0
+]
+function {
+    using tag wp.chosen_item @e[
+        type=item,
+        tag=!global.ignore,
+        tag=!global.ignore.kill,
+        nbt={
+            Item:${warp_config.modifiers.frequency}
+        },
+        nbt={
+            Item:{
+                Count:1b
+            }
+        },
+        dx=0,
+        dy=0,
+        dz=0,
+        limit=1
+    ] {
+        set @e[tag=wp.chosen_item,limit=1]->wp.linked_UUID = @e[tag=wp.chosen_item,limit=1].Thrower[0]
+        if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+        function {
+            
+            set @s->wp.frequency += 1
+            set @s.data.Frequency (int) = @s->wp.frequency
+
+            at @e[tag=wp.chosen_item,limit=1]
+            particle witch ~ ~ ~ 0 0 0 0.2 25 normal @a[distance=..$particle_dist]
+            
+            as @a[distance=..10]
+            if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+                tag @s update wp.mod_thrower
+            
+            tag @p[tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
+            tag @a[tag=wp.displaying_gui] add global.ignore.gui
+            title @a[tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
+                "text":"Warp Pad Frequency tuned to ",
+                "color":"dark_purple",
+                "extra":[
+                    {
+                        "score":{
+                            "name":"@s",
+                            "objective":"wp.frequency"
+                        }
+                    }
+                ]
+            }
+
+            advancement grant @a[tag=wp.mod_thrower] only warppad:mods/freq
+            if entity @s[scores={wp.frequency=64..}]
+                advancement grant @a[tag=wp.mod_thrower] only warppad:challenges/freq64
+
+            kill @e[tag=wp.chosen_item]
+    
+        }
+    }
+}
+
+# Rename
+
+align xyz
+if entity @e[
+    type=item,
+    tag=!global.ignore,
+    tag=!global.ignore.kill,
+    nbt={
+        Item:${warp_config.modifiers.rename}
+    },
+    nbt={
+        Item:{
+            Count:1b
+        }
+    },
+    dx=0,
+    dy=0,
+    dz=0
+]
+function {
+    using tag wp.chosen_item @e[
+        type=item,
+        tag=!global.ignore,
+        tag=!global.ignore.kill,
+        nbt={
+            Item:${warp_config.modifiers.rename}
+        },
+        nbt={
+            Item:{
+                Count:1b
+            }
+        },
+        dx=0,
+        dy=0,
+        dz=0,
+        limit=1
+    ] {
+        set @e[tag=wp.chosen_item,limit=1]->wp.linked_UUID = @e[tag=wp.chosen_item,limit=1].Thrower[0]
+        if data entity @e[tag=wp.chosen_item,limit=1] Item.tag.display.Name
+        if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+        function {
+            unless entity @s[
+                nbt={
+                    CustomName:'{"text":"Warp Pad"}'
+                }
+            ]
+            positioned ~.5 ~.5 ~.5
+            function {
+                using summon item{
+                    Tags:["wp.pad"],
+                    Item:${item<minecraft:paper>},
+                    PickupDelay:25s
+                } with named_paper {
+                    set @s.Item.tag.display.Name = @e[type=$wp_pad,limit=1,sort=nearest].CustomName
+                }
+            }
+            
+            set @s.CustomName = @e[tag=wp.chosen_item,limit=1].Item.tag.display.Name
+
+            at @e[tag=wp.chosen_item,limit=1]
+            particle witch ~ ~ ~ 0 0 0 0.2 25 normal @a[distance=..$particle_dist]
+            
+            as @a[distance=..10]
+            if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
+                tag @s update wp.mod_thrower
+            
+            tag @p[tag=!global.ignore.gui,tag=wp.mod_thrower] add wp.displaying_gui
+            tag @a[tag=wp.displaying_gui] add global.ignore.gui
+            title @a[tag=wp.displaying_gui,tag=wp.mod_thrower] actionbar {
+                "text":"Warp Pad renamed to ",
+                "color":"dark_purple",
+                "extra":[
+                    {
+                        "selector":"@s"
+                    }
+                ]
+            }
+
+            advancement grant @a[tag=wp.mod_thrower] only warppad:mods/rename
+            
+            kill @e[tag=wp.chosen_item]
+    
+        }
+    }
+}
+
+define function remove_gui_display {
+    
+    tag @a[tag=wp.displaying_gui] remove global.ignore.gui
+    tag @a remove wp.displaying_gui
+    
+}
+
+if entity @a[tag=wp.displaying_gui]
+    schedule function /remove_gui_display 20t

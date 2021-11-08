@@ -1,0 +1,393 @@
+@ on compile
+@ priority 2
+
+var particle_dist = warp_config.particle_view_distance
+
+define objective wp.x
+define objective wp.z
+define objective wp.math
+define objective wp.spawn_anim
+define objective wp.UUID
+define objective wp.linked_UUID
+define objective wp.frequency
+define objective wp.spamcount
+
+define event wp_spawn_base_items
+define event wp_replace_base
+define event wp_inc_spam
+
+define entity wp_pad marker {
+    
+    default name [
+        "Warp Pad"
+    ]
+    
+    default nbt {
+        data:{
+            ValidDests:[],
+            InvalidDests:[],
+            IteratedDests:[],
+            Color:"default",
+            Frequency:0b,
+            Reserved:false,
+            Private:false,
+            Owner_UUID:[
+                I;
+                0,
+                0,
+                0,
+                0
+            ],
+            AllSeeing:false,
+            Destructable:true,
+            SpamPunish:true
+        },
+        Tags:[
+            "wp.pad",
+            "global.ignore",
+            "global.ignore.pos",
+            "global.forceload"
+        ]
+    }
+    
+    function construct {
+        
+        forceload add ~ ~
+        
+        set @s.data.Frequency = 0
+        
+        #store result score @s wp.x
+        #    data get entity @s Pos[0] 1
+        #store result score @s wp.z
+        #    data get entity @s Pos[2] 1
+        set @s->wp.x = @s.Pos[0]
+        set @s->wp.z = @s.Pos[2]
+        
+        set @s.data.Owner_UUID = @e[tag=wp.mainitem,limit=1].Thrower
+        set @s->wp.linked_UUID = @s.data.Owner_UUID[0]
+        
+        set @s->wp.UUID = @s.UUID[0] (int)
+        
+        set @s.CustomName = @e[tag=wp.mainitem,limit=1].Item.tag.display.Name
+        
+    }
+    
+    function destruct {
+        
+        particle witch ~ ~-1 ~ 0 0 0 0.5 25 normal @a[distance=..$particle_dist]
+        
+        function /../chunk_unload
+        
+        positioned ~ ~-1 ~ function {
+            
+            unless entity @s[
+                nbt={
+                    data:{
+                        Frequency:0
+                    }
+                }
+            ]
+            function {
+                summon item ~ ~ ~ {
+                    Tags:["wp.freq_item"],
+                    Item:{
+                        id:${(string) warp_config.modifiers.frequency},
+                        Count:1b
+                    },
+                    PickupDelay:25s}
+                set @e[tag=wp.freq_item,limit=1,sort=nearest].Item.Count (byte) = @s.data.Frequency
+            }
+            
+            if entity @s[
+                nbt={
+                    data:{
+                        Private:true
+                    }
+                }
+            ]
+            summon item ~ ~ ~ {
+                Item:{
+                    id:${(string) warp_config.modifiers.private},
+                    Count:1b
+                },
+                PickupDelay:25s
+            }
+            
+            for (color in warp_config.colors) {
+                
+                if entity @s[
+                    nbt={
+                        data:{
+                            Color:${color.key}
+                        }
+                    }
+                ]
+                summon item ~ ~ ~ {
+                    Item:${color.value[0]},
+                    PickupDelay:25s
+                }
+            
+            }
+            
+            if entity @s[
+                nbt={
+                    data:{
+                        Reserved:true
+                    }
+                }
+            ]
+                summon item ~ ~ ~ {
+                Item:{
+                    id:${(string) warp_config.modifiers.reserved},
+                    Count:1b
+                },
+                PickupDelay:25s
+            }
+            
+            event @s wp_spawn_base_items
+            
+            unless entity @s[
+                nbt={
+                    CustomName:'{"text":"Warp Pad"}'
+                }
+            ]
+                set @e[tag=wp.primary_item,limit=1,sort=nearest].Item.tag.display.Name = @s.CustomName
+            set @e[tag=wp.primary_item,limit=1,sort=nearest].Thrower = @s.data.Owner_UUID
+            tag @e remove wp.primary_item
+            
+        }
+        
+        kill @s
+        
+    }
+    
+    function no_break {
+        
+        positioned ~ ~-1 ~ event @s wp_replace_base
+        
+    }
+    
+    function inc_spam {
+        
+        event @s wp_inc_spam
+        
+    }
+    
+    function chunk_unload { # as and at warp pad being destroyed
+        
+        tag @s remove global.forceload # for later comparison
+        
+        using summon marker with wp.locator {
+            # copied Initia_Nova's homework
+            # Move x to chunk edge
+            set #pos->wp.math = @s.Pos[0]
+            set #pos->wp.math /= 16
+            set @s.Pos[0] * 16.0 (double) = #pos->wp.math
+            # Move z to chunk edge
+            set #pos->wp.math = @s.Pos[2]
+            set #pos->wp.math /= 16
+            set @s.Pos[2] * 16.0 (double) = #pos->wp.math
+            # Move y to -64
+            set @s.Pos[1] (double) = -64.0
+                
+            at @s
+            unless entity @e[tag=global.forceload,dx=15,dy=319,dz=15]
+                forceload remove ~ ~
+                
+            kill @s
+            
+        }
+        
+    }
+    
+    function animate_per {
+        
+        as @e[tag=wp.pad,scores={wp.spawn_anim=1..}] function {
+            at @s positioned ~ ~-1.4 ~ function /../../animate_items
+            set @s->wp.spawn_anim -= 1
+        }
+        
+        if entity @e[tag=wp.pad,scores={wp.spawn_anim=1..}]
+        schedule function / 1t
+        
+    }
+    
+    function animate_items {
+        
+        if entity @s[scores={wp.spawn_anim=26..100}]
+        particle portal ~ ~0.8 ~ 0.25 0 0.25 0.3 5 normal @a[distance=..$particle_dist]
+        
+        if entity @s[scores={wp.spawn_anim=11..100}]
+        as @e[tag=wp.primary_anim,distance=..2.5]
+        at @s
+        tp @s ~ ~0.0135 ~
+        
+        if entity @s[scores={wp.spawn_anim=11..50}]
+        as @e[tag=wp.primary_anim,distance=..2.5]
+        at @s
+        expand {
+            tp @s ^ ^ ^-0.2
+            
+            tp @s ^ ^ ^ ~18 ~ #720 degrees in 40 ticks
+            
+            tp @s ^ ^ ^0.2
+        }
+        
+        if entity @s[scores={wp.spawn_anim=51..100}]
+        as @e[tag=wp.primary_anim,distance=..2.5]
+        at @s
+        expand {
+            tp @s ^ ^ ^-0.2
+            
+            tp @s ^ ^ ^ ~7.2 ~ #360 degrees in 50 ticks
+            
+            tp @s ^ ^ ^0.2
+        }
+        
+        if entity @s[scores={wp.spawn_anim=1..10}]
+        as @e[tag=wp.primary_anim,distance=..2.5]
+        at @s
+        expand {
+            tp @s ^ ^ ^-0.2
+            
+            tp @s ~ ~-0.17 ~
+            
+            tp @s ^ ^ ^0.2
+        }
+        
+        if entity @s[scores={wp.spawn_anim=51..100}]
+        as @e[tag=wp.secondary_anim,distance=..2.5]
+        at @s
+        expand {
+            tp @s ^ ^ ^-0.2
+            
+            tp @s ^ ^ ^0.02 ~4 ~
+                
+            tp @s ^ ^ ^0.2
+        }
+
+        if entity @s[scores={wp.spawn_anim=1}]
+        function {
+
+            using tag wp.current_pad @s {
+                as @a[distance=..25]
+                if score @s wp.linked_UUID = @e[tag=wp.current_pad,limit=1] wp.linked_UUID
+                    tag @s update wp.maker
+            }
+            
+            if entity @s[component=tier_0]
+                advancement grant @a[tag=wp.maker] only warppad:makepad/pad0
+            if entity @s[component=tier_1]
+                advancement grant @a[tag=wp.maker] only warppad:makepad/pad1
+            if entity @s[component=tier_2]
+                advancement grant @a[tag=wp.maker] only warppad:makepad/pad2
+
+#   Example logic for an additional warp pad tier
+#           if entity @s[component=tier_3]
+#               advancement grant @a[tag=wp.maker] only warppad:makepad/pad3
+
+        }
+        
+        if entity @s[scores={wp.spawn_anim=1}]
+        as @e[tag=wp.primary_anim,distance=..2.5]
+        at @s
+        function {
+            particle witch ~ ~1.4 ~ 0 0 0 1 80 normal @a[distance=..$particle_dist]
+            particle reverse_portal ~ ~1.4 ~ 0.1 0.1 0.1 1 80 normal @a[distance=..$particle_dist]
+
+            kill @s
+        }
+        
+        if entity @s[scores={wp.spawn_anim=50}]
+        as @e[tag=wp.secondary_anim,distance=..2.5]
+        at @s
+        function {
+            particle witch ~ ~1.4 ~ 0 0 0 0 10 normal @a[distance=..$particle_dist]
+            kill @s
+        }
+    }
+
+}
+
+# Define an entity component "tier_*" for each tier in config
+
+var blocks : list = []
+
+var primaries : list = []
+
+var secondaries : list = []
+
+for (var i=0; i<warp_config.tiers.length; i++) {
+    
+    var tier = warp_config.tiers[i]
+    
+    eval blocks.add((resource) (string) tier.base)
+    eval primaries.add((resource) (string) tier.primary)
+    eval secondaries.add((resource) (string) tier.secondary)
+    
+    define entity component ${"tier_" + i} {
+        
+        on wp_spawn_base_items function {
+            
+            summon item ~ ~ ~ {
+                Tags:["wp.primary_item"],
+                PickupDelay:25s,
+                Item:{
+                    id:${(string) tier.primary},
+                    Count:1b
+                }
+            }
+            
+            summon item ~ ~ ~ {
+                PickupDelay:25s,
+                Item:{
+                    id:${(string) tier.secondary},
+                    Count:4b
+                }
+            }
+            
+        }
+        
+        on wp_replace_base function {
+            
+            align xyz 
+                kill @e[type=item,
+                nbt={
+                    Item:{
+                        id:${(string) tier.base}
+                    }
+                },
+                dx=0,dy=0,dz=0]
+            setblock ~ ~ ~ ${tier.base}
+            
+        }
+        
+        on wp_inc_spam function {
+            
+            align xyz
+            set @a[tag=wp.pilot,dx=0,dy=0,dz=0,gamemode=survival]->wp.spamcount += ${(int) tier.spam_percent}
+            set @a[tag=wp.passenger,gamemode=survival]->wp.spamcount += ${(int) tier.spam_percent}
+            
+        }
+        
+    }
+    
+}
+
+eval Tags.createTag(
+    "block",
+    resource</../../base_blocks>,
+    blocks
+)
+
+eval Tags.createTag(
+    "item",
+    resource</../../primary_items>,
+    primaries
+)
+
+eval Tags.createTag(
+    "item",
+    resource</../../secondary_items>,
+    secondaries
+)

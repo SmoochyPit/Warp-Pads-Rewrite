@@ -1,0 +1,24 @@
+{
+    "__comment": "Made with TheDestruc7i0n's advancements generator: https://advancements.thedestruc7i0n.ca",
+    "display": {
+        "title": {
+            "text": "My Parents Aren't Home"
+        },
+        "description": {
+            "text": "Teleport 50000+ blocks using two Warp Pads while holding a poppy"
+        },
+        "icon": {
+            "item": "minecraft:poppy"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "warped50000": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "warppad:makepad/pad2"
+}

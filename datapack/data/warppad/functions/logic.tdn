@@ -1,0 +1,138 @@
+@ tag load
+schedule function / 10t
+
+set @a->wp.player_launch = 0
+
+at @a[
+    tag=!global.ignore.pos,
+    predicate=warppad:potential_warp,
+    scores={wp.cooldown=0}
+]
+align xyz
+    tag @e[type=$wp_pad,dx=0,dy=0,dz=0,scores={wp.spawn_anim=0}] add wp.active
+
+as @e[
+    tag=wp.displaying_spam_gui,
+    tag=!wp.spammed
+]
+function /remove_spam_text {
+    
+    title @s actionbar ""
+    tag @s remove global.ignore.gui
+    tag @s remove wp.displaying_spam_gui
+    
+}
+
+as @e[
+    tag=wp.displaying_spam_gui,
+    predicate=!warppad:potential_warp
+]
+function /remove_spam_text
+
+as @a[
+    tag=wp.spammed,
+    tag=!global.ignore.pos,
+    predicate=warppad:potential_warp
+]
+at @s
+align xyz
+if entity @e[type=$wp_pad,dx=0,dy=0,dz=0,scores={wp.spawn_anim=0}]
+function {
+    
+    # Tag removed in logic.tdn
+    tag @s[tag=!global.ignore.gui] add wp.displaying_spam_gui
+    tag @s[tag=wp.displaying_spam_gui] add global.ignore.gui
+    set @s[tag=wp.displaying_spam_gui]->wp.math = @s[tag=wp.displaying_spam_gui]->wp.cooldown
+    set @s[tag=wp.displaying_spam_gui]->wp.math /= 4
+    set @s[tag=wp.displaying_spam_gui]->wp.math += 1
+    title @s[tag=wp.displaying_spam_gui] actionbar {
+        "text":"You have warped too fast! Please wait ",
+        "color":"gold",
+        "extra":[
+            {
+                "score":{
+                    "name":"@s",
+                    "objective":"wp.math"
+                },
+                "color":"red"
+            },
+            {
+                "text":" seconds."
+            }
+        ]
+    }
+    
+}
+
+unless @e[tag=wp.active]
+    set @e[type=$wp_pad]->wp.temp_ID = 0
+
+as @e[tag=wp.active]
+at @s
+align xyz
+unless entity @p[dx=0,dy=0,dz=0]
+function {
+    tag @s remove wp.active
+    tag @s remove wp.processed
+}
+
+as @e[tag=wp.selector]
+at @s
+unless entity @e[tag=wp.active,distance=..5]
+    kill @s
+
+as @e[tag=wp.name_display]
+at @s
+unless entity @e[type=$wp_indicator,distance=..0.001]
+    tp @s ~ -1000 ~
+    kill @s
+
+unless entity @e[tag=wp.active]
+    set @e[type=$wp_pad]->wp.temp_ID = 0
+
+as @a 
+at @s
+align xyz
+unless entity @e[tag=wp.active,dx=0,dy=0,dz=0]
+function {
+    tag @s remove wp.pilot
+    if entity @s[tag=wp.displaying_warp_gui] 
+    function {
+        tag @a[tag=wp.displaying_warp_gui] remove global.ignore.gui
+        tag @a remove wp.displaying_warp_gui
+    }
+}
+
+as @e[tag=wp.active,tag=!wp.processed]
+at @s
+function {
+    tag @s add wp.processing
+    
+    set @a->wp.cooldown += 0
+    
+    # Add wp.invaliddest to all within the corresponding list of UUIDS
+    function /../array_check/invalid_dests
+    
+    # Add wp.validdest to all within the corresponding list of UUIDs
+    function /../array_check/valid_dests
+    
+    # Check remaining $wp_pad s
+    function /../conditions
+    
+    # Create icons
+    function /../warping/icon_align
+    
+    # Create selector
+    function /../warping/make_selector
+    
+    #say Invalid : @e[tag=wp.invalid_dest]
+    #say Valid : @e[tag=wp.valid_dest]
+    #say Remaining: @e[type=$wp_pad,tag=!wp.valid_dest,tag=!wp.invalid_dest,tag=!wp.processing]
+    
+    tag @e remove wp.early_exclude
+    tag @e remove wp.invalid_dest
+    tag @e remove wp.valid_dest
+    
+    tag @s add wp.processed
+    tag @s remove wp.processing
+}
