@@ -1,0 +1,24 @@
+{
+    "__comment": "Made with TheDestruc7i0n's advancements generator: https://advancements.thedestruc7i0n.ca",
+    "display": {
+        "title": {
+            "text": "Disappearing Act"
+        },
+        "description": {
+            "text": "Teleport from one Warp Pad to another"
+        },
+        "icon": {
+            "item": "minecraft:ender_pearl"
+        },
+        "frame": "task",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "warped": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "smoochypit:warppad/root"
+}

@@ -265,6 +265,28 @@ define entity wp_pad marker {
                 
             tp @s ^ ^ ^0.2
         }
+
+        if entity @s[scores={wp.spawn_anim=1}]
+        function {
+
+            using tag wp.current_pad @s {
+                as @a[distance=..25]
+                if score @s wp.linked_UUID = @e[tag=wp.current_pad,limit=1] wp.linked_UUID
+                    tag @s update wp.maker
+            }
+            
+            if entity @s[component=tier_0]
+                advancement grant @a[tag=wp.maker] only smoochypit:warppad/makepad/pad0
+            if entity @s[component=tier_1]
+                advancement grant @a[tag=wp.maker] only smoochypit:warppad/makepad/pad1
+            if entity @s[component=tier_2]
+                advancement grant @a[tag=wp.maker] only smoochypit:warppad/makepad/pad2
+
+#   Example logic for an additional warp pad tier
+#           if entity @s[component=tier_3]
+#               advancement grant @a[tag=wp.maker] only smoochypit:warppad/makepad/pad3
+
+        }
         
         if entity @s[scores={wp.spawn_anim=1}]
         as @e[tag=wp.primary_anim,distance=..2.5]
@@ -272,6 +294,7 @@ define entity wp_pad marker {
         function {
             particle witch ~ ~1.4 ~ 0 0 0 1 80 normal @a[distance=..$particle_dist]
             particle reverse_portal ~ ~1.4 ~ 0.1 0.1 0.1 1 80 normal @a[distance=..$particle_dist]
+
             kill @s
         }
         

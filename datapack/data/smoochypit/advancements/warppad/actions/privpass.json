@@ -1,0 +1,24 @@
+{
+    "__comment": "Made with TheDestruc7i0n's advancements generator: https://advancements.thedestruc7i0n.ca",
+    "display": {
+        "title": {
+            "text": "He's With Me"
+        },
+        "description": {
+            "text": "Bring a friend to a private warp"
+        },
+        "icon": {
+            "item": "minecraft:lead"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": true
+    },
+    "criteria": {
+        "privpass": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "parent": "smoochypit:warppad/mods/private"
+}
