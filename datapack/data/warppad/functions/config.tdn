@@ -116,9 +116,9 @@ global final var warp_config = {
 
     _tier_comment:[
         "Notice: Changing warp pad recipes will not update advancements.",
-        "You can manually modify their contents at data/smoochypit/advancements/warppad/makepad.",
+        "You can manually modify their contents at data/warppad/advancements/makepad.",
         "If you add or remove warp pad tiers, you'll need to add or remove both the advancement file and the logic",
-        "Logic is found in data/smoochypit/functions/warppad/entities/warppad.tdn at line 276"
+        "Logic is found in data/warppad/functions/entities/warppad.tdn at line 276"
     ],
     tiers: [
         {
@@ -149,7 +149,7 @@ global final var warp_config = {
 
     _mod_comment:[
             "Notice: Changing warp pad modifiers will not update advancements!",
-            "You can manually modify their contents at data/smoochypit/advancements/warppad/makepad."
+            "You can manually modify their contents at data/warppad/advancements/makepad."
     ],
     modifiers: {
         frequency:item<minecraft:redstone>,

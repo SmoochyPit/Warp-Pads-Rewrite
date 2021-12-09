@@ -94,7 +94,8 @@ define entity wp_pad marker {
                         id:${(string) warp_config.modifiers.frequency},
                         Count:1b
                     },
-                    PickupDelay:25s}
+                    PickupDelay:25s
+                }
                 set @e[tag=wp.freq_item,limit=1,sort=nearest].Item.Count (byte) = @s.data.Frequency
             }
             
