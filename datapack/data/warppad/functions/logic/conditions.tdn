@@ -19,7 +19,7 @@ for (dimension in warp_config.dimensions) {
                 var max_dist = warp_config.tiers[i].max_distance
                 
                 #   jank workaround for @e[component=${"tier_" + i}]
-                tag @e[type=$wp_pad,tag=${"trident-component.smoochypit.tier_" + i}] add wp.tier_equal_or_less
+                tag @e[type=$wp_pad,tag=${"trident-component.warppad.tier_" + i}] add wp.tier_equal_or_less
                 
                 if entity @s[tag=wp.tier_equal_or_less]
                 function {

@@ -114,7 +114,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
         }
         set @e[tag=wp.temp]->wp.spawn_anim = 100
         # cheap workaround for component @s add ${"tier_" + i}
-        tag @e[tag=wp.temp] add ${"trident-component.smoochypit.tier_" + i}
+        tag @e[tag=wp.temp] add ${"trident-component.warppad.tier_" + i}
         as @e[tag=wp.temp]
             schedule function warppad:entities/warppad/wp_pad/animate_per 1t
         using tag wp.mainitem @s {
@@ -141,7 +141,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
     
     as @e[
         type=$wp_pad,
-        tag=${"trident-component.smoochypit.tier_" + i},
+        tag=${"trident-component.warppad.tier_" + i},
         nbt={data:{Destructable:true}}
     ]
     at @s
@@ -152,7 +152,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
     #no player in 32 block comparison here, as no chunk forceloads are being modified
     as @e[
         type=$wp_pad,
-        tag=${"trident-component.smoochypit.tier_" + i},
+        tag=${"trident-component.warppad.tier_" + i},
         nbt={data:{Destructable:false}}
     ]
     at @s
