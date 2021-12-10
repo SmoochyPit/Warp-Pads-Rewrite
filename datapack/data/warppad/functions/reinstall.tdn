@@ -1,0 +1,7 @@
+as @e[type=$wp_pad]
+function {
+    set @s->wp.x = @s.Pos[0]
+    set @s->wp.z = @s.Pos[2]
+    set @s->wp.linked_UUID = @s.data.Owner_UUID[0]
+    set @s->wp.spawn_anim += 0
+}

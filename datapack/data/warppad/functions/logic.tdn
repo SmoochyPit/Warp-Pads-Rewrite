@@ -2,6 +2,7 @@
 schedule function / 10t
 
 set @a->wp.player_launch = 0
+set @a->wp.cooldown += 0
 
 at @a[
     tag=!global.ignore.pos,
@@ -107,8 +108,6 @@ as @e[tag=wp.active,tag=!wp.processed]
 at @s
 function {
     tag @s add wp.processing
-    
-    set @a->wp.cooldown += 0
     
     # Add wp.invaliddest to all within the corresponding list of UUIDS
     function /../array_check/invalid_dests
