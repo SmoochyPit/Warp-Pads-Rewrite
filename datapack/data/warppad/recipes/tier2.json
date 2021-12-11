@@ -1,0 +1,22 @@
+{
+    "type":"crafting_shaped",
+    "group":"Warp Pad",
+    "key":{
+        "b":{
+            "item":"minecraft:diamond_block"
+        },
+        "p":{
+            "item":"minecraft:nether_star"
+        },
+        "s":{
+            "item":"minecraft:popped_chorus_fruit"
+        }
+    },
+    "pattern":[
+        "sps",
+        "sbs"
+    ],
+    "result":{
+        "item":"minecraft:knowledge_book"
+    }
+}

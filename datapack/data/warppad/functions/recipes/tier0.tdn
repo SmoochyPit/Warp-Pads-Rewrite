@@ -1,0 +1,18 @@
+clear @s minecraft:knowledge_book 1
+
+give @s minecraft:blaze_spawn_egg{
+    display:{
+        Name:'{"text":"Warp Pad","italic":false}',
+        Lore:['{"text":"Tier 1"}']
+    },
+    EntityTag:{
+        NoAI:true,
+        Silent:true,
+        Tags:[
+            "wp.spawn_0"
+        ]
+    }
+}
+
+advancement revoke @s only warppad:recipes/tier0
+recipe take @s warppad:tier0

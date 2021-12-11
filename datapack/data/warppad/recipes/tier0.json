@@ -1,0 +1,22 @@
+{
+    "type":"crafting_shaped",
+    "group":"Warp Pad",
+    "key":{
+        "b":{
+            "item":"minecraft:gold_block"
+        },
+        "p":{
+            "item":"minecraft:ender_pearl"
+        },
+        "s":{
+            "item":"minecraft:amethyst_shard"
+        }
+    },
+    "pattern":[
+        "sps",
+        "sbs"
+    ],
+    "result":{
+        "item":"minecraft:knowledge_book"
+    }
+}

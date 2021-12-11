@@ -1,0 +1,13 @@
+{
+    "criteria": {
+        "craft_tier_0":{
+            "trigger":"minecraft:recipe_unlocked",
+            "conditions":{
+                "recipe":"warppad:tier0"
+            }
+        }
+    },
+    "rewards":{
+        "function":"warppad:recipes/tier0"
+    }
+}
