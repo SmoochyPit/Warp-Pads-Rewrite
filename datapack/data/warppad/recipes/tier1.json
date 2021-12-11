@@ -1,0 +1,22 @@
+{
+    "type":"crafting_shaped",
+    "group":"Warp Pad",
+    "key":{
+        "b":{
+            "item":"minecraft:amethyst_block"
+        },
+        "p":{
+            "item":"minecraft:ender_eye"
+        },
+        "s":{
+            "item":"minecraft:quartz"
+        }
+    },
+    "pattern":[
+        "sps",
+        "sbs"
+    ],
+    "result":{
+        "item":"minecraft:knowledge_book"
+    }
+}

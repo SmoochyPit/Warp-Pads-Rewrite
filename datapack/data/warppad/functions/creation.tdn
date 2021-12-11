@@ -26,6 +26,63 @@ for (var i=0; i<warp_config.tiers.length; i++) {
     
     var tier = warp_config.tiers[i]
     
+    as @e[tag=${"wp.spawn_" + i}]
+    at @s
+    align xyz
+    positioned ~0.5 ~0.5 ~0.5
+    function {
+
+        stopsound @a[distance=..10] hostile
+        stopsound @a[distance=..10] neutral
+        playsound minecraft:block.amethyst_block.place block @a[distance=..10] ~ ~ ~ 1 0.75
+
+        summon item ~ ~ ~ {
+            Item:{
+                id:${(string) tier.primary},
+                Count:1b
+            },
+            Tags:[
+                "wp.fake_spawn_item"
+            ],
+            PickupDelay:-32767s
+        }
+
+        unless entity @s[nbt={CustomName:'{"italic":false,"text":"Warp Pad"}'}]
+            set @e[tag=wp.fake_spawn_item,limit=1,sort=nearest].Item.tag.display.Name = @s.CustomName
+        as @e[tag=wp.fake_spawn_item,limit=1,sort=nearest]
+        function {
+            set @s.Thrower = @p.UUID
+            
+            setblock ~ ~ ~ ${(string) tier.base}
+
+            summon $wp_pad ~ ~1 ~ {
+                Tags:["wp.temp"]
+            }
+            tag @e[tag=wp.temp] add ${"trident-component.warppad.tier_" + i}
+
+            using tag wp.mainitem @s {
+                as @e[tag=wp.temp]
+                at @s
+                    function warppad:entities/warppad/wp_pad/construct
+            }
+            kill @s
+            
+            as @e[tag=wp.temp]
+            at @s
+            if entity @e[type=$wp_pad,tag=!wp.temp,distance=..2.9]
+                setblock ~ ~-1 ~ air destroy
+
+            set @e[tag=wp.temp,limit=1]->wp.spawn_anim = 0
+
+            tag @e remove wp.temp
+
+        }
+
+        tp @s ~ -1000 ~
+        kill @s
+
+    }
+
     as @e[type=item,
         tag=!global.ignore,tag=!global.ignore.kill,
         nbt={

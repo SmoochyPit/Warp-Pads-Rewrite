@@ -1,0 +1,18 @@
+clear @s minecraft:knowledge_book 1
+
+give @s minecraft:shulker_spawn_egg{
+    display:{
+        Name:'{"text":"Warp Pad","italic":false}',
+        Lore:['{"text":"Tier 2"}']
+    },
+    EntityTag:{
+        NoAI:true,
+        Silent:true,
+        Tags:[
+            "wp.spawn_1"
+        ]
+    }
+}
+
+advancement revoke @s only warppad:recipes/tier1
+recipe take @s warppad:tier1
