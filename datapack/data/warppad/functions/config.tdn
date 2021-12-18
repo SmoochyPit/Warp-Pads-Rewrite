@@ -162,6 +162,7 @@ global final var warp_config = {
             spam_percent:0
         }
     ],
+    pad_drop_item: true,
 
     _mod_comment:[
             "Notice: Changing warp pad modifiers will not update advancements!",
