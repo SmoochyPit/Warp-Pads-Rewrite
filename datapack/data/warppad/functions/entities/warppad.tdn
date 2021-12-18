@@ -329,22 +329,59 @@ for (var i=0; i<warp_config.tiers.length; i++) {
     define entity component ${"tier_" + i} {
         
         on wp_spawn_base_items function {
-            
-            summon item ~ ~ ~ {
-                Tags:["wp.primary_item"],
-                PickupDelay:25s,
-                Item:{
-                    id:${(string) tier.primary},
-                    Count:1b
+
+            if (warp_config.pad_drop_item) {
+
+                align xyz
+                store success score #wp wp.math  
+                kill @e[type=item,
+                nbt={
+                    Item:{
+                        id:${(string) tier.base}
+                    }
+                },
+                dx=0,dy=0,dz=0]
+
+                if score #wp wp.math matches 1
+                summon item ~ ~ ~ {
+                    Tags:["wp.primary_item"],
+                    PickupDelay:25s,
+                    Item:{
+                        id:${(string) tier.item_id},
+                        Count:1b,
+                        tag:{
+                            display:${tier.item_display},
+                            EntityTag:{
+                                NoAI:true,
+                                Silent:true,
+                                Tags:[
+                                    ${"wp.spawn_" + i}
+                                ]
+                            }
+                        }
+                    }
                 }
+
             }
+            else {
             
-            summon item ~ ~ ~ {
-                PickupDelay:25s,
-                Item:{
-                    id:${(string) tier.secondary},
-                    Count:4b
+                summon item ~ ~ ~ {
+                    Tags:["wp.primary_item"],
+                    PickupDelay:25s,
+                    Item:{
+                        id:${(string) tier.primary},
+                        Count:1b
+                    }
                 }
+                
+                summon item ~ ~ ~ {
+                    PickupDelay:25s,
+                    Item:{
+                        id:${(string) tier.secondary},
+                        Count:4b
+                    }
+                }
+
             }
             
         }
