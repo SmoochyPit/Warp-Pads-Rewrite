@@ -3,11 +3,11 @@
         "craft_tier_0":{
             "trigger":"minecraft:recipe_unlocked",
             "conditions":{
-                "recipe":"warppad:tier1"
+                "recipe":"warppad:tier_1"
             }
         }
     },
     "rewards":{
-        "function":"warppad:recipes/tier1"
+        "function":"warppad:recipes/tier_1"
     }
 }
