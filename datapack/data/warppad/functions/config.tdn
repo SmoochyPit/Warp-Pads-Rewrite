@@ -115,14 +115,22 @@ global final var warp_config = {
     },
 
     _tier_comment:[
-        "Notice: Changing warp pad recipes will not update advancements.",
-        "You can manually modify their contents at data/warppad/advancements/makepad.",
+        "Notice: Changing warp pad recipes here will not update advancements or crafting recipes.",
+        "You can manually modify their contents at data/warppad/advancements/makepad and data/warppad/recipes",
+
         "If you add or remove warp pad tiers, you'll need to add or remove both the advancement file and the logic",
-        "Logic is found in data/warppad/functions/entities/warppad.tdn at line 276"
+        "Logic is found in data/warppad/functions/entities/warppad.tdn at line 276",
+
+        "If you add or remove a crafting recipe, you'll need to add or remove a corresponding advancement file.",
+        "Recipe advancements are found at data/warppad/advancements/recipes"
     ],
     tiers: [
         {
-            item_name:text_component<{"text":"Tier 1 Warp Pad"}>,
+            item_id:item<minecraft:blaze_spawn_egg>,
+            item_display:nbt_value<{
+                Name:'{"text":"Warp Pad","italic":false}',
+                Lore:['{"text":"Tier 1"}']
+            }>,
             base:block<minecraft:gold_block>,
             primary:item<minecraft:ender_pearl>,
             secondary:item<minecraft:amethyst_shard>,
@@ -130,7 +138,11 @@ global final var warp_config = {
             spam_percent:50
         },
         {
-            item_name:text_component<{"text":"Tier 2 Warp Pad"}>,
+            item_id:item<minecraft:shulker_spawn_egg>,
+            item_display:nbt_value<{
+                Name:'{"text":"Warp Pad","italic":false}',
+                Lore:['{"text":"Tier 2"}']
+            }>,
             base:block<minecraft:amethyst_block>,
             primary:item<minecraft:ender_eye>,
             secondary:item<minecraft:quartz>,
@@ -138,7 +150,11 @@ global final var warp_config = {
             spam_percent:25
         },
         {
-            item_name:text_component<{"text":"Tier 3 Warp Pad"}>,
+            item_id:item<minecraft:drowned_spawn_egg>,
+            item_display:nbt_value<{
+                Name:'{"text":"Warp Pad","italic":false}',
+                Lore:['{"text":"Tier 3"}']
+            }>,
             base:block<minecraft:diamond_block>,
             primary:item<minecraft:nether_star>,
             secondary:item<minecraft:popped_chorus_fruit>,
@@ -149,7 +165,7 @@ global final var warp_config = {
 
     _mod_comment:[
             "Notice: Changing warp pad modifiers will not update advancements!",
-            "You can manually modify their contents at data/warppad/advancements/makepad."
+            "You can manually modify their contents at data/warppad/advancements/makepad"
     ],
     modifiers: {
         frequency:item<minecraft:redstone>,
