@@ -350,6 +350,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
                         id:${(string) tier.item_id},
                         Count:1b,
                         tag:{
+                            CustomModelData:${(nbt_value) (0290000 + i)},
                             display:${tier.item_display},
                             EntityTag:{
                                 NoAI:true,
