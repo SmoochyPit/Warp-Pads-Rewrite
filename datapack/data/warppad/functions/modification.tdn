@@ -168,24 +168,27 @@ function {
         if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
         function {
             
-            if entity @s[
-                nbt={
-                    data:{
-                        Private:true
-                    }
-                }
-            ]
-            function {
-                summon item ~.5 ~.5 ~.5 {
-                    Item:{
-                        id:${(string) warp_config.modifiers.private},
-                        Count:1b
-                    },
-                    PickupDelay:25s
-                }
-                set @s.data.Private = false
-            }
+            if (warp_config.freqency_reserved_mutually_exclusive) {
             
+                if entity @s[
+                    nbt={
+                        data:{
+                            Private:true
+                        }
+                    }
+                ]
+                function {
+                    summon item ~.5 ~.5 ~.5 {
+                        Item:{
+                            id:${(string) warp_config.modifiers.private},
+                            Count:1b
+                        },
+                        PickupDelay:25s
+                    }
+                    set @s.data.Private = false
+                }
+
+            }
             
             set @s.data.Reserved = true
 
@@ -259,22 +262,26 @@ function {
         if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
         function {
             
-            if entity @s[
-                nbt={
-                    data:{
-                        Reserved:true
+            if (warp_config.freqency_reserved_mutually_exclusive) {
+
+                if entity @s[
+                    nbt={
+                        data:{
+                            Reserved:true
+                        }
                     }
+                ]
+                function {
+                    summon item ~.5 ~.5 ~.5 {
+                        Item:{
+                            id:${(string) warp_config.modifiers.reserved},
+                            Count:1b
+                        },
+                        PickupDelay:25s
+                    }
+                    set @s.data.Reserved = false
                 }
-            ]
-            function {
-                summon item ~.5 ~.5 ~.5 {
-                    Item:{
-                        id:${(string) warp_config.modifiers.reserved},
-                        Count:1b
-                    },
-                    PickupDelay:25s
-                }
-                set @s.data.Reserved = false
+
             }
             
             set @s.data.Private = true
