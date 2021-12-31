@@ -1,6 +1,6 @@
 {
 	
-	"target-version": [1, 17, 1],
+	"target-version": [1, 18, 1],
 	"default-namespace": "warppad",
 	"language-level": 2
 		
