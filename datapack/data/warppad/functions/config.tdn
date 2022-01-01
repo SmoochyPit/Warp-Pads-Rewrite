@@ -129,7 +129,10 @@ global final var warp_config = {
             item_id:item<minecraft:blaze_spawn_egg>,
             item_display:nbt_value<{
                 Name:'{"text":"Warp Pad","italic":false}',
-                Lore:['{"text":"Tier 1"}']
+                Lore:[
+                    '{"text":"Tier 1"}',
+                    '{"text":"Range 1k"}'
+                ]
             }>,
             base:block<minecraft:gold_block>,
             primary:item<minecraft:ender_pearl>,
@@ -141,7 +144,10 @@ global final var warp_config = {
             item_id:item<minecraft:shulker_spawn_egg>,
             item_display:nbt_value<{
                 Name:'{"text":"Warp Pad","italic":false}',
-                Lore:['{"text":"Tier 2"}']
+                Lore:[
+                    '{"text":"Tier 2"}',
+                    '{"text":"Range 25k"}'
+                ]
             }>,
             base:block<minecraft:amethyst_block>,
             primary:item<minecraft:ender_eye>,
@@ -153,7 +159,10 @@ global final var warp_config = {
             item_id:item<minecraft:drowned_spawn_egg>,
             item_display:nbt_value<{
                 Name:'{"text":"Warp Pad","italic":false}',
-                Lore:['{"text":"Tier 3"}']
+                Lore:[
+                    '{"text":"Tier 3"}',
+                    '{"text":"Range ∞"}'
+                ]
             }>,
             base:block<minecraft:diamond_block>,
             primary:item<minecraft:nether_star>,
