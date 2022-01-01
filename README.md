@@ -89,7 +89,7 @@ Warp Pads in the Nether are limited to 1/8th the distance of those in the Overwo
 
 1. Click [releases](https://github.com/SmoochyPit/Warp-Pads-Rewrite/releases)
 2. Find the latest release
-3. Under assets, click "WarpPadsv2.X.X.zip" to download the archived data pack. *This file **should not** be unzipped before installation*
+3. Under assets, click "warp-pads-2.X.X.zip" to download the archived data pack. *This file **should not** be unzipped before installation*
 4. Select one of the following methods for installing the data pack:
 
 ### Step 2 - Data pack menu (New singleplayer worlds) (Very Easy)
