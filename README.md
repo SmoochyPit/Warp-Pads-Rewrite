@@ -112,16 +112,10 @@ At this point, Warp Pads will now be installed in your Minecraft world.
 ### Step 3 - Updating
 
 1. Follow step 1 to download the latest release
-<<<<<<< HEAD
 2. Backup your world!! `World Select > Edit > Make Backup`
 3. Delete the previous installation (Refer to step 2 for locating this file)
 4. Follow step 2 to install the new data pack manually
 5. Run `/reload` to check for any errors
-=======
-2. Delete the previous installation (Refer to step 2 for locating this file)
-3. Follow step 2 to install the new data pack manually
-4. Run `/reload` to check for any errors
->>>>>>> Update README.md
 
 Version 2.0 and newer are incompatible with previous versions of Warp Pads. Please uninstall them before installing new versions.
 
