@@ -22,6 +22,7 @@
         "#minecraft:rails",
         "#minecraft:saplings",
         "#minecraft:signs",
+        "#minecraft:trapdoors",
         "#minecraft:wall_corals"
     ]
 }
