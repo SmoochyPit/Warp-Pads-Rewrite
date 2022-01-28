@@ -8,6 +8,13 @@ var particle_dist = warp_config.particle_view_distance
 
 # Colors
 
+if (warp_config.ambient_light_level > 0) {
+
+    at @e[type=$wp_pad,tag=!wp.active]
+    fill ~ ~ ~ ~ ~ ~ light[level=${warp_config.ambient_light_level}] replace #warppad:air
+
+}
+
 for (color in warp_config.colors) {
     
     var color_name = color.key
