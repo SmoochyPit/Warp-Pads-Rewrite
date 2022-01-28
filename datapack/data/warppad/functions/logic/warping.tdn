@@ -59,22 +59,6 @@ define function /icon_align {
         positioned ~ ~1.14 ~
         facing entity @s
             tp @e[tag=wp.temp] ^ ^ ^${warp_config.icon.distance_away} facing entity @s
-
-        as @e[tag=wp.temp,limit=1]
-        at @s
-        unless block ~ ~ ~ #warppad:icon_no_coll
-        function {
-            
-            tp @s ^ ^ ^-0.2
-
-            at @s
-            unless block ~ ~ ~ #warppad:icon_no_coll
-            positioned ~ ~-1.64 ~
-            if entity @p[distance=1..5]
-            positioned ~ ~1.64 ~
-                function /
-
-        }
         
         align xyz
             set @e[tag=wp.temp,limit=1].data.Home_UUID = @e[type=$wp_pad,dx=0,dy=0,dz=0,limit=1].UUID
@@ -161,6 +145,7 @@ define function /mark_selected {
             CustomName:'{"text":"Warp Pad"}'
         }]
     unless entity @e[tag=wp.name_display,distance=..0.001]
+    if block ~ ~ ~ #warppad:icon_no_coll
     function {
         summon $wp_anim_stand ~ ~ ~ {Tags:["wp.name_display"],CustomNameVisible:false}
         set @e[tag=wp.name_display,distance=..0.001,limit=1,sort=nearest].CustomName = @s.CustomName
