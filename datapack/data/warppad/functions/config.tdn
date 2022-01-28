@@ -234,6 +234,9 @@ global final var warp_config = {
         clockwise: true
     },
 
+    ambient_light_level:10,
+    light_level_on_use:12,
+
     spam_punishment: 15
     
 }

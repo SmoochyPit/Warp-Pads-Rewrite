@@ -157,6 +157,12 @@ define entity wp_pad marker {
             tag @e remove wp.primary_item
             
         }
+
+        if (warp_config.light_level_on_use > 0 || warp_config.ambient_light_level > 0) {
+
+            fill ~ ~ ~ ~ ~ ~ air replace light
+
+        }
         
         kill @s
         

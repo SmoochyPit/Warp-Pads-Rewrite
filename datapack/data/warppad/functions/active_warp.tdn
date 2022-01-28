@@ -8,6 +8,12 @@ function {
         tag @p[dx=0,dy=0,dz=0,scores={
             wp.cooldown=0
         }] add wp.pilot
+
+    if ( (warp_config.light_level_on_use > 0) && (warp_config.light_level_on_use != warp_config.ambient_light_level) ) {
+
+        fill ~ ~ ~ ~ ~ ~ light[level=${warp_config.light_level_on_use}] replace #warppad:air
+
+    }
     
     # Icon Selection
     function /../../logic/warping/selection
