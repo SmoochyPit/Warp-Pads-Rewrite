@@ -4,23 +4,42 @@ var particle_dist = warp_config.particle_view_distance
 
 for (color in warp_config.colors) {
     
-    at @e[type=$wp_indicator,
-        tag=!wp.selected_icon,
-        nbt={
-            data:{
-                Color:${color.key}
-            }
-        }]
-        particle dust ${color.value[1]} ${color.value[2]} ${color.value[3]} ${warp_config.icon.unselected_size} ~ ~ ~ 0 0 0 0 1 force @a[distance=..$particle_dist]
-    
-    at @e[type=$wp_indicator,
-        tag=wp.selected_icon,
-        nbt={
-            data:{
-                Color:${color.key}
-            }
-        }]
-        particle dust ${color.value[1]} ${color.value[2]} ${color.value[3]} ${warp_config.icon.selected_size} ~ ~ ~ 0 0 0 0 1 force @a[distance=..$particle_dist]
+    as @e[type=$wp_indicator]
+    at @s
+    function {
+        
+        unless block ~ ~ ~ #warppad:icon_no_coll
+        facing entity @p eyes
+        positioned ^ ^ ^0.35
+        positioned ~ ~-1.64 ~
+        if entity @p[distance=1..5]
+        positioned ~ ~1.64 ~
+            function /
+
+        if block ~ ~ ~ #warppad:icon_no_coll
+        function {
+
+            if entity @s[
+                tag=!wp.selected_icon,
+                nbt={
+                    data:{
+                        Color:${color.key}
+                    }
+                }]
+                particle dust ${color.value[1]} ${color.value[2]} ${color.value[3]} ${warp_config.icon.unselected_size} ~ ~ ~ 0 0 0 0 1 force @a[distance=..$particle_dist]
+            
+            if entity @s[
+                tag=wp.selected_icon,
+                nbt={
+                    data:{
+                        Color:${color.key}
+                    }
+                }]
+                particle dust ${color.value[1]} ${color.value[2]} ${color.value[3]} ${warp_config.icon.selected_size} ~ ~ ~ 0 0 0 0 1 force @a[distance=..$particle_dist]
+
+        }
+
+    }
     
 }
 
