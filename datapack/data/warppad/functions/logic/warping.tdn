@@ -302,6 +302,7 @@ define function /warp {
         ] wp.temp_ID
     tag @s add wp.dest_pad
     
+    if entity @e[tag=wp.dest_pad]
     function warppad:entities/warppad/wp_pad/inc_spam
 
     if entity @e[tag=wp.dest_pad]
