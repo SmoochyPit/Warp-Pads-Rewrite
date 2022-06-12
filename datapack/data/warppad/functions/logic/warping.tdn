@@ -122,6 +122,29 @@ define function /tick_cool_down {
     
 }
 
+define function /surprise_players {
+
+    @ tag load
+
+    # This function will run intermittently to check for players with a cooldown that have joined since the last run
+    
+    schedule clear /
+    schedule function / 5s
+
+    schedule clear /../tick_cool_down
+    
+    if entity @a[scores={
+            wp.cooldown=1..
+        }]
+    schedule function /../tick_cool_down 5t
+    
+    if entity @a[scores={
+            wp.spamcount=1..
+        }]
+    schedule function /../tick_cool_down 5t
+
+}
+
 define function /make_selector {
     
     # as and at all active warps not yet processed
