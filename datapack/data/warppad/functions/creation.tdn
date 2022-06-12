@@ -5,6 +5,7 @@ var particle_dist = warp_config.particle_view_distance
 
 as @e[type=$wp_indicator]
 at @s
+positioned ~ ~-1.64 ~
 unless entity @e[type=$wp_pad,
     tag=wp.active,
     distance=..2.9]
