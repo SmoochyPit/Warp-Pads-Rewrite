@@ -5,7 +5,6 @@ for (var i=0; i<warp_config.tiers.length; i++) {
     var func_name = (resource) ("/tier_" + i)
     var recipe_advancement = (resource) ("warppad:recipes/tier_" + i)
     var recipe = (resource) ("warppad:tier_" + i)
-    var advancecraft = (resource) ("warppad:makepad/pad" + i)
 
     function $func_name {
 
@@ -22,7 +21,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
                 ]
             }
         }
-        advancement grant @s only $advancecraft
+
         advancement revoke @s only $recipe_advancement
         recipe take @s $recipe
 
