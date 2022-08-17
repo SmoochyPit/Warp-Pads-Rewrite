@@ -312,6 +312,8 @@ define entity wp_pad marker {
             particle witch ~ ~1.4 ~ 0 0 0 0 10 normal @a[distance=..$particle_dist]
             kill @s
         }
+
+        tag @a remove wp.maker
     }
 
 }

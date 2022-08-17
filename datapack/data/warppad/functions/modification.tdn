@@ -116,7 +116,8 @@ for (color in warp_config.colors) {
                 }
 
                 advancement grant @a[tag=wp.mod_thrower] only warppad:mods/color
-        
+
+                tag @a remove wp.mod_thrower
                 kill @e[tag=wp.chosen_item]
                 
             }
@@ -215,6 +216,7 @@ function {
 
             advancement grant @a[tag=wp.mod_thrower] only warppad:mods/reserve
             
+            tag @a remove wp.mod_thrower
             kill @e[tag=wp.chosen_item]
     
         }
@@ -314,6 +316,7 @@ function {
 
             advancement grant @a[tag=wp.mod_thrower] only warppad:mods/private
             
+            tag @a remove wp.mod_thrower
             kill @e[tag=wp.chosen_item]
     
         }
@@ -393,6 +396,7 @@ function {
             if entity @s[scores={wp.frequency=64..}]
                 advancement grant @a[tag=wp.mod_thrower] only warppad:challenges/freq64
 
+            tag @a remove wp.mod_thrower
             kill @e[tag=wp.chosen_item]
     
         }
@@ -479,6 +483,7 @@ function {
 
             advancement grant @a[tag=wp.mod_thrower] only warppad:mods/rename
             
+            tag @a remove wp.mod_thrower
             kill @e[tag=wp.chosen_item]
     
         }
