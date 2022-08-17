@@ -29,5 +29,8 @@ function {
     ]
         kill @e[tag=wp.name_display,distance=..0.001]
     
-    set @a->wp.player_launch = 0
+    set @p[tag=wp.pilot,dx=0,dy=0,dz=0]->wp.player_launch = 0
+
+    tag @a remove wp.pilot
 }
+
