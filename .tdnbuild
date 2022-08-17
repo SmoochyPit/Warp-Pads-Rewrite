@@ -4,13 +4,13 @@
 		
 		"default-definition-packs": [
 			
-			"../../Minecraft-Definitions/defpacks/zipped/minecraft_j_1_18.zip"
+			"../../Minecraft-Definitions/defpacks/zipped/minecraft_j_1_19.zip"
 			
 		],
-		"feature-map": "../../Minecraft-Definitions/featuremaps/j_1_18.json",
+		"feature-map": "../../Minecraft-Definitions/featuremaps/j_1_19.json",
 		"type-map-packs": [
 			
-			"../../Minecraft-Definitions/typemaps/zipped/j_1_18.zip"
+			"../../Minecraft-Definitions/typemaps/zipped/j_1_19.zip"
 			
 		]
 	},
