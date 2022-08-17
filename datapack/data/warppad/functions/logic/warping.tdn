@@ -150,8 +150,7 @@ define function /make_selector {
     # as and at all active warps not yet processed
     
     summon marker{Tags:[
-            "wp.selector",
-            "wp.temp"
+            "wp.selector"
         ]} ~ ~1.14 ~
     
 }
@@ -182,7 +181,7 @@ define function /mark_selected {
         # Tag removed in logic.tdn
         tag @p[tag=!global.ignore.gui,tag=wp.pilot,dx=0,dy=0,dz=0] add wp.displaying_warp_gui
         tag @a[tag=wp.displaying_warp_gui] add global.ignore.gui
-        title @p[tag=wp.displaying_warp_gui,dx=0,dy=0,dz=0] actionbar {
+        title @p[tag=wp.pilot,tag=wp.displaying_warp_gui,dx=0,dy=0,dz=0] actionbar {
             "text":"Destination: ",
             "color":"gold",
             "extra":[
@@ -260,7 +259,7 @@ define function /selection {
     
     positioned ~ ~1.14 ~
     unless entity @e[tag=wp.selected_icon,distance=..${warp_config.icon.distance_away + 0.1}]
-        title @a[tag=wp.displaying_warp_gui] actionbar ""
+        title @a[tag=wp.pilot,tag=wp.displaying_warp_gui] actionbar ""
     
 }
 
@@ -301,8 +300,6 @@ define function /teleport {
 define function /warp {
     
     # at and as pads with a pilot sneaking
-    
-    tag @e[type=$wp_pad] remove wp.dest_pad
     
     positioned ~ ~1.14 ~
     as @e[
@@ -349,7 +346,7 @@ define function /warp {
 
     if entity @e[tag=wp.dest_pad]
     align xyz
-    as @e[tag=wp.pilot,dx=0,dy=0,dz=0]
+    as @p[tag=wp.pilot,dx=0,dy=0,dz=0]
     at @e[tag=wp.dest_pad,limit=1]
     function /../teleport
 
@@ -359,5 +356,6 @@ define function /warp {
     advancement grant @s only warppad:challenges/warp50000
 
     tag @e remove wp.passenger
+    tag @e remove wp.dest_pad
     
 }
