@@ -280,7 +280,7 @@ define function /teleport {
     if entity @e[tag=wp.passenger,type=creeper]
         advancement grant @s only warppad:challenges/creep
     if entity @a[tag=wp.passenger]
-    if entity @e[type=$wp_pad,nbt={data:{Private:true}}]
+    if entity @e[tag=wp.dest_pad,nbt={data:{Private:true}}]
         advancement grant @s only warppad:actions/privpass
     advancement grant @a[tag=wp.passenger] only warppad:actions/passenger
 
