@@ -4,7 +4,7 @@ This is a **rewrite** of [Warp Pads](https://github.com/SmoochyPit/Warp-Pads) su
 
 Warp Pads is a data pack for Minecraft: Java Edition enabling players to create and teleport between Warp Pads in the world. It is designed to be balanced for survival Minecraft, but beneficial for players in all game modes.
 
-Warp Pads follows the Minecraft Datapacks [Official Conventions and Style](https://mc-datapacks.github.io/en/) to ensure compatibility with other certified data packs.
+Warp Pads follows the Minecraft Datapacks [Official Conventions and Style](https://mc-datapacks.github.io/en/) as well as [Smithed Conventions](https://wiki.smithed.dev/conventions) to ensure compatibility with other certified data packs.
 
 ## About
 

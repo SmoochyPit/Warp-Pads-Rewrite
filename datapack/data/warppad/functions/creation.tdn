@@ -86,6 +86,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
 
     as @e[type=item,
         tag=!global.ignore,tag=!global.ignore.kill,
+        tag=!smithed.entity,tag=!smithed.block,
         nbt={
             Item:{
                 id:${(string) tier.primary}
@@ -95,6 +96,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
     align xyz
     if entity @e[type=item,
         tag=!global.ignore,tag=!global.ignore.kill,
+        tag=!smithed.entity,tag=!smithed.block,
         dx=0,dy=0,dz=0,
         nbt={
             Item:{
@@ -185,6 +187,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
         align xyz
         kill @e[type=item,
             tag=!global.ignore,tag=!global.ignore.kill,
+            tag=!smithed.entity,tag=!smithed.block,
             dx=0,dy=0,dz=0,
             nbt={
                 Item:{
