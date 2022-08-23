@@ -5,7 +5,7 @@ set @a->wp.player_launch = 0
 set @a->wp.cooldown += 0
 
 at @a[
-    tag=!global.ignore.pos,
+    tag=!global.ignore.pos,tag=!wp.nowarp,
     predicate=warppad:potential_warp,
     scores={wp.cooldown=0}
 ]
@@ -32,7 +32,7 @@ function /remove_spam_text
 
 as @a[
     tag=wp.spammed,
-    tag=!global.ignore.pos,
+    tag=!global.ignore.pos,tag=!wp.nowarp,
     predicate=warppad:potential_warp
 ]
 at @s

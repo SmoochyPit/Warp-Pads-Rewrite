@@ -13,7 +13,8 @@ define entity wp_anim_stand armor_stand {
         Invulnerable:true,
         NoGravity:true,
         Tags:[
-            "wp.anim_stand"
+            "wp.anim_stand",
+            "smithed.entity"
         ]
     }
     
