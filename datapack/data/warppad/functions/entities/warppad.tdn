@@ -46,7 +46,8 @@ define entity wp_pad marker {
             "wp.pad",
             "global.ignore",
             "global.ignore.pos",
-            "global.forceload"
+            "global.forceload",
+            "smithed.block"
         ]
     }
     

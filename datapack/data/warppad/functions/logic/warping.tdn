@@ -330,8 +330,8 @@ define function /warp {
     as @e[
         tag=!wp.pilot,
         type=!#warppad:nonwarpable,
-        tag=!global.ignore,
-        tag=!global.ignore.pos,
+        tag=!global.ignore,tag=!global.ignore.pos,
+        tag=!smithed.strict,tag=!smithed.block,tag=!wp.nowarp,
         distance=..${warp_config.warp_circle.radius}
         ]
     positioned ~${-1 * warp_config.warp_circle.radius} ~ ~${-1 * warp_config.warp_circle.radius}
