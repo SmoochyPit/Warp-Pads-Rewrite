@@ -1,0 +1,15 @@
+{
+    "criteria":{
+        "use_spawn_egg":{
+            "trigger":"item_used_on_block",
+            "conditions":{
+                "item":{
+                    "tag":"warppad:spawn_items"
+                }
+            }
+        }
+    },
+    "rewards":{
+        "function":"warppad:creation"
+    }
+}

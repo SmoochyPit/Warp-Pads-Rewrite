@@ -323,6 +323,8 @@ define entity wp_pad marker {
 
 var blocks : list = []
 
+var spawn_items : list = []
+
 var primaries : list = []
 
 var secondaries : list = []
@@ -332,6 +334,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
     var tier = warp_config.tiers[i]
     
     eval blocks.add((resource) (string) tier.base)
+    eval spawn_items.add((resource) (string) tier.item_id)
     eval primaries.add((resource) (string) tier.primary)
     eval secondaries.add((resource) (string) tier.secondary)
     
@@ -426,6 +429,12 @@ eval Tags.createTag(
     "block",
     resource</../../base_blocks>,
     blocks
+)
+
+eval Tags.createTag(
+    "item",
+    resource</../../spawn_items>,
+    spawn_items
 )
 
 eval Tags.createTag(

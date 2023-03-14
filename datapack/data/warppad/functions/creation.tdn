@@ -1,6 +1,9 @@
 @ tag load
 schedule function / 10t
 
+# Reset if place_pad was active
+advancement revoke @a only warppad:logic/place_pad
+
 var particle_dist = warp_config.particle_view_distance
 
 as @e[type=$wp_indicator]
