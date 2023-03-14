@@ -6,6 +6,10 @@ Warp Pads is a data pack for Minecraft: Java Edition enabling players to create 
 
 Warp Pads follows the Minecraft Datapacks [Official Conventions and Style](https://mc-datapacks.github.io/en/) as well as [Smithed Conventions](https://wiki.smithed.dev/conventions) to ensure compatibility with other certified data packs.
 
+### Warning: 
+
+Warp Pads force-load the chunk they are in. This can cause overhead at large scales and can be used by players for unintended purposes. If you are a server owner or an advanced player, please consider this behavior before installing.
+
 ## About
 
 ### Features
@@ -121,7 +125,7 @@ Version 2.0 and newer are incompatible with previous versions of Warp Pads. Plea
 
 ### Support
 
-Tested to support Minecraft: Java Edition 1.17-1.19.2. The original (very performance-intensive) version for 1.16-1.16.4 can be found [here](https://github.com/SmoochyPit/Warp-Pads). A legacy (very performance-intensive) version supporting Minecraft 1.14.4-1.15.2 can be found [here](https://github.com/SmoochyPit/Warp-Pads/tree/legacy).
+Tested to support Minecraft: Java Edition 1.17-1.19.4. The original (very performance-intensive) version for 1.16-1.16.4 can be found [here](https://github.com/SmoochyPit/Warp-Pads). A legacy (very performance-intensive) version supporting Minecraft 1.14.4-1.15.2 can be found [here](https://github.com/SmoochyPit/Warp-Pads/tree/legacy).
 
 ### Uninstalling
 
