@@ -49,7 +49,19 @@ define function invalid_dests {
         /${"execute in " + (dimension.key) + " run function " + (string) function_name}
         
         define function $function_name {
+
+            tag @e[type=$wp_pad] remove wp.cross_dimension
+            for (var i=0; i<warp_config.tiers.length; i++) {
+                
+                if (warp_config.tiers[i].cross_dimension) {
+                    # jank workaround for @e[component=${"tier_" + i}]
+                    tag @e[tag=${"trident-component.warppad.tier_" + i}] add wp.cross_dimension
+                    as @r say TAGGED!!
+                }
+
+            }
             
+            # If processing warp is in dimension
             if entity @e[tag=wp.processing,
                 distance=0..]
             as @e[
@@ -65,17 +77,16 @@ define function invalid_dests {
                     unless entity @e[tag=wp.test_dim,
                     distance=0..]
                     tag @s add wp.early_exclude
-                    
-                    for (var i=0; i<warp_config.tiers.length; i++) {
-
-                        if (warp_config.tiers[i].cross_dimension) {
-                            tag @s[tag=${"trident-component.warppad.tier_" + i}] remove wp.early_exclude
-                        }
-
-                    }
                 }
                 
             }
+            
+            # If processing warp is cross_dimension
+            if entity @e[tag=wp.processing,tag=wp.cross_dimension]
+                tag @e[type=$wp_pad,
+                tag=!wp.processing,
+                tag=wp.cross_dimension] remove wp.early_exclude
+
             
         }
         
