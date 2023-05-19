@@ -138,6 +138,7 @@ global final var warp_config = {
             primary:item<minecraft:ender_pearl>,
             secondary:item<minecraft:amethyst_shard>,
             max_distance:1000,
+            cross_dimension:false,
             spam_percent:50
         },
         {
@@ -153,6 +154,7 @@ global final var warp_config = {
             primary:item<minecraft:ender_eye>,
             secondary:item<minecraft:quartz>,
             max_distance:25000,
+            cross_dimension:false,
             spam_percent:25
         },
         {
@@ -168,6 +170,7 @@ global final var warp_config = {
             primary:item<minecraft:nether_star>,
             secondary:item<minecraft:popped_chorus_fruit>,
             max_distance:-1,
+            cross_dimension:true,
             spam_percent:0
         }
     ],

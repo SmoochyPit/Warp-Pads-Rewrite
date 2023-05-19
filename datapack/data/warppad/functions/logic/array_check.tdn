@@ -65,6 +65,14 @@ define function invalid_dests {
                     unless entity @e[tag=wp.test_dim,
                     distance=0..]
                     tag @s add wp.early_exclude
+                    
+                    for (var i=0; i<warp_config.tiers.length; i++) {
+
+                        if (warp_config.tiers[i].cross_dimension) {
+                            tag @s[tag=${"trident-component.warppad.tier_" + i}] remove wp.early_exclude
+                        }
+
+                    }
                 }
                 
             }
