@@ -56,7 +56,6 @@ define function invalid_dests {
                 if (warp_config.tiers[i].cross_dimension) {
                     # jank workaround for @e[component=${"tier_" + i}]
                     tag @e[tag=${"trident-component.warppad.tier_" + i}] add wp.cross_dimension
-                    as @r say TAGGED!!
                 }
 
             }
