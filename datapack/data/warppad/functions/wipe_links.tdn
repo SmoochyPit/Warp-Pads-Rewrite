@@ -1,0 +1,7 @@
+# This function can be called by a user to erase a warp pad's memory of valid or invalid destinations
+
+as @e[type=$wp_pad]
+    data remove entity @s data.ValidDests
+
+as @e[type=$wp_pad]
+    data remove entity @s data.InvalidDests
