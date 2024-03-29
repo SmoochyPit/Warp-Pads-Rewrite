@@ -446,7 +446,7 @@ function {
         function {
             unless entity @s[
                 nbt={
-                    CustomName:'{"text":"Warp Pad"}'
+                    CustomName:'{"text":"Warp Pad","italic":false}'
                 }
             ]
             positioned ~.5 ~.5 ~.5

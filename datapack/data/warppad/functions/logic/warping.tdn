@@ -164,7 +164,7 @@ define function /mark_selected {
     
     at @s
     unless entity @s[nbt={
-            CustomName:'{"text":"Warp Pad"}'
+            CustomName:'{"text":"Warp Pad","italic":false}'
         }]
     unless entity @e[tag=wp.name_display,distance=..0.001]
     if block ~ ~ ~ #warppad:icon_no_coll

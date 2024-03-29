@@ -19,7 +19,7 @@ define event wp_inc_spam
 define entity wp_pad marker {
     
     default name [
-        "Warp Pad"
+        {"text":"Warp Pad","italic":false}
     ]
     
     default nbt {
@@ -150,7 +150,7 @@ define entity wp_pad marker {
             
             unless entity @s[
                 nbt={
-                    CustomName:'{"text":"Warp Pad"}'
+                    CustomName:'{"text":"Warp Pad","italic":false}'
                 }
             ]
                 set @e[tag=wp.primary_item,limit=1,sort=nearest].Item.tag.display.Name = @s.CustomName

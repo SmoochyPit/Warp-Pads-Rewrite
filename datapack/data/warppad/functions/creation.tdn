@@ -51,7 +51,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
             PickupDelay:-32767s
         }
 
-        unless entity @s[nbt={CustomName:'{"italic":false,"text":"Warp Pad"}'}]
+        unless entity @s[nbt={CustomName:'{"text":"Warp Pad","italic":false}'}]
             set @e[tag=wp.fake_spawn_item,limit=1,sort=nearest].Item.tag.display.Name = @s.CustomName
         as @e[tag=wp.fake_spawn_item,limit=1,sort=nearest]
         function {
