@@ -125,7 +125,7 @@ Version 2.0 and newer are incompatible with previous versions of Warp Pads. Plea
 
 ### Support
 
-Tested to support Minecraft: Java Edition 1.17-1.19.4. The original (very performance-intensive) version for 1.16-1.16.4 can be found [here](https://github.com/SmoochyPit/Warp-Pads). A legacy (very performance-intensive) version supporting Minecraft 1.14.4-1.15.2 can be found [here](https://github.com/SmoochyPit/Warp-Pads/tree/legacy).
+Tested to support Minecraft: Java Edition 1.17-1.20.4. The original (very performance-intensive) version for 1.16-1.16.4 can be found [here](https://github.com/SmoochyPit/Warp-Pads). A legacy (very performance-intensive) version supporting Minecraft 1.14.4-1.15.2 can be found [here](https://github.com/SmoochyPit/Warp-Pads/tree/legacy).
 
 ### Uninstalling
 
