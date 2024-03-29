@@ -146,7 +146,26 @@ I designed this rewrite to be easily customizable, but you'll still need to comp
 
 Now you have everything you need. Open the downloaded Warp Pads Rewrite folder and navigate to `datapack/data/warppad/functions/config.tdn`. Edit, add or removes values as you see fit. If a value is invalid, compilation will fail in the next step:
 
-In the root of the "Warp-Pads-Rewrite" folder, run the command `java -jar ../../Trident-Language/Trident-Lang.jar .`. If it is successful, your configured .zip will be located in the "out" folder ready to be used.
+In the root of the "Warp-Pads-Rewrite" folder, run the command `java -jar ../../Trident-Language/Trident-Lang.jar .`. If it is successful, your configured .zip will be located in the "out" folder ~~ready to be used~~ *see below*.
+
+---
+
+Due to a Trident bug, you'll need to patch in entity tag specifying which entities should not be warped. I wrote a small shell script to patch this file in, located in the root directory. Prerequisites:
+- 7zip (needs to be included in your environment's PATH)
+- Git Bash, MinGW-w64, WSL or a linux terminal.
+
+Directions:
+1. Change directory to the Warp Pad root directory if needed.
+2. Open `dp_patch.sh` in a text editor or viewer and read which commands will be run. 
+    - This is good practice for any shell script, as they are very powerful and can be used for evil.
+    - The first line `#!/bin/sh` is called a shebang and tells the system what shell to use.
+    - The second line is the `cp` command, which creates a copy of your warppad zip to be patched.
+    - The third line changes the directory and uses the `7z` command to add the file to our new zip.
+3. Make sure you have already compiled the project with Trident and have the file `out/warppad.zip`.
+4. Execute (without the `$`) `$ ./dp_patch.sh`.
+5. Your patched data pack is `out/warppad-patched.zip`.
+
+---
 
 Note: Changes to Tiers and Recipes in an existing world may cause undefined behavior, please use caution.
 
