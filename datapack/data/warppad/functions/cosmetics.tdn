@@ -26,7 +26,7 @@ for (color in warp_config.colors) {
                         Color:${color.key}
                     }
                 }]
-                particle dust ${color.value[1]} ${color.value[2]} ${color.value[3]} ${warp_config.icon.unselected_size} ~ ~ ~ 0 0 0 0 1 force @a[distance=..$particle_dist]
+                /${"particle dust{color:[" + color.value[1] + ", " + color.value[2] + ", " + color.value[3] + "], scale:" + warp_config.icon.unselected_size + "} ~ ~ ~ 0 0 0 0 1 force @a[distance=.." + particle_dist + "]"}
             
             if entity @s[
                 tag=wp.selected_icon,
@@ -35,7 +35,7 @@ for (color in warp_config.colors) {
                         Color:${color.key}
                     }
                 }]
-                particle dust ${color.value[1]} ${color.value[2]} ${color.value[3]} ${warp_config.icon.selected_size} ~ ~ ~ 0 0 0 0 1 force @a[distance=..$particle_dist]
+                /${"particle dust{color:[" + color.value[1] + ", " + color.value[2] + ", " + color.value[3] + "], scale:" + warp_config.icon.selected_size + "} ~ ~ ~ 0 0 0 0 1 force @a[distance=.." + particle_dist + "]"}
 
         }
 
@@ -74,22 +74,25 @@ for (var i=points-1; i>=0; i--) {
         var particle = warp_config.warp_circle.particle
         
         var particle_command = ""
+
+        var color = particle.colors
         
         if (particle.colors.length > 0) {
             
-            var colors = ""
-            for (d in particle.colors) {
-                eval colors += d + " "
-            }
-            
-            eval particle_command = "particle " + particle.name + " " + colors + "~" + rx + " ~" + particle.y_offset + " ~" + rz + " " + particle.dx + " " + particle.dy + " " + particle.dz + " " + particle.speed + " " + particle.count + " normal @a[distance=.." + particle_dist + "]"
+            eval particle_command = "particle " + particle.name + "{color:[" + color.value[0] + ", " + color.value[1] + ", " + color.value[2] + "], scale:" + color.value[3] + "} ~" + rx + " ~" + particle.y_offset + " ~" + rz + " " + particle.dx + " " + particle.dy + " " + particle.dz + " " + particle.speed + " " + particle.count + " normal @a[distance=.." + particle_dist + "]"
             
             if (i == 0)
                 log info "Colors enabled. Sample circle particle command: " + particle_command
             
         }
         else if (particle.block != "") {
-            eval particle_command = "particle " + particle.name + " " + particle.block +  " ~" + rx + " ~" + particle.y_offset + " ~" + rz + " " + particle.dx + " " + particle.dy + " " + particle.dz + " " + particle.speed + " " + particle.count + " normal @a[distance=.." + particle_dist + "]"
+            
+            if (particle.name == "minecraft:item") {
+                eval particle_command = "particle " + particle.name + "{item:\"" + particle.block + "\"} ~" + rx + " ~" + particle.y_offset + " ~" + rz + " " + particle.dx + " " + particle.dy + " " + particle.dz + " " + particle.speed + " " + particle.count + " normal @a[distance=.." + particle_dist + "]"
+            }
+            else if (particle.name == "minecraft:block") {
+                eval particle_command = "particle " + particle.name + "{block_id:\"" + particle.block + "\"} ~" + rx + " ~" + particle.y_offset + " ~" + rz + " " + particle.dx + " " + particle.dy + " " + particle.dz + " " + particle.speed + " " + particle.count + " normal @a[distance=.." + particle_dist + "]"
+            }
             
             if (i == 0)
                 log info "Block enabled. Sample circle particle command: " + particle_command
@@ -104,25 +107,27 @@ for (var i=points-1; i>=0; i--) {
         var particle2 = warp_config.warp_circle.particle2
         
         var particle2_command = ""
+
+        var color = particle2.colors
         
         if (particle2.name != "") {
             
             if (particle2.colors.length > 0) {
             
-                var colors = ""
-                for (d in particle2.colors) {
-                    eval colors += d + " "
-                }
-                
-                eval particle2_command = "particle " + particle2.name + " " + colors + "~" + rx + " ~" + particle2.y_offset + " ~" + rz + " " + particle2.dx + " " + particle2.dy + " " + particle2.dz + " " + particle2.speed + " " + particle2.count + " normal @a[distance=.." + particle_dist + "]"
+                eval particle2_command = "particle " + particle2.name + "{color:[" + color.value[0] + ", " + color.value[1] + ", " + color.value[2] + "], scale:" + color.value[3] + "} ~" + rx + " ~" + particle2.y_offset + " ~" + rz + " " + particle2.dx + " " + particle2.dy + " " + particle2.dz + " " + particle2.speed + " " + particle2.count + " normal @a[distance=.." + particle_dist + "]"
                 
                 if (i == 0)
                     log info "Colors enabled. Sample circle particle 2 command: " + particle2_command
                 
             }
             else if (particle2.block != "") {
-                
-                eval particle2_command = "particle " + particle2.name + " " + particle2.block +  " ~" + rx + " ~" + particle2.y_offset + " ~" + rz + " " + particle2.dx + " " + particle2.dy + " " + particle2.dz + " " + particle2.speed + " " + particle2.count + " normal @a[distance=.." + particle_dist + "]"
+
+                if (particle2.name == "minecraft:item") {
+                    eval particle2_command = "particle " + particle2.name + "{item:\"" + particle2.block + "\"} ~" + rx + " ~" + particle2.y_offset + " ~" + rz + " " + particle2.dx + " " + particle2.dy + " " + particle2.dz + " " + particle2.speed + " " + particle2.count + " normal @a[distance=.." + particle_dist + "]"
+                }
+                else if (particle2.name == "minecraft:block") {
+                    eval particle2_command = "particle " + particle2.name + "{block_id:\"" + particle2.block + "\"} ~" + rx + " ~" + particle2.y_offset + " ~" + rz + " " + particle2.dx + " " + particle2.dy + " " + particle2.dz + " " + particle2.speed + " " + particle2.count + " normal @a[distance=.." + particle_dist + "]"
+                }
                 
                 if (i == 0)
                     log info "Block enabled. Sample circle particle 2 command: " + particle2_command
