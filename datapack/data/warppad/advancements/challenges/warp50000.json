@@ -8,7 +8,7 @@
             "text": "Teleport 50000+ blocks using two Warp Pads while holding a poppy"
         },
         "icon": {
-            "item": "minecraft:poppy"
+            "id": "minecraft:poppy"
         },
         "frame": "challenge",
         "show_toast": true,

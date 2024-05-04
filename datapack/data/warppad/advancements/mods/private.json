@@ -8,7 +8,7 @@
             "text": "Hide a Warp Pad from others by throwing a Diamond on it"
         },
         "icon": {
-            "item": "minecraft:diamond"
+            "id": "minecraft:diamond"
         },
         "frame": "task",
         "show_toast": true,

@@ -8,7 +8,7 @@
             "text": "Tune a warp pad to the maximum frequency (why?)"
         },
         "icon": {
-            "item": "minecraft:redstone_block"
+            "id": "minecraft:redstone_block"
         },
         "frame": "task",
         "show_toast": true,

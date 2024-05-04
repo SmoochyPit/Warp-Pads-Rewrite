@@ -8,7 +8,7 @@
             "text": "Bring a friend to a private warp"
         },
         "icon": {
-            "item": "minecraft:lead"
+            "id": "minecraft:lead"
         },
         "frame": "challenge",
         "show_toast": true,

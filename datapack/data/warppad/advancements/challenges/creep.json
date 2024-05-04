@@ -9,7 +9,7 @@
             "bold": false
         },
         "icon": {
-            "item": "minecraft:creeper_head"
+            "id": "minecraft:creeper_head"
         },
         "frame": "challenge",
         "show_toast": true,

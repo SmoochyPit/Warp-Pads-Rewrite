@@ -8,7 +8,7 @@
             "text": "Bring 3 or more passengers"
         },
         "icon": {
-            "item": "minecraft:milk_bucket"
+            "id": "minecraft:milk_bucket"
         },
         "frame": "task",
         "show_toast": true,
