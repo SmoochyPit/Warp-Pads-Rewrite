@@ -17,6 +17,20 @@
         "sbs"
     ],
     "result":{
-        "item":"minecraft:knowledge_book"
+        "id":"minecraft:shulker_spawn_egg",
+        "components":{
+            "minecraft:entity_data":{
+                "id":"minecraft:marker",
+                "Tags":[
+                    "wp.spawn_1"
+                ]
+            },
+            "minecraft:custom_model_data": 290001,
+            "minecraft:custom_name": "{\"text\":\"Warp Pad\",\"italic\":false}",
+            "minecraft:lore": [
+                "{\"text\":\"Tier 2\"}",
+                "{\"text\":\"Range 25k\"}"
+            ]
+        }
     }
 }

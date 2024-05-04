@@ -17,6 +17,20 @@
         "sbs"
     ],
     "result":{
-        "item":"minecraft:knowledge_book"
+        "id":"minecraft:blaze_spawn_egg",
+        "components":{
+            "minecraft:entity_data":{
+                "id":"minecraft:marker",
+                "Tags":[
+                    "wp.spawn_0"
+                ]
+            },
+            "minecraft:custom_model_data": 290000,
+            "minecraft:custom_name": "{\"text\":\"Warp Pad\",\"italic\":false}",
+            "minecraft:lore": [
+                "{\"text\":\"Tier 1\"}",
+                "{\"text\":\"Range 1k\"}"
+            ]
+        }
     }
 }

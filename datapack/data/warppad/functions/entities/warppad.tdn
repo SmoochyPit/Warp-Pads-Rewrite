@@ -360,17 +360,17 @@ for (var i=0; i<warp_config.tiers.length; i++) {
                     PickupDelay:25s,
                     Item:{
                         id:${(string) tier.item_id},
-                        Count:1b,
-                        tag:{
-                            CustomModelData:${(nbt_value) (0290000 + i)},
-                            display:${tier.item_display},
-                            EntityTag:{
-                                NoAI:true,
-                                Silent:true,
-                                Tags:[
+                        count:1,
+                        components:{
+                            "minecraft:entity_data":{
+                                "id":"minecraft:marker",
+                                "Tags":[
                                     ${"wp.spawn_" + i}
                                 ]
-                            }
+                            },
+                            "minecraft:custom_model_data": ${(nbt_value) (0290000 + i)},
+                            "minecraft:custom_name": ${tier.item_display.Name},
+                            "minecraft:lore": ${(nbt_value) tier.item_display.Lore}
                         }
                     }
                 }
@@ -383,7 +383,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
                     PickupDelay:25s,
                     Item:{
                         id:${(string) tier.primary},
-                        Count:1b
+                        count:1
                     }
                 }
                 
@@ -391,7 +391,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
                     PickupDelay:25s,
                     Item:{
                         id:${(string) tier.secondary},
-                        Count:4b
+                        count:4
                     }
                 }
 

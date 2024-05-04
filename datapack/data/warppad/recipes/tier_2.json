@@ -17,6 +17,20 @@
         "sbs"
     ],
     "result":{
-        "item":"minecraft:knowledge_book"
+        "id":"minecraft:drowned_spawn_egg",
+        "components":{
+            "minecraft:entity_data":{
+                "id":"minecraft:marker",
+                "Tags":[
+                    "wp.spawn_2"
+                ]
+            },
+            "minecraft:custom_model_data": 290002,
+            "minecraft:custom_name": "{\"text\":\"Warp Pad\",\"italic\":false}",
+            "minecraft:lore": [
+                "{\"text\":\"Tier 3\"}",
+                "{\"text\":\"Range ∞\"}"
+            ]
+        }
     }
 }
