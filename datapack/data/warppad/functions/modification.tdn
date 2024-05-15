@@ -31,7 +31,7 @@ for (color in warp_config.colors) {
         color.value[2],
         color.value[3]
     ]
-    
+
     align xyz
     unless entity @s[
         nbt={
@@ -45,11 +45,13 @@ for (color in warp_config.colors) {
         tag=!global.ignore,tag=!global.ignore.kill,
         tag=!smithed.entity,tag=!smithed.block,
         nbt={
-            Item:$color_item
+            Item:{
+                id: ${(string) color_item.itemType}
+            }
         },
         nbt={
             Item:{
-                Count:1b
+                count:1
             }
         },
         dx=0,
@@ -62,11 +64,13 @@ for (color in warp_config.colors) {
             tag=!global.ignore,tag=!global.ignore.kill,
             tag=!smithed.entity,tag=!smithed.block,
             nbt={
-                Item:$color_item
+                Item:{
+                    id: ${(string) color_item.itemType}
+                }
             },
             nbt={
                 Item:{
-                    Count:1b
+                    count:1
                 }
             },
             dx=0,
@@ -79,7 +83,7 @@ for (color in warp_config.colors) {
             function {
                 
                 for (color in warp_config.colors) {
-                
+
                     if entity @s[
                         nbt={
                             data:{
@@ -88,10 +92,13 @@ for (color in warp_config.colors) {
                         }
                     ]
                     summon item ~.5 ~.5 ~.5 {
-                        Item:${color.value[0]},
+                        Item:{
+                            id: ${(string) color.value[0].itemType},
+                            count: 1
+                        },
                         PickupDelay:25s
                     }
-            
+
                 }
                 
                 set @s.data.Color = ${(nbt_value) color_name}
@@ -143,11 +150,13 @@ if entity @e[
     tag=!global.ignore,tag=!global.ignore.kill,
     tag=!smithed.entity,tag=!smithed.block,
     nbt={
-        Item:${warp_config.modifiers.reserved}
+        Item:{
+            id: ${(string) warp_config.modifiers.reserved.itemType}
+        }
     },
     nbt={
         Item:{
-            Count:1b
+            count:1
         }
     },
     dx=0,
@@ -160,11 +169,13 @@ function {
         tag=!global.ignore,tag=!global.ignore.kill,
         tag=!smithed.entity,tag=!smithed.block,
         nbt={
-            Item:${warp_config.modifiers.reserved}
+            Item:{
+                id: ${(string) warp_config.modifiers.reserved.itemType}
+            }
         },
         nbt={
             Item:{
-                Count:1b
+                count:1
             }
         },
         dx=0,
@@ -188,8 +199,8 @@ function {
                 function {
                     summon item ~.5 ~.5 ~.5 {
                         Item:{
-                            id:${(string) warp_config.modifiers.private},
-                            Count:1b
+                            id:${(string) warp_config.modifiers.private.itemType},
+                            count:1
                         },
                         PickupDelay:25s
                     }
@@ -238,11 +249,13 @@ if entity @e[
     tag=!global.ignore,tag=!global.ignore.kill,
     tag=!smithed.entity,tag=!smithed.block,
     nbt={
-        Item:${warp_config.modifiers.private}
+        Item:{
+            id: ${(string) warp_config.modifiers.private.itemType}
+        }
     },
     nbt={
         Item:{
-            Count:1b
+            count:1
         }
     },
     dx=0,
@@ -255,11 +268,13 @@ function {
         tag=!global.ignore,tag=!global.ignore.kill,
         tag=!smithed.entity,tag=!smithed.block,
         nbt={
-            Item:${warp_config.modifiers.private}
+            Item:{
+                id: ${(string) warp_config.modifiers.private.itemType}
+            }
         },
         nbt={
             Item:{
-                Count:1b
+                count:1
             }
         },
         dx=0,
@@ -283,8 +298,8 @@ function {
                 function {
                     summon item ~.5 ~.5 ~.5 {
                         Item:{
-                            id:${(string) warp_config.modifiers.reserved},
-                            Count:1b
+                            id:${(string) warp_config.modifiers.reserved.itemType},
+                            count:1
                         },
                         PickupDelay:25s
                     }
@@ -334,11 +349,13 @@ if entity @e[
     tag=!global.ignore,tag=!global.ignore.kill,
     tag=!smithed.entity,tag=!smithed.block,
     nbt={
-        Item:${warp_config.modifiers.frequency}
+        Item:{
+            id: ${(string) warp_config.modifiers.frequency.itemType}
+        }
     },
     nbt={
         Item:{
-            Count:1b
+            count:1
         }
     },
     dx=0,
@@ -351,11 +368,13 @@ function {
         tag=!global.ignore,tag=!global.ignore.kill,
         tag=!smithed.entity,tag=!smithed.block,
         nbt={
-            Item:${warp_config.modifiers.frequency}
+            Item:{
+                id: ${(string) warp_config.modifiers.frequency.itemType}
+            }
         },
         nbt={
             Item:{
-                Count:1b
+                count:1
             }
         },
         dx=0,
@@ -411,11 +430,13 @@ if entity @e[
     tag=!global.ignore,tag=!global.ignore.kill,
     tag=!smithed.entity,tag=!smithed.block,
     nbt={
-        Item:${warp_config.modifiers.rename}
+        Item:{
+            id: ${(string) warp_config.modifiers.rename.itemType}
+        }
     },
     nbt={
         Item:{
-            Count:1b
+            count:1
         }
     },
     dx=0,
@@ -428,11 +449,13 @@ function {
         tag=!global.ignore,tag=!global.ignore.kill,
         tag=!smithed.entity,tag=!smithed.block,
         nbt={
-            Item:${warp_config.modifiers.rename}
+            Item:{
+                id: ${(string) warp_config.modifiers.rename.itemType}
+            }
         },
         nbt={
             Item:{
-                Count:1b
+                count:1
             }
         },
         dx=0,
@@ -441,7 +464,7 @@ function {
         limit=1
     ] {
         set @e[tag=wp.chosen_item,limit=1]->wp.linked_UUID = @e[tag=wp.chosen_item,limit=1].Thrower[0]
-        if data entity @e[tag=wp.chosen_item,limit=1] Item.tag.display.Name
+        if data entity @e[tag=wp.chosen_item,limit=1] Item.components."minecraft:custom_name"
         if score @s wp.linked_UUID = @e[tag=wp.chosen_item,limit=1] wp.linked_UUID
         function {
             unless entity @s[
@@ -453,14 +476,17 @@ function {
             function {
                 using summon item{
                     Tags:["wp.pad"],
-                    Item:${item<minecraft:paper>},
+                    Item:{
+                        id: ${(string) item<minecraft:paper>.itemType},
+                        count: 1
+                    },
                     PickupDelay:25s
                 } with named_paper {
-                    set @s.Item.tag.display.Name = @e[type=$wp_pad,limit=1,sort=nearest].CustomName
+                    set @s.Item.components."minecraft:custom_name" = @e[type=$wp_pad,limit=1,sort=nearest].CustomName
                 }
             }
             
-            set @s.CustomName = @e[tag=wp.chosen_item,limit=1].Item.tag.display.Name
+            set @s.CustomName = @e[tag=wp.chosen_item,limit=1].Item.components."minecraft:custom_name"
 
             at @e[tag=wp.chosen_item,limit=1]
             particle witch ~ ~ ~ 0 0 0 0.2 25 normal @a[distance=..$particle_dist]

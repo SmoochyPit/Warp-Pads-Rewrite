@@ -43,7 +43,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
         summon item ~ ~ ~ {
             Item:{
                 id:${(string) tier.primary},
-                Count:1b
+                count:1
             },
             Tags:[
                 "wp.fake_spawn_item"
@@ -52,7 +52,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
         }
 
         unless entity @s[nbt={CustomName:'{"text":"Warp Pad","italic":false}'}]
-            set @e[tag=wp.fake_spawn_item,limit=1,sort=nearest].Item.tag.display.Name = @s.CustomName
+            set @e[tag=wp.fake_spawn_item,limit=1,sort=nearest].Item.components."minecraft:custom_name" = @s.CustomName
         as @e[tag=wp.fake_spawn_item,limit=1,sort=nearest]
         function {
             set @s.Thrower = @p.UUID
@@ -104,7 +104,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
         nbt={
             Item:{
                 id:${(string) tier.secondary},
-                Count:4b
+                count:4
             }
         }]
     positioned ~0.5 ~0.5 ~0.5
@@ -123,7 +123,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
                 {},
                 {
                     id:${(string) tier.primary},
-                    Count:1b
+                    count:1
                 }
             ],
             Rotation:[
@@ -146,7 +146,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
                     {},
                     {
                         id:${(string) tier.secondary},
-                        Count:1b
+                        count:1
                     }
                 ],
                 Rotation:$rot,
@@ -195,7 +195,7 @@ for (var i=0; i<warp_config.tiers.length; i++) {
             nbt={
                 Item:{
                     id:${(string) tier.secondary},
-                    Count:4b
+                    count:4
                 }
             }]
         

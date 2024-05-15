@@ -69,7 +69,7 @@ define entity wp_pad marker {
         
         set @s->wp.UUID = @s.UUID[0] (int)
         
-        set @s.CustomName = @e[tag=wp.mainitem,limit=1].Item.tag.display.Name
+        set @s.CustomName = @e[tag=wp.mainitem,limit=1].Item.components."minecraft:custom_name"
         
     }
     
@@ -93,11 +93,11 @@ define entity wp_pad marker {
                     Tags:["wp.freq_item"],
                     Item:{
                         id:${(string) warp_config.modifiers.frequency},
-                        Count:1b
+                        count:1
                     },
                     PickupDelay:25s
                 }
-                set @e[tag=wp.freq_item,limit=1,sort=nearest].Item.Count (byte) = @s.data.Frequency
+                set @e[tag=wp.freq_item,limit=1,sort=nearest].Item.count = @s.data.Frequency
             }
             
             if entity @s[
@@ -110,13 +110,13 @@ define entity wp_pad marker {
             summon item ~ ~ ~ {
                 Item:{
                     id:${(string) warp_config.modifiers.private},
-                    Count:1b
+                    count:1
                 },
                 PickupDelay:25s
             }
             
             for (color in warp_config.colors) {
-                
+
                 if entity @s[
                     nbt={
                         data:{
@@ -141,7 +141,7 @@ define entity wp_pad marker {
                 summon item ~ ~ ~ {
                 Item:{
                     id:${(string) warp_config.modifiers.reserved},
-                    Count:1b
+                    count:1
                 },
                 PickupDelay:25s
             }
@@ -153,7 +153,7 @@ define entity wp_pad marker {
                     CustomName:'{"text":"Warp Pad","italic":false}'
                 }
             ]
-                set @e[tag=wp.primary_item,limit=1,sort=nearest].Item.tag.display.Name = @s.CustomName
+                set @e[tag=wp.primary_item,limit=1,sort=nearest].Item.components."minecraft:custom_name" = @s.CustomName
             set @e[tag=wp.primary_item,limit=1,sort=nearest].Thrower = @s.data.Owner_UUID
             tag @e remove wp.primary_item
             
