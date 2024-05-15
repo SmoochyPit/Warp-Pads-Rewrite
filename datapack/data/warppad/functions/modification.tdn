@@ -84,19 +84,23 @@ for (color in warp_config.colors) {
                 
                 for (color in warp_config.colors) {
 
-                    if entity @s[
-                        nbt={
-                            data:{
-                                Color:${color.key}
+                    if (color.key != "default") {
+
+                        if entity @s[
+                            nbt={
+                                data:{
+                                    Color:${color.key}
+                                }
                             }
+                        ]
+                        summon item ~.5 ~.5 ~.5 {
+                            Item:{
+                                id: ${(string) color.value[0].itemType},
+                                count: 1
+                            },
+                            PickupDelay:25s
                         }
-                    ]
-                    summon item ~.5 ~.5 ~.5 {
-                        Item:{
-                            id: ${(string) color.value[0].itemType},
-                            count: 1
-                        },
-                        PickupDelay:25s
+
                     }
 
                 }
